@@ -16,7 +16,21 @@ import { fileURLToPath } from 'node:url';
 export const BRIDGE_PORT = Number(process.env.BEAM_BRIDGE_PORT || 4330);
 export const BRIDGE_URL = `http://127.0.0.1:${BRIDGE_PORT}`;
 const PROBE_FILE = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', 'probe', 'beam-probe.js');
-const TOKEN_FILE = path.join(os.tmpdir(), `kane-beam-bridge-${BRIDGE_PORT}.json`);
+// Per-user folder, owner-only: never the shared temp folder.
+const TOKEN_DIR = path.join(process.env.BEAM_HOME || os.homedir(), '.kane-beam');
+const TOKEN_FILE = path.join(TOKEN_DIR, `bridge-${BRIDGE_PORT}.json`);
+
+function writeTokenFile(data) {
+  fs.mkdirSync(TOKEN_DIR, { recursive: true, mode: 0o700 });
+  try {
+    const st = fs.lstatSync(TOKEN_FILE);
+    if (!st.isFile()) throw new Error(`${TOKEN_FILE} is not a regular file; refusing to use it`);
+    fs.rmSync(TOKEN_FILE);
+  } catch (e) { if (e.code !== 'ENOENT') throw e; }
+  const flags = fs.constants.O_WRONLY | fs.constants.O_CREAT | fs.constants.O_EXCL | (fs.constants.O_NOFOLLOW || 0);
+  const fd = fs.openSync(TOKEN_FILE, flags, 0o600);
+  try { fs.writeSync(fd, JSON.stringify(data)); } finally { fs.closeSync(fd); }
+}
 const LOOPBACK_ORIGIN = /^https?:\/\/(localhost|127\.\d+\.\d+\.\d+|\[::1\]|[a-z0-9-]+(\.[a-z0-9-]+)*\.localhost)(:\d+)?$/i;
 const LOOPBACK_HOST = /^(127\.0\.0\.1|localhost)(:\d+)?$/i;
 const MAX_SNAPSHOTS = 2000;
@@ -65,7 +79,7 @@ export function startBridge({ port = BRIDGE_PORT } = {}) {
   return new Promise((resolve, reject) => {
     server.once('error', reject);
     server.listen(port, '127.0.0.1', () => {
-      fs.writeFileSync(TOKEN_FILE, JSON.stringify({ port, token, pid: process.pid }), { mode: 0o600 });
+      writeTokenFile({ port, token, pid: process.pid });
       resolve({
         server, snaps, token,
         close: () => new Promise((r) => server.close(() => { try { const t = JSON.parse(fs.readFileSync(TOKEN_FILE, 'utf8')); if (t.token === token) fs.rmSync(TOKEN_FILE); } catch {} r(); })),
@@ -75,7 +89,12 @@ export function startBridge({ port = BRIDGE_PORT } = {}) {
 }
 
 function readToken() {
-  try { return JSON.parse(fs.readFileSync(TOKEN_FILE, 'utf8')).token; } catch { return null; }
+  try {
+    const st = fs.lstatSync(TOKEN_FILE);
+    if (!st.isFile()) return null;
+    if (typeof process.getuid === 'function' && (st.uid !== process.getuid() || (st.mode & 0o077))) return null;
+    return JSON.parse(fs.readFileSync(TOKEN_FILE, 'utf8')).token;
+  } catch { return null; }
 }
 
 // Use a running Beam bridge if there is one, otherwise start one in this process.

@@ -3,6 +3,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import readline from 'node:readline/promises';
+import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { checkObjective } from './match.mjs';
 
@@ -51,6 +52,69 @@ function writeFor(agent, skill, dataText) {
   return [f, d];
 }
 
+// How agents should start the Beam MCP server: npx when installed from npm, else this checkout.
+function mcpCommand() {
+  if (/[\\/]_npx[\\/]/.test(PKG_ROOT)) return { command: 'npx', args: ['-y', 'kane-beam', 'mcp'] };
+  return { command: process.execPath, args: [path.join(PKG_ROOT, 'bin', 'kane-beam.mjs'), 'mcp'] };
+}
+
+// Register the MCP server with each agent. Returns undo records for uninstall.
+function registerMcp(out) {
+  const h = home();
+  const cmd = mcpCommand();
+  const done = [];
+  // Claude Code: through its own CLI, user scope (skipped in a test HOME).
+  if (fs.existsSync(path.join(h, '.claude')) && !process.env.BEAM_HOME) {
+    const r = spawnSync('claude', ['mcp', 'add', '--scope', 'user', 'beam', '--', cmd.command, ...cmd.args], { encoding: 'utf8', shell: false });
+    if (r.status === 0) { done.push({ kind: 'claude-mcp', name: 'beam' }); out('  Claude Code: added the "beam" MCP server (user scope)'); }
+    else out(`  Claude Code: couldn't add the MCP server automatically. Run: claude mcp add --scope user beam -- ${[cmd.command, ...cmd.args].map((a) => (a.includes(' ') ? `"${a}"` : a)).join(' ')}`);
+  }
+  // Cursor: global mcp.json, merged.
+  const cursorDir = path.join(h, '.cursor');
+  if (fs.existsSync(cursorDir)) {
+    const f = path.join(cursorDir, 'mcp.json');
+    let cfg = {};
+    try { cfg = JSON.parse(fs.readFileSync(f, 'utf8')); } catch {}
+    cfg.mcpServers = { ...(cfg.mcpServers || {}), beam: { command: cmd.command, args: cmd.args } };
+    fs.writeFileSync(f, JSON.stringify(cfg, null, 2));
+    done.push({ kind: 'json-key', file: f, key: 'beam' });
+    out(`  Cursor: added "beam" to ${f}`);
+  }
+  // Codex: a marked block in config.toml.
+  const codexDir = path.join(h, '.codex');
+  if (fs.existsSync(codexDir)) {
+    const f = path.join(codexDir, 'config.toml');
+    const prev = fs.existsSync(f) ? fs.readFileSync(f, 'utf8') : '';
+    if (!prev.includes('# >>> kane-beam')) {
+      const block = `\n# >>> kane-beam\n[mcp_servers.beam]\ncommand = ${JSON.stringify(cmd.command)}\nargs = ${JSON.stringify(cmd.args)}\n# <<< kane-beam\n`;
+      fs.writeFileSync(f, prev + block);
+    }
+    done.push({ kind: 'toml-block', file: f });
+    out(`  Codex: added [mcp_servers.beam] to ${f}`);
+  }
+  return done;
+}
+
+function unregisterMcp(records, out) {
+  for (const r of records || []) {
+    try {
+      if (r.kind === 'claude-mcp') { spawnSync('claude', ['mcp', 'remove', '--scope', 'user', r.name], { shell: false }); out('  Claude Code: removed the "beam" MCP server'); }
+      if (r.kind === 'json-key' && fs.existsSync(r.file)) {
+        const cfg = JSON.parse(fs.readFileSync(r.file, 'utf8'));
+        if (cfg.mcpServers) delete cfg.mcpServers[r.key];
+        fs.writeFileSync(r.file, JSON.stringify(cfg, null, 2));
+        out(`  Cursor: removed "beam" from ${r.file}`);
+      }
+      if (r.kind === 'toml-block' && fs.existsSync(r.file)) {
+        fs.writeFileSync(r.file, fs.readFileSync(r.file, 'utf8').replace(/\n?# >>> kane-beam[\s\S]*?# <<< kane-beam\n?/, '\n'));
+        out(`  Codex: removed [mcp_servers.beam] from ${r.file}`);
+      }
+    } catch (e) {
+      out(`  Couldn't undo ${r.kind}: ${e.message}`);
+    }
+  }
+}
+
 async function install(args, out) {
   const data = readData();
   const cwd = process.cwd();
@@ -75,12 +139,15 @@ async function install(args, out) {
   const dataText = JSON.stringify(data, null, 2);
   const state = loadState();
   for (const a of agents) for (const f of writeFor(a, skill, dataText)) if (!state.files.includes(f)) state.files.push(f);
+  out('\nMCP server:');
+  const mcp = registerMcp(out);
+  state.mcp = [...(state.mcp || []).filter((r) => !mcp.some((m) => m.kind === r.kind && m.file === r.file)), ...mcp];
   state.version = version();
   state.dataDate = dataDate(data);
   saveState(state);
   out(`\nInstalled for ${agents.map((a) => a.name).join(' and ')}.`);
-  out('Next: ask your agent for a Kane check, or try');
-  out(`  npx kane-beam check "Verify the todo counter reads '1 item left'"`);
+  out('Next: add the probe to your app (npx kane-beam init), then ask your agent to build a feature and verify it with Beam.');
+  out(`Or try: npx kane-beam check "Verify the todo counter reads '1 item left'"`);
   out('Undo anytime: npx kane-beam uninstall');
   return 0;
 }
@@ -137,7 +204,8 @@ function check(args, out) {
 
 function uninstall(args, out) {
   const state = loadState();
-  if (!state.files.length) { out('Nothing to remove.'); return 0; }
+  if (!state.files.length && !(state.mcp || []).length) { out('Nothing to remove.'); return 0; }
+  unregisterMcp(state.mcp, out);
   for (const f of state.files) {
     for (const x of [f, f + '.bak']) if (fs.existsSync(x)) fs.rmSync(x);
     const dir = path.dirname(f);
