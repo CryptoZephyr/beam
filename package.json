@@ -4,7 +4,7 @@
   "description": "Make every Kane green a true green. Which Kane CLI checks are right, measured on pages with known answers, and a skill that teaches your coding agent the wordings that work.",
   "type": "module",
   "bin": { "kane-beam": "bin/kane-beam.mjs" },
-  "files": ["bin/", "skill/", "beam.json", "src/installer.mjs", "src/match.mjs"],
+  "files": ["bin/", "skill/", "probe/", "beam.json", "src/"],
   "engines": { "node": ">=20" },
   "scripts": {
     "test": "node --test test/*.test.mjs",

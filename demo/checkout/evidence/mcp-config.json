@@ -1,0 +1,1 @@
+{ "mcpServers": { "beam": { "command": "node", "args": ["<path-to-beam>/bin/kane-beam.mjs", "mcp"] } } }

@@ -5,3 +5,9 @@ site/
 *.log
 .env
 .lab-site/
+
+# Kane evidence packs can hold request headers and local paths: keep them local
+.testmuai/
+**/.testmuai/
+demo/plural-todo/runs/
+*.beam-result.json.bak

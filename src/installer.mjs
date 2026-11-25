@@ -162,11 +162,39 @@ export async function main(argv, out = console.log) {
   for (let i = 0; i < rest.length; i++) {
     if (rest[i] === '--yes' || rest[i] === '-y') args.yes = true;
     else if (rest[i] === '--dir') args.dir = rest[++i];
+    else if (rest[i] === '--record') args.record = true;
+    else if (rest[i] === '--headed') args.headed = true;
+    else if (rest[i] === '--accept-changes') args.acceptChanges = true;
     else args._.push(rest[i]);
   }
-  const cmds = { install, update, check, uninstall, where };
+  const cmds = {
+    install, update, check, uninstall, where,
+    mcp: async () => { await (await import('./mcp.mjs')).startMcp(); return new Promise(() => {}); },
+    bridge: async () => { const { startBridge, BRIDGE_URL } = await import('./bridge.mjs'); await startBridge(); out(`Beam bridge on ${BRIDGE_URL} (Ctrl+C to stop)`); return new Promise(() => {}); },
+    verify: async (a) => {
+      const { verify, formatResult } = await import('./verify.mjs');
+      if (!a._[0]) { out('Usage: npx kane-beam verify path/to/name_test.md [--record] [--accept-changes]'); return 2; }
+      const r = await verify(a._[0], { replayOnly: !a.record, acceptChanges: a.acceptChanges, headed: a.headed });
+      out(formatResult(r));
+      return r.state === 'BALANCED' ? 0 : 1;
+    },
+    init: async (a) => (await import('./init.mjs')).init(a, out),
+  };
   if (!cmds[cmd]) {
-    out('Beam: make every Kane green a true green.\n\nUsage:\n  npx kane-beam install      add the skill to Claude Code, Codex or Cursor\n  npx kane-beam check "..."  check a Kane objective against measured results\n  npx kane-beam update       get the latest results\n  npx kane-beam uninstall    remove everything install added\n  npx kane-beam where        show what is installed');
+    out([
+      'Beam: Kane checks the screen. Your app confirms it.',
+      '',
+      'Usage:',
+      '  npx kane-beam install      add the Beam MCP server and skill to Claude Code, Codex or Cursor',
+      '  npx kane-beam init         add the Beam probe to your app\'s dev build',
+      '  npx kane-beam verify X     run a Kane test and weigh it against your app\'s own truth',
+      '  npx kane-beam check "..."  look up a Kane wording in Beam\'s measured results',
+      '  npx kane-beam mcp          the MCP server (your agent starts this)',
+      '  npx kane-beam bridge       the bridge the probe reports to (verify and mcp start it for you)',
+      '  npx kane-beam update       get the latest measured results',
+      '  npx kane-beam uninstall    remove everything install added',
+      '  npx kane-beam where        show what is installed',
+    ].join('\n'));
     return cmd ? 2 : 0;
   }
   return cmds[cmd](args, out);

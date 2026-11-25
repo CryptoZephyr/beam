@@ -1,0 +1,9 @@
+{
+  "truth": [
+    { "key": "cart.total", "equals": 45 },
+    { "key": "order.amount", "equals": 45 },
+    { "key": "order.status", "equals": "placed" },
+    { "network": "no-failures" },
+    { "errors": "none" }
+  ]
+}

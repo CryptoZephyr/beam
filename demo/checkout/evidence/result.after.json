@@ -1,0 +1,60 @@
+{
+  "test": "checkout_test.md",
+  "at": "2026-11-25T17:11:16.401Z",
+  "kaneVersion": "0.10.9",
+  "state": "BALANCED",
+  "label": "Balanced",
+  "kane": "PASS",
+  "app": "working",
+  "checks": [
+    {
+      "what": "cart.total",
+      "expected": 45,
+      "actual": 45,
+      "ok": true
+    },
+    {
+      "what": "order.amount",
+      "expected": 45,
+      "actual": 45,
+      "ok": true
+    },
+    {
+      "what": "order.status",
+      "expected": "placed",
+      "actual": "placed",
+      "ok": true
+    },
+    {
+      "what": "no failed requests",
+      "expected": "none",
+      "actual": "none",
+      "ok": true
+    },
+    {
+      "what": "no JS errors",
+      "expected": "none",
+      "actual": "none",
+      "ok": true
+    }
+  ],
+  "failedRequests": [],
+  "errors": [],
+  "lastSnapshot": {
+    "at": "2026-11-25T17:11:07.402Z",
+    "url": "http://127.0.0.1:4402/",
+    "values": {
+      "cart.total": 45,
+      "order.amount": 45,
+      "order.status": "placed"
+    }
+  },
+  "kaneRun": {
+    "summary": "",
+    "testUrl": null,
+    "credits": 0,
+    "replayed": 1,
+    "authored": 0,
+    "codeJs": null
+  }
+}
