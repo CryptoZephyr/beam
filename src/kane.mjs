@@ -51,10 +51,17 @@ export function runTest(kane, file, { replay = false, headed = false, onStep, ti
     let stderr = '';
     let buf = '';
     const timer = setTimeout(() => child.kill(), timeoutMs);
+    // After Kane reports its result, stop waiting if it goes quiet (background uploads can hang).
+    let idle = null;
+    const armIdle = () => {
+      clearTimeout(idle);
+      if (/"type":"(run_end|test_md_summary|test_md_done)"/.test(stdout)) idle = setTimeout(() => child.kill(), 45_000);
+    };
     child.stdout.on('data', (d) => {
       const s = d.toString();
       stdout += s;
       buf += s;
+      armIdle();
       let i;
       while ((i = buf.indexOf('\n')) >= 0) {
         const line = buf.slice(0, i);
@@ -71,6 +78,7 @@ export function runTest(kane, file, { replay = false, headed = false, onStep, ti
     child.stderr.on('data', (d) => (stderr += d.toString()));
     child.on('close', (code) => {
       clearTimeout(timer);
+      clearTimeout(idle);
       const parsed = parseStream(stdout);
       resolve({ exitCode: code, version: kane.version, replay, ...parsed, stderrTail: stderr.split('\n').filter(Boolean).slice(-3).join('\n') });
     });
@@ -80,5 +88,9 @@ export function runTest(kane, file, { replay = false, headed = false, onStep, ti
 export function verdictOf(result) {
   if (result.overall === 'passed') return 'PASS';
   if (result.overall === 'failed') return 'FAIL';
+  // Kane sometimes keeps running after its result (uploads); trust its own run_end reason then.
+  const rc = String(result.reasonCode || '');
+  if (rc.startsWith('success')) return 'PASS';
+  if (rc.startsWith('assertion_error')) return 'FAIL';
   return 'ERROR';
 }

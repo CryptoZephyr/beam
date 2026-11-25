@@ -4,3 +4,4 @@ fixtures/_drafts/
 site/
 *.log
 .env
+.lab-site/
