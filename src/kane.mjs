@@ -1,6 +1,7 @@
 // Runs a Kane _test.md and turns its NDJSON stream into one plain result object.
 import { spawn } from 'node:child_process';
 import path from 'node:path';
+import { packPathFrom } from './pack.mjs';
 
 export function parseStream(text) {
   const out = { overall: null, replayDecisions: null, authorDecisions: null, summary: null, oneLiner: null, reasonCode: null, credits: null, durationS: null, testUrl: null, stored: {}, steps: [], codeJs: null, evidence: [] };
@@ -80,7 +81,8 @@ export function runTest(kane, file, { replay = false, headed = false, onStep, ti
       clearTimeout(timer);
       clearTimeout(idle);
       const parsed = parseStream(stdout);
-      resolve({ exitCode: code, version: kane.version, replay, ...parsed, stderrTail: stderr.split('\n').filter(Boolean).slice(-3).join('\n') });
+      const pack = packPathFrom(stderr);
+      resolve({ exitCode: code, version: kane.version, replay, ...parsed, packPath: pack && (path.isAbsolute(pack) ? pack : path.resolve(path.dirname(file), pack)), stderrTail: stderr.split('\n').filter(Boolean).slice(-3).join('\n') });
     });
   });
 }

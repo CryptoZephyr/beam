@@ -35,7 +35,7 @@ function valueFor(last, key) {
 }
 
 // truth items: {key, equals} | {key, min} | {key, present:true} | {network:"no-failures"} | {errors:"none"}
-export function weigh(verdict, snapshots, truth) {
+export function weigh(verdict, snapshots, truth, { packFailedRequests = [] } = {}) {
   const all = snapshots || [];
   if (!all.length) return { state: 'NO_PROBE', kane: verdict, note: 'The app reported nothing during the run. Is the Beam probe on the page, and is the bridge running?' };
   const page = lastPageSnapshots(all);
@@ -44,6 +44,10 @@ export function weigh(verdict, snapshots, truth) {
   const seen = new Set();
   const uniqueRequests = requests.filter((r) => { const k = `${r.method} ${r.url} ${r.at}`; if (seen.has(k)) return false; seen.add(k); return true; });
   const failedRequests = uniqueRequests.filter((r) => !r.ok);
+  // Kane's own network log is a second witness: add what it saw that the probe didn't.
+  for (const r of packFailedRequests) {
+    if (!failedRequests.some((f) => f.method === r.method && f.url.split('?')[0] === r.url && f.status === r.status)) failedRequests.push({ ...r, ok: false, source: 'kane-pack' });
+  }
   const errors = [...new Set(page.flatMap((s) => s.errors || []))];
 
   const checks = truth.map((t) => {

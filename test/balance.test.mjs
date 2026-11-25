@@ -50,3 +50,16 @@ test('bridge accepts only pages on this machine', () => {
   for (const o of ['http://127.0.0.1:4319', 'http://localhost:3000', 'http://app.localhost:5173', undefined]) assert.ok(isLoopbackOrigin(o), String(o));
   for (const o of ['https://evil.example', 'http://192.168.1.5:3000', 'http://localhost.evil.com', 'null']) assert.ok(!isLoopbackOrigin(o), o);
 });
+
+test("Kane's own network log counts as a second witness", () => {
+  const s = snap({ 'order.status': 'placed' });
+  const r = weigh('PASS', [s], [{ network: 'no-failures' }], { packFailedRequests: [{ method: 'POST', url: 'http://127.0.0.1:4402/api/orders', status: 500 }] });
+  assert.equal(r.state, 'FALSE_GREEN');
+  assert.equal(r.failedRequests[0].source, 'kane-pack');
+});
+
+test('the same failure seen by both witnesses is counted once', () => {
+  const s = snap({}, { network: [{ method: 'POST', url: 'http://127.0.0.1:4402/api/orders', status: 500, ok: false, at: 1 }] });
+  const r = weigh('PASS', [s], [{ network: 'no-failures' }], { packFailedRequests: [{ method: 'POST', url: 'http://127.0.0.1:4402/api/orders', status: 500 }] });
+  assert.equal(r.failedRequests.length, 1);
+});

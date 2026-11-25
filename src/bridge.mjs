@@ -76,6 +76,51 @@ export function startBridge({ port = BRIDGE_PORT } = {}) {
     if (url.pathname === '/reset' && req.method === 'POST') { snaps.length = 0; return res.writeHead(204).end(); }
     res.writeHead(404).end('not found');
   });
+  // WebSocket channel for the probe. Reports sent this way stay out of Kane's network log (HAR),
+  // so the app's state and the token don't end up in an evidence pack that gets uploaded.
+  server.on('upgrade', (req, socket) => {
+    const origin = req.headers.origin;
+    const url = new URL(req.url, 'http://x');
+    if (url.pathname !== '/ws' || !LOOPBACK_HOST.test(req.headers.host || '') || !isLoopbackOrigin(origin) || !req.headers['sec-websocket-key']) {
+      socket.end('HTTP/1.1 403 Forbidden\r\n\r\n');
+      return;
+    }
+    const accept = crypto.createHash('sha1').update(req.headers['sec-websocket-key'] + '258EAFA5-E914-47DA-95CA-C5AB0DC85B11').digest('base64');
+    socket.write(`HTTP/1.1 101 Switching Protocols\r\nUpgrade: websocket\r\nConnection: Upgrade\r\nSec-WebSocket-Accept: ${accept}\r\n\r\n`);
+    let buf = Buffer.alloc(0);
+    let authed = false;
+    socket.on('data', (chunk) => {
+      buf = Buffer.concat([buf, chunk]);
+      if (buf.length > 2_000_000) return socket.destroy();
+      for (;;) {
+        if (buf.length < 2) return;
+        const opcode = buf[0] & 0x0f;
+        const masked = (buf[1] & 0x80) !== 0;
+        let len = buf[1] & 0x7f;
+        let off = 2;
+        if (len === 126) { if (buf.length < 4) return; len = buf.readUInt16BE(2); off = 4; }
+        else if (len === 127) { if (buf.length < 10) return; len = Number(buf.readBigUInt64BE(2)); off = 10; }
+        if (!masked) return socket.destroy(); // browsers always mask
+        if (buf.length < off + 4 + len) return;
+        const mask = buf.subarray(off, off + 4);
+        const data = Buffer.from(buf.subarray(off + 4, off + 4 + len));
+        for (let i = 0; i < data.length; i++) data[i] ^= mask[i % 4];
+        buf = buf.subarray(off + 4 + len);
+        if (opcode === 0x8) return socket.end();
+        if (opcode !== 0x1) continue;
+        const text = data.toString('utf8');
+        if (!authed) { if (text === token) { authed = true; continue; } return socket.destroy(); }
+        try {
+          const s = JSON.parse(text);
+          s.received = Date.now();
+          snaps.push(s);
+          if (snaps.length > MAX_SNAPSHOTS) snaps.shift();
+        } catch {}
+      }
+    });
+    socket.on('error', () => {});
+  });
+
   return new Promise((resolve, reject) => {
     server.once('error', reject);
     server.listen(port, '127.0.0.1', () => {
