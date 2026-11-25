@@ -48,5 +48,5 @@ test('a value the app never reported is not a match', () => {
 
 test('bridge accepts only pages on this machine', () => {
   for (const o of ['http://127.0.0.1:4319', 'http://localhost:3000', 'http://app.localhost:5173', undefined]) assert.ok(isLoopbackOrigin(o), String(o));
-  for (const o of ['https://evil.example', 'http://192.168.1.5:3000', 'http://localhost.evil.com']) assert.ok(!isLoopbackOrigin(o), o);
+  for (const o of ['https://evil.example', 'http://192.168.1.5:3000', 'http://localhost.evil.com', 'null']) assert.ok(!isLoopbackOrigin(o), o);
 });

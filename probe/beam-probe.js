@@ -27,6 +27,7 @@
     if (src && LOOPBACK.test(src.hostname)) bridge = src.origin;
   } catch (e) {}
 
+  var TOKEN = '__BEAM_TOKEN__';
   var SECRET = /(token|secret|password|passwd|auth|session|cookie|api[-_]?key|private)/i;
   var exposed = Object.create(null);
   var network = [];
@@ -89,7 +90,7 @@
     if (!origFetch) return;
     var snap = read();
     snap.page = page; snap.seq = ++seq; snap.at = Date.now(); snap.url = location.href; snap.reason = reason;
-    origFetch(bridge + '/snapshot', { method: 'POST', headers: { 'content-type': 'text/plain' }, body: JSON.stringify(snap), keepalive: true }).catch(function () {});
+    origFetch(bridge + '/snapshot?t=' + TOKEN, { method: 'POST', headers: { 'content-type': 'text/plain' }, body: JSON.stringify(snap), keepalive: true }).catch(function () {});
   }
   function schedule(reason) { clearTimeout(timer); timer = setTimeout(function () { send(reason); }, 60); }
 
