@@ -41,7 +41,7 @@ function layout({ title, body, depth = 0, lab = false, page = '' }) {
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${esc(title)}</title>
 <meta name="description" content="Which Kane CLI checks can you trust? Measured on pages with known answers.">
-<link rel="icon" href="${up}favicon.svg">
+<link rel="icon" href="${up}favicon.svg" type="image/svg+xml"><link rel="icon" href="${up}favicon-32.png" sizes="32x32"><link rel="apple-touch-icon" href="${up}apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="${up}beam.css">
@@ -50,7 +50,7 @@ function layout({ title, body, depth = 0, lab = false, page = '' }) {
 <a class="skip" href="#main">Skip to content</a>
 <header class="top">
   <div class="wrap top-in">
-    <a class="brand" href="${up}index.html"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h18M12 4v16M6 7l-3 7h6zM18 7l-3 7h6z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>Beam${lab ? ' <span class="labtag">Lab · local</span>' : ''}</a>
+    <a class="brand" href="${up}index.html"><svg width="24" height="24" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M2 6 6 2H18L22 6V18L18 22H6L2 18ZM4 6.83 6.83 4H17.17L20 6.83V17.17L17.17 20H6.83L4 17.17Z M6 7.5H18V9H6ZM11.25 9H12.75V16H11.25ZM8.5 16H15.5V17.5H8.5ZM7.4 9H8.6V11.5H7.4ZM15.4 9H16.6V11.5H15.4ZM5.5 11.5H10.5A2.5 2.5 0 0 1 5.5 11.5ZM13.5 11.5H18.5A2.5 2.5 0 0 1 13.5 11.5Z"/></svg>Beam${lab ? ' <span class="labtag">Lab · local</span>' : ''}</a>
     <nav aria-label="Main">${nav}${lab ? '<button class="btn" id="open-run" type="button">Run</button><button class="btn ghost" id="open-add" type="button">Add from issue</button>' : ''}</nav>
   </div>
 </header>
@@ -268,7 +268,7 @@ export function buildSite({ lab = false, outDir = SITE_DIR } = {}) {
   fs.writeFileSync(path.join(outDir, 'install.html'), installPage());
   fs.writeFileSync(path.join(outDir, 'about.html'), aboutPage(data));
   fs.writeFileSync(path.join(outDir, 'beam.json'), JSON.stringify(data, null, 2));
-  for (const f of ['beam.css', 'favicon.svg', ...(lab ? ['lab.js'] : [])]) fs.copyFileSync(path.join(ROOT, 'site-src', f), path.join(outDir, f));
+  for (const f of ['beam.css', 'favicon.svg', 'favicon-32.png', 'apple-touch-icon.png', ...(lab ? ['lab.js'] : [])]) fs.copyFileSync(path.join(ROOT, 'site-src', f), path.join(outDir, f));
   fs.cpSync(path.join(ROOT, 'fixtures'), path.join(outDir, 'fixtures'), { recursive: true, filter: (s) => !s.includes('_drafts') });
   if (!lab) console.log(`Site built: ${data.behaviors.length} behaviors → ${path.relative(ROOT, outDir)}/`);
   return data;
