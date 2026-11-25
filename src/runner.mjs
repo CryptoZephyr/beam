@@ -90,7 +90,15 @@ export class Runner extends EventEmitter {
         }
         await setTwin(behavior.id, twin);
         this.emit('cell:start', { id: behavior.id, wording: wording.id, version: kane.version, twin, recording });
-        const r = await runTest(kane, file, { replay: !recording, headed: this.headed, onStep: (remark) => this.emit('kane:step', { id: behavior.id, wording: wording.id, version: kane.version, twin, remark }) });
+        const go = () => runTest(kane, file, { replay: !recording, headed: this.headed, onStep: (remark) => this.emit('kane:step', { id: behavior.id, wording: wording.id, version: kane.version, twin, remark }) });
+        let r = await go();
+        // Exit 2 means auth or infra. Kane's server sometimes fails once ("TMS did not return an
+        // org_id") while the login is fine, so wait and retry once before stopping the run.
+        if (r.exitCode === 2 && !r.overall) {
+          this.emit('kane:retry', { message: r.stderrTail });
+          await new Promise((res) => setTimeout(res, 20_000));
+          r = await go();
+        }
         if (r.exitCode === 2 && !r.overall) this.emit('kane:not-ready', { message: r.stderrTail });
         const verdict = verdictOf(r);
         this.spent += r.credits || 0;

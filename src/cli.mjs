@@ -41,6 +41,7 @@ async function suite() {
   runner.on('agent:error', (e) => console.log(`${t()} ${e.id}: agent unavailable (${e.error})`));
   runner.on('behavior:done', (e) => console.log(`${t()} ${e.id} done: ${JSON.stringify(e.states)}`));
   runner.on('budget:stop', (e) => console.log(`${t()} Stopped: spent ${e.spent} of ${e.budget} credits`));
+  runner.on('kane:retry', (e) => console.log(`${t()} Kane had a server error, retrying in 20 s: ${String(e.message).split(/\r?\n/).pop()}`));
   runner.on('kane:not-ready', (e) => console.log(`${t()} Kane isn't ready: ${e.message}`));
   runner.on('run:done', (e) => console.log(`${t()} Done. ${e.credits} credits reported by Kane.`));
   process.on('SIGINT', () => runner.stop());
