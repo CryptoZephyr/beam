@@ -1,7 +1,10 @@
 // Lab mode client: run panel, add-from-issue review, live cell updates over SSE.
 const $ = (s) => document.querySelector(s);
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
-const LABEL = { CORRECT: 'Correct', FIXED_BY_WORDING: 'Fixed by wording', FALSE_GREEN: 'Wrong: false green', FALSE_RED: 'Wrong: false red', ERROR: "Couldn't run", NOT_RUN: 'Not run' };
+const LABEL = { CORRECT: 'True', FIXED_BY_WORDING: 'True with wording', FALSE_GREEN: 'False green', FALSE_RED: 'False red', ERROR: "Couldn't run", NOT_RUN: 'Not run' };
+const BEAM = { level: 'M2 5h16v1.6H2z', FALSE_GREEN: 'M2 7.6 18 3.4l.4 1.5L2.4 9.1z', FALSE_RED: 'M2 3.4l16 4.2-.4 1.5L1.6 4.9z' };
+const glyph = (s) => `<svg width="22" height="14" viewBox="0 0 20 12" aria-hidden="true"><path class="beam" fill="currentColor" d="${BEAM[s] || BEAM.level}"/><path fill="currentColor" d="M9.2 6.6h1.6V10H9.2zM6.5 10h7v1.5h-7z"/>${s === 'FIXED_BY_WORDING' ? '<rect x="15.4" y="0.6" width="3" height="3" fill="var(--streak)"/>' : ''}</svg>`;
+const reading = (s, extra = '') => `<span class="reading r-${s}${extra}">${glyph(s)}${esc(LABEL[s] || s)}</span>`;
 const base = location.pathname.includes('/b/') ? '../' : '';
 
 const status = $('#run-status');
@@ -17,7 +20,7 @@ const log = (line) => {
 function setCell(id, version, html) {
   document.querySelectorAll(`[data-cell="${CSS.escape(id + '|' + version)}"]`).forEach((td) => (td.innerHTML = html));
 }
-const running = (d) => `<span class="pill s-RUNNING">Running · ${esc(d.twin || '')} page</span><span class="cellstep">${esc(d.remark || (d.recording ? 'Recording the check' : 'Replaying the check'))}</span>`;
+const running = (d) => `<span class="reading r-RUNNING">${glyph('level')}Reading ${esc(d.version)}, ${esc(d.twin || '')} page</span><span class="cellstep">${esc(d.remark || (d.recording ? 'Recording the check' : 'Replaying the check'))}</span>`;
 
 // Live updates
 const es = new EventSource('/api/events');
@@ -31,7 +34,7 @@ es.addEventListener('kane:step', (e) => { const d = JSON.parse(e.data); setCell(
 es.addEventListener('cell:done', (e) => {
   const d = JSON.parse(e.data);
   const s = d.state && d.state !== 'NOT_RUN' ? d.state : null;
-  setCell(d.id, d.version, s ? `<span class="pill s-${s}">${LABEL[s]}</span><span class="cellstep">${esc(d.wording)} · ${d.twin} page ${d.verdict === 'PASS' ? 'passed' : d.verdict === 'FAIL' ? 'failed' : "couldn't run"}</span>` : `<span class="pill s-RUNNING">Waiting for the broken page</span><span class="cellstep">${esc(d.wording)} · correct page ${d.verdict === 'PASS' ? 'passed' : 'failed'}</span>`);
+  setCell(d.id, d.version, s ? `${reading(s, ' arrived')}<span class="cellstep">${esc(d.wording)} · ${d.twin} page ${d.verdict === 'PASS' ? 'passed' : d.verdict === 'FAIL' ? 'failed' : "couldn't run"}</span>` : `<span class="reading r-RUNNING">${glyph('level')}Waiting for the broken page</span><span class="cellstep">${esc(d.wording)} · correct page ${d.verdict === 'PASS' ? 'passed' : 'failed'}</span>`);
   log(`${d.id} ${d.wording} · Kane ${d.version} · ${d.twin} page: ${d.verdict}${d.credits ? ` (${d.credits.toFixed(1)} credits)` : ''}`);
 });
 es.addEventListener('agent:start', (e) => log(`${JSON.parse(e.data).id}: no wording is right, asking the agent for new ones…`));

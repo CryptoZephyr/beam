@@ -53,7 +53,7 @@ A screen with any of these fails review.
 
 Revision 2: the palette comes from what an assayer actually uses, not from developer-tool defaults. See `site/_brand/palettes.html` in a local build for the live sheet. Contrast computed 25 Nov (WCAG 2.2).
 
-### Option T: Touchstone (recommended), dark first
+### Option T: Touchstone, dark first (LOCKED 25 Nov)
 
 An assayer rubs gold on a black touchstone and reads the streak it leaves. The page is the stone. The gold streak marks what you operate.
 
@@ -163,8 +163,8 @@ Home (data, no data yet), matrix (filtered empty, search empty), behavior page (
 
 ## 13. Decisions for the owner
 
-- **D1 Palette:** T Touchstone (recommended) or R Assay certificate.
-- **D2 Type:** Big Shoulders Display, Atkinson Hyperlegible Next and Martian Mono (recommended), or Schibsted Grotesk as the heading face.
+- **D1 Palette:** LOCKED 25 Nov: T Touchstone (dark first, light mode on assay paper).
+- **D2 Type:** LOCKED 25 Nov: Big Shoulders Display (headings), Atkinson Hyperlegible Next (body), Martian Mono (code and wordings).
 - **D3 State names:** True / True with wording / False green / False red / Couldn't run, instead of Correct / Fixed by wording / Wrong.
 - **D4 Mark:** LOCKED 25 Nov (B1 + B3 small cut, section 12).
 - **D5 Dark mode:** follow the device with no toggle (recommended), or add a toggle.
