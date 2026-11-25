@@ -1,0 +1,68 @@
+{
+  "test": "checkout_test.md",
+  "at": "2026-11-25T17:14:53.496Z",
+  "kaneVersion": "0.10.9",
+  "state": "FALSE_GREEN",
+  "label": "False green",
+  "kane": "PASS",
+  "app": "broken",
+  "checks": [
+    {
+      "what": "cart.total",
+      "expected": 45,
+      "actual": 45,
+      "ok": true
+    },
+    {
+      "what": "order.amount",
+      "expected": 45,
+      "actual": 50,
+      "ok": false
+    },
+    {
+      "what": "order.status",
+      "expected": "placed",
+      "actual": "placed",
+      "ok": true
+    },
+    {
+      "what": "no failed requests",
+      "expected": "none",
+      "actual": "POST http://127.0.0.1:4402/api/orders → 500",
+      "ok": false
+    },
+    {
+      "what": "no JS errors",
+      "expected": "none",
+      "actual": "none",
+      "ok": true
+    }
+  ],
+  "failedRequests": [
+    {
+      "method": "POST",
+      "url": "http://127.0.0.1:4402/api/orders",
+      "status": 500,
+      "ok": false,
+      "at": 1795626882701
+    }
+  ],
+  "errors": [],
+  "lastSnapshot": {
+    "at": "2026-11-25T17:14:44.188Z",
+    "url": "http://127.0.0.1:4402/",
+    "values": {
+      "cart.total": 45,
+      "order.amount": 50,
+      "order.status": "placed"
+    }
+  },
+  "kaneRun": {
+    "summary": "",
+    "testUrl": null,
+    "credits": 0,
+    "replayed": 1,
+    "authored": 0,
+    "codeJs": null
+  }
+}

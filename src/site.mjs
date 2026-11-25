@@ -10,8 +10,9 @@ const INSTALL = 'npx kane-beam install';
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
 
 export const STATE_LABEL = {
-  CORRECT: 'True',
-  FIXED_BY_WORDING: 'True with wording',
+  CORRECT: 'Balanced',
+  FIXED_BY_WORDING: 'Balanced with wording',
+  BALANCED: 'Balanced',
   FALSE_GREEN: 'False green',
   FALSE_RED: 'False red',
   ERROR: "Couldn't run",
@@ -34,13 +35,14 @@ export function beamGlyph(state) {
   const mark = state === 'FIXED_BY_WORDING' ? '<rect x="15.4" y="0.6" width="3" height="3" fill="var(--streak)"/>' : '';
   return '<svg width="22" height="14" viewBox="0 0 20 12" aria-hidden="true">' + body + '<path fill="currentColor" d="M9.2 6.6h1.6V10H9.2zM6.5 10h7v1.5h-7z"/>' + mark + '</svg>';
 }
+export const reading = (state, extra = '') => pill(state, extra);
 const pill = (state, extra = '') => `<span class="reading r-${state}" title="${esc(STATE_HELP[state])}">${beamGlyph(state)}${esc(STATE_LABEL[state] || state)}</span>${extra}`;
 const verdict = (v) => (v ? `<span class="v v-${v}">${v === 'PASS' ? 'passed' : v === 'FAIL' ? 'failed' : "couldn't run"}</span>` : '<span class="v">–</span>');
 const fmtDate = (iso) => (iso ? new Date(iso).toLocaleString('en-GB', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit', timeZone: 'Africa/Lagos' }) + ' WAT' : 'not yet');
 
 function layout({ title, body, depth = 0, lab = false, page = '' }) {
   const up = depth ? '../'.repeat(depth) : '';
-  const nav = [['index.html', 'Matrix', 'matrix'], ['install.html', 'Install', 'install'], ['about.html', 'How it works', 'about']]
+  const nav = [['index.html', 'Matrix', 'matrix'], ['install.html', 'Set up', 'install'], ['about.html', 'How it works', 'about']]
     .map(([href, label, key]) => `<a href="${up}${href}"${page === key ? ' aria-current="page"' : ''}>${label}</a>`).join('');
   return `<!doctype html>
 <html lang="en">
@@ -135,20 +137,78 @@ q.addEventListener('input',apply);chips.forEach(c=>c.addEventListener('click',()
 </script>`;
 }
 
+// The checkout demo, from its saved results (demo/checkout/evidence). Real runs, not a mock.
+function checkoutDemo() {
+  const dir = path.join(ROOT, 'demo', 'checkout', 'evidence');
+  const read = (f) => { try { return JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8')); } catch { return null; } };
+  return { before: read('result.before.json'), after: read('result.after.json') };
+}
+
+const stripHost = (s) => String(s).replace(/https?:\/\/[^/\s]+/g, '');
+
+function balanceFrame(r, { caption }) {
+  if (!r) return '';
+  const kaneSteps = ['Total shows $45.00', 'Page says “Order placed”'];
+  const appRows = r.checks.map((c) => `<li class="${c.ok ? 'ok' : 'no'}"><span class="what">${esc(c.what)}</span><span class="val">${esc(stripHost(typeof c.actual === 'string' ? c.actual : JSON.stringify(c.actual)))}</span>${c.ok ? '' : `<span class="exp">expected ${esc(c.expected === 'none' ? 'none' : JSON.stringify(c.expected))}</span>`}</li>`).join('');
+  const sentence = r.state === 'FALSE_GREEN'
+    ? 'Kane passed. The app says it charged $50 and the order request failed.'
+    : r.state === 'BALANCED' ? 'Kane passed, and the app agrees.' : esc(r.label || r.state);
+  return `
+<figure class="balance" aria-label="${esc(caption)}">
+  <figcaption>${esc(caption)}</figcaption>
+  <div class="pans">
+    <div class="pan"><p class="pan-h">Kane <span>reads the screen</span></p>
+      <ul class="kane">${kaneSteps.map((t) => `<li>${esc(t)}</li>`).join('')}</ul>
+      <p class="pan-v">Verdict: <strong>${r.kane === 'PASS' ? 'passed' : r.kane === 'FAIL' ? 'failed' : "couldn't run"}</strong></p></div>
+    <div class="pan"><p class="pan-h">Your app <span>reports its own state</span></p><ul class="app">${appRows}</ul></div>
+  </div>
+  <p class="verdict">${pill(r.state === 'BALANCED' ? 'CORRECT' : r.state)} <span>${sentence}</span></p>
+</figure>`;
+}
+
 function indexPage(data, { lab }) {
   const n = data.behaviors.length;
   const issues = data.behaviors.filter((b) => b.issue).length;
+  const demo = checkoutDemo();
   const body = `
 <section class="hero">
-  <h1>Same Kane check, two wordings, opposite results.</h1>
-  <p class="lede">Beam measures which Kane CLI checks are right, on pages where we know the answer, and teaches your coding agent to write the ones that are.</p>
-  ${heroContrast(data)}
+  <h1>Kane checks the screen. Your app confirms it.</h1>
+  <p class="lede">Beam weighs every Kane verdict against what your app knows to be true, and hands any difference to your coding agent.</p>
   ${copyBox(INSTALL)}
-  </section>
-<p class="scope">${n} behaviors, ${issues} of them from public Kane issues. Measured on Kane ${data.versions.map(esc).join(' and ') || '(none yet)'}, last run ${esc(fmtDate(data.lastRun))}.</p>
+</section>
+${balanceFrame(demo.before, { caption: 'A real Beam run on the Northwind Coffee checkout demo' })}
+
+<section aria-labelledby="how"><div class="scale" aria-hidden="true"></div>
+  <h2 id="how">How the balance works</h2>
+  <ol class="how">
+    <li><h3>Your app reports its truth</h3><p>One script tag in your dev build, added by <code>npx kane-beam init</code>. Expose what the code knows, and Beam also records the app's own requests, errors and saved data.</p><pre><code>beam.expose('order.amount', () => lastOrder.amount)</code></pre></li>
+    <li><h3>You say what must be true</h3><p>Next to a Kane test, a small file lists the truth that has to hold when the check passes.</p><pre><code>{ "truth": [ { "key": "order.amount", "equals": 45 },
+            { "network": "no-failures" } ] }</code></pre></li>
+    <li><h3>Kane runs, Beam weighs</h3><p>Kane drives the real flow in a real browser. Beam compares its verdict with what the app reported during that same run. Replays of recorded tests cost no Kane credits.</p><pre><code>npx kane-beam verify tests/checkout_test.md</code></pre></li>
+  </ol>
+</section>
+
+<section aria-labelledby="loop"><div class="scale" aria-hidden="true"></div>
+  <h2 id="loop">Your agent closes the loop</h2>
+  <p class="lede">With Beam's MCP server, a coding agent calls <code>beam_verify</code>, reads which value disagrees, fixes the app and verifies again. It can't pass by editing the test: Beam refuses runs where the test changed.</p>
+  <p>On the checkout demo, Claude Code, given only Beam's tools and a customer's complaint, made three changes in the app and nothing in the tests:</p>
+  <ul class="changes">
+    <li>Charged the discounted total instead of the subtotal.</li>
+    <li>Added the <code>SAVE10</code> code the server didn't know about.</li>
+    <li>Made the page check the order request, so a failed order never says “Order placed”.</li>
+  </ul>
+  ${balanceFrame(demo.after, { caption: "The same check after the agent's fix" })}
+</section>
+
+<section aria-labelledby="why"><div class="scale" aria-hidden="true"></div>
+  <h2 id="why">Why a second pan</h2>
+  <p class="lede">Kane's verdict depends on how a check is worded, and on the code Kane happens to record. We measured ${n} behaviors on pages with known answers, ${issues} of them from Kane's own public issues.</p>
+  ${heroContrast(data)}
+</section>
+<p class="scope">Measured on Kane ${data.versions.map(esc).join(' and ') || '(none yet)'}, last run ${esc(fmtDate(data.lastRun))}.</p>
 ${matrix(data, { lab })}
 ${lab ? labPanels() : ''}`;
-  return layout({ title: 'Beam: make every Kane green a true green', body, lab, page: 'matrix' });
+  return layout({ title: 'Beam: Kane checks the screen. Your app confirms it.', body, lab, page: 'matrix' });
 }
 
 function behaviorPage(b, data, { lab }) {
@@ -202,49 +262,100 @@ ${why}
 
 function installPage() {
   const body = `
-<h1>Install Beam into your coding agent</h1>
-<p class="lede">One command. Your agent then uses the Kane wordings that are measured to be right, and avoids the ones that pass broken pages.</p>
+<h1>Set up Beam</h1>
+<p class="lede">Three commands: give your agent Beam's tools, let your app report its truth, and verify.</p>
+
+<section aria-labelledby="i1"><div class="scale" aria-hidden="true"></div>
+<h2 id="i1">1. Give your coding agent Beam</h2>
 ${copyBox(INSTALL)}
-<section><h2>What it changes</h2>
+<p>Adds Beam's MCP server and skill to the agents it finds:</p>
 <ul>
-  <li><strong>Claude Code:</strong> adds <code>~/.claude/skills/kane-beam/SKILL.md</code> and <code>beam.json</code> beside it.</li>
-  <li><strong>Codex:</strong> adds <code>~/.codex/skills/kane-beam/</code> when Codex is installed.</li>
-  <li><strong>Cursor:</strong> adds <code>.cursor/rules/kane-beam.mdc</code> in the current project (asks first).</li>
+  <li><strong>Claude Code:</strong> the <code>beam</code> MCP server (user scope, through <code>claude mcp add</code>) and <code>~/.claude/skills/kane-beam/</code>.</li>
+  <li><strong>Cursor:</strong> <code>beam</code> in <code>~/.cursor/mcp.json</code>.</li>
+  <li><strong>Codex:</strong> <code>[mcp_servers.beam]</code> in <code>~/.codex/config.toml</code> and <code>~/.codex/skills/kane-beam/</code>.</li>
 </ul>
-<p>Nothing else is touched. Every file it writes is listed in <code>~/.kane-beam/installed.json</code>.</p></section>
-<section><h2>How you'll know it's working</h2>
-<p>When your agent writes a Kane check that Beam knows about, it says one line, for example:</p>
-<pre><code>Beam: used the "exact visible text" wording. The shorter wording passes plural bugs.</code></pre></section>
-<section><h2>Check a wording yourself</h2>
+<p>Your agent gets four tools: <code>beam_verify</code>, <code>beam_app_state</code>, <code>beam_app_history</code> and <code>beam_check_wording</code>. Everything it writes is listed in <code>~/.kane-beam/installed.json</code>.</p>
+</section>
+
+<section aria-labelledby="i2"><div class="scale" aria-hidden="true"></div>
+<h2 id="i2">2. Let your app report its truth</h2>
+${copyBox('npx kane-beam init')}
+<p>Adds the Beam probe to your dev build: a script tag in plain HTML, or a loader behind <code>import.meta.env.DEV</code> in Vite. For Next.js it prints the line to add. Then expose what your code knows, next to the feature:</p>
+<pre><code>if (window.beam) beam.expose('order.amount', () => lastOrder.amount)</code></pre>
+<p>The probe also records your app's own requests with their status codes, JS errors and localStorage, with no extra code.</p>
+<h3>Safety</h3>
+<ul>
+  <li>It does nothing on a page that isn't on your own machine, so shipping it by mistake is harmless.</li>
+  <li>It only talks to the Beam bridge on 127.0.0.1, which refuses other sites and needs a per-session token.</li>
+  <li>Storage values whose keys look like secrets are hidden before they leave the page.</li>
+</ul>
+</section>
+
+<section aria-labelledby="i3"><div class="scale" aria-hidden="true"></div>
+<h2 id="i3">3. Declare the truth and verify</h2>
+<p>Next to a Kane test <code>name_test.md</code>, write <code>name_test.beam.json</code>:</p>
+<pre><code>{ "truth": [
+  { "key": "order.amount", "equals": 45 },
+  { "network": "no-failures" },
+  { "errors": "none" }
+] }</code></pre>
+${copyBox('npx kane-beam verify tests/checkout_test.md --record')}
+<p>The first run records the Kane test (Kane credits). Later runs replay it at no credit cost. Exit code 0 means Balanced, 1 means not, so it works in CI. If the test, its recording or its truth file changed since the last verify, Beam refuses to run.</p>
+</section>
+
+<section aria-labelledby="i4"><div class="scale" aria-hidden="true"></div>
+<h2 id="i4">Look up a wording</h2>
 ${copyBox(`npx kane-beam check "Verify the todo counter reads '1 item left'"`)}
-<p>Exits with code 1 on a wording known to pass broken pages, so you can use it in a pre-commit hook or CI.</p></section>
-<section><h2>Update and remove</h2>
+<p>Exits with code 1 on a wording measured to pass broken pages, and prints the wording that's right.</p>
+<h2>Update and remove</h2>
 ${copyBox('npx kane-beam update')}
-${copyBox('npx kane-beam uninstall')}</section>`;
-  return layout({ title: 'Install · Beam', body, page: 'install' });
+${copyBox('npx kane-beam uninstall')}
+</section>`;
+  return layout({ title: 'Set up · Beam', body, page: 'install' });
 }
 
 function aboutPage(data) {
   const body = `
-<h1>How Beam measures Kane</h1>
-<p class="lede">A check is only useful if it fails when the app is broken. Beam tests that directly.</p>
+<h1>How Beam works</h1>
+<p class="lede">A Kane check is only useful if it fails when the app is broken. Beam checks that, on real apps and on test pages with known answers.</p>
+
+<section aria-labelledby="a1"><div class="scale" aria-hidden="true"></div>
+<h2 id="a1">The balance</h2>
 <ol class="steps">
-  <li><strong>Two pages per behavior.</strong> A correct page and a broken twin that differs in one visible thing. We know the right answer for both.</li>
-  <li><strong>Kane runs every wording on both pages.</strong> Right means: passed the correct page and failed the broken one. Passing the broken page is a false green.</li>
-  <li><strong>The agent repairs wrong wordings.</strong> When no wording is right, Claude Code reads what Kane did (its summary and the code it recorded) and proposes new wordings. Kane runs those too. The first one that's right is what Beam recommends.</li>
-  <li><strong>Every Kane version gets a column.</strong> Checks are recorded once with Kane ${esc(data.referenceVersion || '')}, then replayed with healing off on each version. So older columns measure Kane's replay of those recordings.</li>
+  <li><strong>Kane drives the real flow</strong> in a real browser and gives its verdict from what the page shows.</li>
+  <li><strong>Your app reports its own state</strong> during that same run, through the probe: exposed values, request status codes, errors, storage.</li>
+  <li><strong>Beam weighs the two</strong> against the truth you declared. <em>Balanced</em> when they agree. <em>False green</em> when Kane passed but the app says broken. <em>False red</em> when Kane failed but the app says working. <em>Couldn't run</em> is never counted either way.</li>
+  <li><strong>Your agent gets the difference</strong> through MCP, fixes the app and verifies again. It can't pass by editing the test: Beam hashes the test, its recording and its truth file, and refuses a run where they changed.</li>
 </ol>
-<section><h2>Honesty notes</h2>
+</section>
+
+<section aria-labelledby="a2"><div class="scale" aria-hidden="true"></div>
+<h2 id="a2">The matrix: why a second pan matters</h2>
+<ol class="steps">
+  <li><strong>Two pages per behavior.</strong> A correct page and a broken twin that differs in one visible thing, so the right answer is known for both.</li>
+  <li><strong>Kane runs each wording on both.</strong> Balanced means it passed the correct page and failed the broken one.</li>
+  <li><strong>The agent repairs wrong wordings.</strong> When no wording is right, Claude Code reads what Kane did and proposes new ones, and Kane runs those too.</li>
+  <li><strong>Each Kane version gets a column.</strong> Checks are recorded with Kane ${esc(data.referenceVersion || '')} and replayed with healing off on each version, so older columns measure Kane's replay of those recordings.</li>
+</ol>
+<p>We also found that the same wording can record different reading code on different runs. One recording of the plural check read only the number and passed a broken page. Another read the whole label and caught it. That's why Beam doesn't rely on the wording alone.</p>
+</section>
+
+<section aria-labelledby="a3"><div class="scale" aria-hidden="true"></div>
+<h2 id="a3">Honesty notes</h2>
 <ul>
-  <li>Pages are small test pages, not real websites. They're in the repo, and the two versions of each differ by one to four lines.</li>
-  <li>A behavior from a Kane issue that Kane now gets right is shown as correct. That's a finding, not something to hide.</li>
-  <li>"Couldn't run" results are never counted as right or wrong.</li>
-  <li>Kane reported ${esc(data.creditsReported)} credits for the runs behind this page.</li>
-</ul></section>
-<section id="add"><h2>Add a behavior</h2>
-<p>Know a Kane check that goes wrong? Open an issue on <a href="https://github.com/CryptoZephyr/beam/issues">Beam's repo</a> with a link to the Kane issue, or run it yourself:</p>
+  <li>The matrix uses small test pages in the repo, not real websites. The checkout and todo demos are small apps in the repo too.</li>
+  <li>A behavior from a Kane issue that Kane now gets right is shown as Balanced. That's a finding, not something to hide.</li>
+  <li>Kane reported ${esc(data.creditsReported)} credits for the matrix runs behind this page.</li>
+  <li>Beam is a separate open-source project. It isn't affiliated with TestMu AI.</li>
+</ul>
+</section>
+
+<section id="add"><div class="scale" aria-hidden="true"></div>
+<h2>Add a behavior to the matrix</h2>
+<p>Know a Kane check that goes wrong? Open an issue on <a href="https://github.com/CryptoZephyr/beam/issues">Beam's repo</a> with a link to the Kane issue, or draft it yourself:</p>
 ${copyBox('npm run add-issue -- https://github.com/LambdaTest/kane-cli/issues/<number>')}
-<p>The agent drafts the two pages. Nothing runs until a person approves them.</p></section>`;
+<p>The agent drafts the two pages. Nothing runs until a person approves them.</p>
+</section>`;
   return layout({ title: 'How it works · Beam', body, page: 'about' });
 }
 
