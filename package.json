@@ -1,0 +1,20 @@
+{
+  "name": "kane-beam",
+  "version": "0.1.0",
+  "description": "Make every Kane green a true green. Which Kane CLI checks are right, measured on pages with known answers, and a skill that teaches your coding agent the wordings that work.",
+  "type": "module",
+  "bin": { "kane-beam": "bin/kane-beam.mjs" },
+  "files": ["bin/", "skill/", "beam.json", "src/installer.mjs", "src/match.mjs"],
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "test": "node --test test/",
+    "suite": "node src/cli.mjs suite",
+    "add-issue": "node src/cli.mjs add-issue",
+    "kane:install": "node src/cli.mjs kane-install",
+    "site": "node src/cli.mjs site",
+    "lab": "node src/cli.mjs lab"
+  },
+  "license": "MIT",
+  "repository": "github:CryptoZephyr/beam",
+  "keywords": ["kane-cli", "testing", "ai-agents", "claude-code", "e2e"]
+}
