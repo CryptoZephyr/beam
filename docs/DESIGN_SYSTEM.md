@@ -108,26 +108,26 @@ Naming change (D3): the cell states read **True / True with wording / False gree
 
 ## 8. Surfaces and rules
 
-- **Frames:** Graphite surfaces with a 4px radius, flat. Used for the top bar, hero contrast, command boxes, run panel and footer.
-- **Scale rule:** the signature line. A 1px Graphite rule with calibration ticks every 8px (taller every 40px) runs under the top bar and above section headings. It's the only decoration in the system, and it says "instrument".
-- **Sheets:** Sheet #F2F4F5 for tables, inputs and code. 1px #C9CED3 border, 4px radius.
+- **Frames:** Stone surfaces with a 4px radius, flat. Used for the top bar, hero contrast, command boxes, run panel and footer.
+- **Scale rule:** the signature line. A 1px rule in the text colour at 40% opacity with calibration ticks every 8px (taller every 40px) runs under the top bar and above section headings. It's the only decoration in the system, and it says "instrument".
+- **Sheets:** Sheets for tables, inputs and code: Stone in dark, #F3F4F2 in light, with a 1px #3A4047 (dark) or #C5C9C4 (light) border, 4px radius.
 - **Radii:** 4px everywhere (frames, sheets, buttons, inputs). No other radius.
 - **Shadows:** none.
 
 ## 9. Components
 
-- **Top bar:** Graphite frame, the Beam mark (D4) plus the wordmark in Archivo, nav in body, the scale rule under it. Lab mode adds "Lab" as plain text next to the wordmark and two actions on the right (Run, Add from issue).
-- **Hero:** left-aligned. Headline (max 2 lines), one sentence of sub-text, then the **contrast frame**: a Graphite frame with the two wordings, each with its reading against the broken page. Then the install command frame. No other text in the hero. The scope line moves under the hero as plain muted text.
-- **Command frame:** Graphite, mono text, a Streak "Copy" button. Commands stay on one line and scroll. Wordings wrap.
+- **Top bar:** Stone frame, the Beam mark (D4) plus the wordmark in Big Shoulders Display, nav in body, the scale rule under it. Lab mode adds "Lab" as plain text next to the wordmark and two actions on the right (Run, Add from issue).
+- **Hero:** left-aligned. Headline (max 2 lines), one sentence of sub-text, then the **contrast frame**: a Stone frame with the two wordings, each with its reading against the broken page. Then the install command frame. No other text in the hero. The scope line moves under the hero as plain muted text.
+- **Command frame:** Stone, mono text, a Streak "Copy" button. Commands stay on one line and scroll. Wordings wrap.
 - **Matrix:** a Sheet table. The behavior column is pinned on scroll. Each version column header shows the exact version and its run date. Cells hold a reading (glyph plus word). A changed cell gets a Streak tick above the glyph and "changed since 0.10.8" in its title.
 - **Filter:** a segmented control on a single 1px frame (not chips): All, True, True with wording, False. A search field to the left, with its label above it.
-- **Behavior page:** title, reading, issue link (plain link, not a badge). Then "What your agent will do" as a Sheet with a Graphite heading bar (no left stripe): Use (wording frame plus Copy), Avoid (list). Then results, how Kane read the page (code pairs side by side, each with its reading), the two pages, and reproduce.
+- **Behavior page:** title, reading, issue link (plain link, not a badge). Then "What your agent will do" as a Sheet with a Stone heading bar (no left stripe): Use (wording frame plus Copy), Avoid (list). Then results, how Kane read the page (code pairs side by side, each with its reading), the two pages, and reproduce.
 - **Results table:** rows grouped by wording, with a hairline between groups only (no rule on every row).
 - **Buttons:** primary is a Streak fill with a Basanite label, 44px tall. Secondary is a Stone outline. Pressed state: one shade darker and 1px down, 120ms. One primary per view.
-- **Lab run panel:** a dialog (Sheet) with a Graphite heading bar, behaviors and versions as checkboxes, budget, show browser, and the estimate from real costs.
+- **Lab run panel:** a dialog (Sheet) with a Stone heading bar, behaviors and versions as checkboxes, budget, show browser, and the estimate from real costs.
 - **Lab live cell:** the running glyph plus "Reading 0.10.9 · broken page" and Kane's latest step underneath in muted body text.
-- **Run status:** a Graphite frame bottom-right with the last 5 events as text. No toast stack, no spinner.
-- **Footer:** Graphite frame. "© 2026 Beam. MIT Licensed." plus Source and beam.json links. "Not affiliated with TestMu AI."
+- **Run status:** a Stone frame bottom-right with the last 5 events as text. No toast stack, no spinner.
+- **Footer:** Stone frame. "© 2026 Beam. MIT Licensed." plus Source and beam.json links. "Not affiliated with TestMu AI."
 
 ## 10. Motion
 
