@@ -63,7 +63,7 @@ $('#run-go').addEventListener('click', async () => {
   const ids = [...document.querySelectorAll('#run-behaviors input:checked')].map((i) => i.value);
   if (!ids.length) return;
   const versions = [...document.querySelectorAll('#run-versions input:checked')].map((i) => i.value);
-  const r = await fetch('/api/run', { method: 'POST', body: JSON.stringify({ ids, versions, budget: Number($('#run-budget').value), headed: $('#run-headed').checked }) });
+  const r = await fetch('/api/run', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ ids, versions, budget: Number($('#run-budget').value), headed: $('#run-headed').checked }) });
   const d = await r.json();
   $('#run-dialog').close();
   if (!r.ok) log(d.error);
@@ -78,7 +78,7 @@ $('#add-go').addEventListener('click', async () => {
   box.innerHTML = `<p class="muted">Reading ${esc(url.split('/').pop() ? '#' + url.split('/').pop() : 'the issue')} and drafting the two pages. This takes about a minute…</p>`;
   $('#add-go').disabled = true;
   try {
-    const r = await fetch('/api/draft', { method: 'POST', body: JSON.stringify({ issueUrl: url }) });
+    const r = await fetch('/api/draft', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ issueUrl: url }) });
     const d = await r.json();
     if (!r.ok) throw new Error(d.error);
     box.innerHTML = `
@@ -90,13 +90,13 @@ $('#add-go').addEventListener('click', async () => {
       <details><summary>Source of both pages</summary><pre><code>${esc(d.correctHtml)}</code></pre><pre><code>${esc(d.brokenHtml)}</code></pre></details>
       <div class="row"><button class="btn" type="button" id="approve">Approve &amp; run</button><button class="btn ghost" type="button" id="discard">Discard</button></div>`;
     $('#approve').onclick = async () => {
-      await fetch('/api/approve', { method: 'POST', body: JSON.stringify({ id: d.id }) });
+      await fetch('/api/approve', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ id: d.id }) });
       $('#add-dialog').close();
       log(`Added ${d.id}. Starting the run…`);
-      const r2 = await fetch('/api/run', { method: 'POST', body: JSON.stringify({ ids: [d.id], budget: 80, headed: true }) });
+      const r2 = await fetch('/api/run', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ ids: [d.id], budget: 80, headed: true }) });
       if (!r2.ok) log((await r2.json()).error);
     };
-    $('#discard').onclick = async () => { await fetch('/api/discard', { method: 'POST', body: JSON.stringify({ id: d.id }) }); $('#add-dialog').close(); };
+    $('#discard').onclick = async () => { await fetch('/api/discard', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ id: d.id }) }); $('#add-dialog').close(); };
   } catch (e) {
     box.innerHTML = `<p>Couldn't draft from that issue: ${esc(e.message)}</p>`;
   } finally {

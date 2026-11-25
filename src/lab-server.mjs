@@ -31,8 +31,17 @@ export async function startLab() {
   const json = (res, code, obj) => res.writeHead(code, { 'content-type': 'application/json' }).end(JSON.stringify(obj));
   const body = (req) => new Promise((r) => { let b = ''; req.on('data', (c) => (b += c)); req.on('end', () => { try { r(JSON.parse(b || '{}')); } catch { r({}); } }); });
 
+  const allowedHosts = new Set([`127.0.0.1:${PORT}`, `localhost:${PORT}`]);
   const server = http.createServer(async (req, res) => {
     const url = new URL(req.url, 'http://x');
+    // Only the lab page itself may use the API: blocks other sites (and DNS rebinding) from
+    // spending credits or touching files through this local server.
+    if (!allowedHosts.has(req.headers.host || '')) return res.writeHead(403).end('forbidden host');
+    if (url.pathname.startsWith('/api/') && req.method === 'POST') {
+      const origin = req.headers.origin;
+      if (origin && !allowedHosts.has(origin.replace(/^https?:\/\//, ''))) return res.writeHead(403).end('forbidden origin');
+      if (!String(req.headers['content-type'] || '').startsWith('application/json')) return res.writeHead(415).end('send application/json');
+    }
     try {
       if (url.pathname === '/api/state') {
         return json(res, 200, { behaviors: loadBehaviors().map((b) => ({ id: b.id, title: b.title })), versions: installedKanes().map((k) => k.version), active: active ? { cells: active.cells, spent: active.runner.spent } : null });
@@ -76,6 +85,7 @@ export async function startLab() {
       }
       if (url.pathname === '/api/approve' && req.method === 'POST') {
         const { id } = await body(req);
+        if (!drafts.has(id)) return json(res, 404, { error: 'No such draft' });
         const { approveDraft } = await import('./add-issue.mjs');
         approveDraft(id);
         drafts.delete(id);
@@ -84,6 +94,7 @@ export async function startLab() {
       }
       if (url.pathname === '/api/discard' && req.method === 'POST') {
         const { id } = await body(req);
+        if (!drafts.has(id)) return json(res, 404, { error: 'No such draft' });
         const { discardDraft } = await import('./add-issue.mjs');
         discardDraft(id);
         drafts.delete(id);

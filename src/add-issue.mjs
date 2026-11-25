@@ -57,8 +57,15 @@ export async function draftFromIssue(url) {
   return { ...manifest, correctUrl: `/drafts/${d.id}/correct.html`, brokenUrl: `/drafts/${d.id}/broken.html`, correctHtml: d.correct_html, brokenHtml: d.broken_html };
 }
 
+function draftDir(id) {
+  if (!/^[a-z0-9-]+$/.test(String(id))) throw new Error('Bad draft id');
+  const dir = path.resolve(DRAFTS, id);
+  if (!dir.startsWith(path.resolve(DRAFTS) + path.sep)) throw new Error('Bad draft id');
+  return dir;
+}
+
 export function approveDraft(id) {
-  const from = path.join(DRAFTS, id);
+  const from = draftDir(id);
   const to = path.join(FIXTURES_DIR, id);
   if (!fs.existsSync(from)) throw new Error(`No draft ${id}`);
   if (fs.existsSync(to)) throw new Error(`fixtures/${id} already exists`);
@@ -66,7 +73,7 @@ export function approveDraft(id) {
 }
 
 export function discardDraft(id) {
-  fs.rmSync(path.join(DRAFTS, id), { recursive: true, force: true });
+  fs.rmSync(draftDir(id), { recursive: true, force: true });
 }
 
 // CLI: npm run add-issue -- <url> [--approve]

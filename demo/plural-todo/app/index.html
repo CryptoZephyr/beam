@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><title>Todos</title>
+<style>body{font:18px/1.5 system-ui,sans-serif;max-width:480px;margin:40px auto}input{font:inherit;padding:8px;width:100%}ul{padding-left:20px}.todo-count{color:#555}</style></head>
+<body>
+<h1>todos</h1>
+<input id="new" placeholder="What needs to be done?" autofocus>
+<ul id="list"></ul>
+<footer><span class="todo-count" data-testid="todo-count"></span></footer>
+<script>
+  const todos = [];
+  const list = document.getElementById('list');
+  const count = document.querySelector('.todo-count');
+  function render() {
+    list.innerHTML = todos.map(t => '<li>' + t.replace(/</g, '&lt;') + '</li>').join('');
+    const n = todos.length;
+    count.innerHTML = n ? '<strong>' + n + '</strong> items left' : '';
+  }
+  document.getElementById('new').addEventListener('keydown', e => {
+    if (e.key !== 'Enter' || !e.target.value.trim()) return;
+    todos.push(e.target.value.trim());
+    e.target.value = '';
+    render();
+  });
+</script>
+</body>
+</html>
