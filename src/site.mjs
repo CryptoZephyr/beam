@@ -180,8 +180,8 @@ ${why}
 <section aria-labelledby="pages"><h2 id="pages">The two pages</h2>
   ${b.steps ? `<p class="muted">These are live. To see the difference, do what Kane does: ${esc(b.steps)}</p>` : ""}
   <div class="twins">
-    <figure><figcaption>Correct page (Kane should pass)</figcaption><iframe title="Correct page" loading="lazy" sandbox="allow-scripts allow-same-origin" src="../fixtures/${esc(b.id)}/correct.html"></iframe><details><summary>Source</summary><pre><code>${src(b.fixture.correct)}</code></pre></details></figure>
-    <figure><figcaption>Broken page (Kane should fail)</figcaption><iframe title="Broken page" loading="lazy" sandbox="allow-scripts allow-same-origin" src="../fixtures/${esc(b.id)}/broken.html"></iframe><details><summary>Source</summary><pre><code>${src(b.fixture.broken)}</code></pre></details></figure>
+    <figure><figcaption>Correct page (Kane should pass)</figcaption><iframe title="Correct page" loading="lazy" sandbox="allow-scripts" src="../fixtures/${esc(b.id)}/correct.html"></iframe><details><summary>Source</summary><pre><code>${src(b.fixture.correct)}</code></pre></details></figure>
+    <figure><figcaption>Broken page (Kane should fail)</figcaption><iframe title="Broken page" loading="lazy" sandbox="allow-scripts" src="../fixtures/${esc(b.id)}/broken.html"></iframe><details><summary>Source</summary><pre><code>${src(b.fixture.broken)}</code></pre></details></figure>
   </div>
 </section>
 <section aria-labelledby="repro"><h2 id="repro">Reproduce it</h2>
