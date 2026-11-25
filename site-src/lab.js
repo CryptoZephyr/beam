@@ -1,7 +1,7 @@
 // Lab mode client: run panel, add-from-issue review, live cell updates over SSE.
 const $ = (s) => document.querySelector(s);
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
-const LABEL = { CORRECT: 'True', FIXED_BY_WORDING: 'True with wording', FALSE_GREEN: 'False green', FALSE_RED: 'False red', ERROR: "Couldn't run", NOT_RUN: 'Not run' };
+const LABEL = { CORRECT: 'Balanced', FIXED_BY_WORDING: 'Balanced with wording', FALSE_GREEN: 'False green', FALSE_RED: 'False red', ERROR: "Couldn't run", NOT_RUN: 'Not run' };
 const BEAM = { level: 'M2 5h16v1.6H2z', FALSE_GREEN: 'M2 7.6 18 3.4l.4 1.5L2.4 9.1z', FALSE_RED: 'M2 3.4l16 4.2-.4 1.5L1.6 4.9z' };
 const glyph = (s) => `<svg width="22" height="14" viewBox="0 0 20 12" aria-hidden="true"><path class="beam" fill="currentColor" d="${BEAM[s] || BEAM.level}"/><path fill="currentColor" d="M9.2 6.6h1.6V10H9.2zM6.5 10h7v1.5h-7z"/>${s === 'FIXED_BY_WORDING' ? '<rect x="15.4" y="0.6" width="3" height="3" fill="var(--streak)"/>' : ''}</svg>`;
 const reading = (s, extra = '') => `<span class="reading r-${s}${extra}">${glyph(s)}${esc(LABEL[s] || s)}</span>`;
@@ -106,3 +106,44 @@ $('#add-go').addEventListener('click', async () => {
     $('#add-go').disabled = false;
   }
 });
+
+// Live verify: Kane's steps on the left pan, the app's own values on the right, then the reading.
+const liveTest = document.getElementById('live-test');
+if (liveTest) {
+  const kaneList = document.getElementById('live-kane');
+  const appList = document.getElementById('live-app');
+  const verdictEl = document.getElementById('live-verdict');
+  const cap = document.getElementById('live-cap');
+  const kaneV = document.getElementById('live-kane-v');
+  fetch('/api/tests').then((r) => r.json()).then((tests) => {
+    liveTest.innerHTML = tests.map((t) => `<option value="${esc(t.id)}">${esc(t.id)}</option>`).join('');
+  });
+  document.getElementById('live-go').addEventListener('click', async () => {
+    kaneList.innerHTML = ''; appList.innerHTML = ''; verdictEl.innerHTML = ''; kaneV.textContent = '';
+    cap.textContent = `Verifying ${liveTest.value}…`;
+    const r = await fetch('/api/verify', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ id: liveTest.value, headed: document.getElementById('live-headed').checked }) });
+    if (!r.ok) cap.textContent = (await r.json()).error;
+  });
+  es.addEventListener('verify:step', (e) => {
+    const { remark } = JSON.parse(e.data);
+    const li = document.createElement('li');
+    li.textContent = remark.replace(/^(PRIMARY: )/, '');
+    kaneList.append(li);
+    while (kaneList.children.length > 7) kaneList.firstChild.remove();
+  });
+  es.addEventListener('verify:app', (e) => {
+    const { values, failed } = JSON.parse(e.data);
+    const rows = Object.entries(values || {}).map(([k, v]) => `<li><span class="what">${esc(k)}</span><span class="val">${esc(JSON.stringify(v))}</span></li>`);
+    for (const f of failed || []) rows.push(`<li class="no"><span class="what">request failed</span><span class="val">${esc(f)}</span></li>`);
+    appList.innerHTML = rows.join('');
+  });
+  es.addEventListener('verify:done', (e) => {
+    const r = JSON.parse(e.data);
+    const kane = r.kane === 'PASS' ? 'passed' : r.kane === 'FAIL' ? 'failed' : "couldn't run";
+    kaneV.innerHTML = `Verdict: <strong>${kane}</strong>`;
+    if (r.checks) appList.innerHTML = r.checks.map((c) => `<li class="${c.ok ? 'ok' : 'no'}"><span class="what">${esc(c.what)}</span><span class="val">${esc(String(typeof c.actual === 'string' ? c.actual : JSON.stringify(c.actual)).replace(/https?:\/\/[^/\s]+/g, ''))}</span>${c.ok ? '' : `<span class="exp">expected ${esc(c.expected === 'none' ? 'none' : JSON.stringify(c.expected))}</span>`}</li>`).join('');
+    const state = r.state === 'BALANCED' ? 'CORRECT' : r.state === 'COULDNT_RUN' ? 'ERROR' : r.state;
+    verdictEl.innerHTML = `${reading(state, ' arrived')} <span>${esc(r.state === 'BALANCED' ? 'Kane and the app agree.' : r.state === 'FALSE_GREEN' ? 'Kane passed, but the app says it is broken.' : r.state === 'FALSE_RED' ? 'Kane failed, but the app says it works.' : (r.note || r.label || ''))}</span>`;
+    cap.textContent = `Done: ${r.test || liveTest.value}${r.kaneRun?.credits ? `, ${r.kaneRun.credits.toFixed(1)} Kane credits` : ', replayed at no Kane credit cost'}.`;
+  });
+}

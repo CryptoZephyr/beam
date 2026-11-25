@@ -3,7 +3,9 @@
 import http from 'node:http';
 import fs from 'node:fs';
 import path from 'node:path';
-import { execFile } from 'node:child_process';
+import { execFile, spawn } from 'node:child_process';
+import { ensureBridge, getSnapshots } from './bridge.mjs';
+import { verify } from './verify.mjs';
 import { buildSite } from './site.mjs';
 import { loadBehaviors } from './behaviors.mjs';
 import { installedKanes } from './versions.mjs';
@@ -15,8 +17,33 @@ const PORT = Number(process.env.BEAM_LAB_PORT || 4317);
 const LAB_DIR = path.join(ROOT, '.lab-site');
 const TYPES = { '.html': 'text/html; charset=utf-8', '.css': 'text/css', '.js': 'text/javascript', '.json': 'application/json', '.svg': 'image/svg+xml' };
 
+// Demo apps the lab can verify: every demo/<app>/tests/*_test.md with a .beam.json beside it.
+function demoTests() {
+  const out = [];
+  const demo = path.join(ROOT, 'demo');
+  for (const app of fs.existsSync(demo) ? fs.readdirSync(demo) : []) {
+    const tests = path.join(demo, app, 'tests');
+    if (!fs.existsSync(tests)) continue;
+    for (const f of fs.readdirSync(tests)) {
+      if (f.endsWith('_test.md') && fs.existsSync(path.join(tests, f.replace(/.md$/, '.beam.json')))) out.push({ id: `${app}/${f}`, app, file: path.join(tests, f) });
+    }
+  }
+  return out;
+}
+
+// Start a demo app's server if it has one and the lab hasn't started it yet.
+const demoServers = new Map();
+function ensureDemoServer(app) {
+  const server = path.join(ROOT, 'demo', app, 'server.mjs');
+  if (!fs.existsSync(server) || demoServers.has(app)) return;
+  const child = spawn(process.execPath, [server], { stdio: 'ignore', windowsHide: true });
+  child.on('exit', () => demoServers.delete(app));
+  demoServers.set(app, child);
+}
+
 export async function startLab() {
   const fixtures = await startFixtureServer();
+  const bridge = await ensureBridge();
   const clients = new Set();
   let active = null; // { runner, cells: {} }
   const drafts = new Map();
@@ -52,6 +79,33 @@ export async function startLab() {
         clients.add(res);
         req.on('close', () => clients.delete(res));
         return;
+      }
+      if (url.pathname === '/api/tests') return json(res, 200, demoTests().map(({ id, app }) => ({ id, app })));
+      if (url.pathname === '/api/verify' && req.method === 'POST') {
+        if (active) return json(res, 409, { error: 'A run is in progress. Wait for it to finish.' });
+        const { id, headed = false } = await body(req);
+        const t = demoTests().find((x) => x.id === id);
+        if (!t) return json(res, 404, { error: 'No such demo test' });
+        ensureDemoServer(t.app);
+        active = { verify: true, cells: {}, runner: { spent: 0 } };
+        send('verify:start', { id });
+        send('verify:step', { remark: 'Starting Kane and opening the app (this takes about half a minute)' });
+        let last = '';
+        const poll = setInterval(async () => {
+          try {
+            const s = await getSnapshots();
+            const snap = s[s.length - 1];
+            if (!snap) return;
+            const page = s.filter((x) => x.page === snap.page);
+            const failed = page.flatMap((x) => x.network || []).filter((r) => !r.ok).map((r) => `${r.method} ${new URL(r.url).pathname} → ${r.status}`);
+            const payload = JSON.stringify({ values: snap.values, failed: [...new Set(failed)] });
+            if (payload !== last) { last = payload; send('verify:app', JSON.parse(payload)); }
+          } catch {}
+        }, 600);
+        setTimeout(() => verify(t.file, { headed, onStep: (remark) => send('verify:step', { remark }) })
+          .then((r) => send('verify:done', r), (e) => send('verify:done', { state: 'COULDNT_RUN', label: "Couldn't run", note: String(e.message || e) }))
+          .finally(() => { clearInterval(poll); active = null; }), 800);
+        return json(res, 202, { started: true });
       }
       if (url.pathname === '/api/run' && req.method === 'POST') {
         if (active) return json(res, 409, { error: 'A run is in progress. Wait for it to finish.' });
@@ -122,6 +176,6 @@ export async function startLab() {
     const [cmd, args] = process.platform === 'win32' ? ['cmd', ['/c', 'start', '', url]] : [process.platform === 'darwin' ? 'open' : 'xdg-open', [url]];
     execFile(cmd, args, () => {});
   }
-  process.on('SIGINT', async () => { await fixtures.close(); server.close(); process.exit(0); });
+  process.on('SIGINT', async () => { for (const c of demoServers.values()) c.kill(); await fixtures.close(); await bridge.close(); server.close(); process.exit(0); });
   return { server, fixtures };
 }

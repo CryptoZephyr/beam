@@ -176,6 +176,7 @@ function indexPage(data, { lab }) {
   <p class="lede">Beam weighs every Kane verdict against what your app knows to be true, and hands any difference to your coding agent.</p>
   ${copyBox(INSTALL)}
 </section>
+${lab ? liveVerify() : ''}
 ${balanceFrame(demo.before, { caption: 'A real Beam run on the Northwind Coffee checkout demo' })}
 
 <section aria-labelledby="how"><div class="scale" aria-hidden="true"></div>
@@ -357,6 +358,26 @@ ${copyBox('npm run add-issue -- https://github.com/LambdaTest/kane-cli/issues/<n
 <p>The agent drafts the two pages. Nothing runs until a person approves them.</p>
 </section>`;
   return layout({ title: 'How it works · Beam', body, page: 'about' });
+}
+
+function liveVerify() {
+  return `
+<section id="live" aria-labelledby="live-h"><div class="scale" aria-hidden="true"></div>
+  <h2 id="live-h">Verify an app, live</h2>
+  <div class="controls">
+    <label class="search">Demo test<select id="live-test"></select></label>
+    <label class="inline"><input id="live-headed" type="checkbox"> Show browser</label>
+    <button class="btn" id="live-go" type="button">Verify</button>
+  </div>
+  <figure class="balance" aria-live="polite">
+    <figcaption id="live-cap">Pick a demo test and press Verify. Kane drives the app on the left; the app reports itself on the right.</figcaption>
+    <div class="pans">
+      <div class="pan"><p class="pan-h">Kane <span>reads the screen</span></p><ul class="steps-live" id="live-kane"></ul><p class="pan-v" id="live-kane-v"></p></div>
+      <div class="pan"><p class="pan-h">Your app <span>reports its own state</span></p><ul class="app" id="live-app"></ul></div>
+    </div>
+    <p class="verdict" id="live-verdict"></p>
+  </figure>
+</section>`;
 }
 
 function labPanels() {

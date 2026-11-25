@@ -240,3 +240,7 @@ section > .lede { margin-bottom: 14px; }
 }
 
 main > h1:first-child { margin-top: 40px; }
+
+.steps-live { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; font-size: 14.5px; color: rgb(233 231 226 / 0.85); min-height: 3em; }
+.steps-live li:last-child { color: var(--on-frame); font-weight: 600; }
+select { font: 16px var(--body); color: var(--text); background: var(--sheet); border: 1px solid var(--line); border-radius: var(--r); padding: 8px 10px; }
