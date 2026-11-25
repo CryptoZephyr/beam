@@ -165,7 +165,7 @@ Home (data, no data yet), matrix (filtered empty, search empty), behavior page (
 
 - **D1 Palette:** LOCKED 25 Nov: T Touchstone (dark first, light mode on assay paper).
 - **D2 Type:** LOCKED 25 Nov: Big Shoulders Display (headings), Atkinson Hyperlegible Next (body), Martian Mono (code and wordings).
-- **D3 State names:** True / True with wording / False green / False red / Couldn't run, instead of Correct / Fixed by wording / Wrong.
+- **D3 State names:** LOCKED 25 Nov: Balanced / Balanced with wording / False green / False red / Couldn't run (one vocabulary for the matrix and the probe; see ../docs/PROBE-DECISIONS.md D-P6).
 - **D4 Mark:** LOCKED 25 Nov (B1 + B3 small cut, section 12).
-- **D5 Dark mode:** follow the device with no toggle (recommended), or add a toggle.
-- **D6 Scale rule:** keep the calibration-tick rule as the one decoration, or drop it for plain 1px rules.
+- **D5 Dark mode:** LOCKED 25 Nov: follow the device, no toggle.
+- **D6 Scale rule:** LOCKED 25 Nov: keep the calibration-tick rule as the one decoration.
