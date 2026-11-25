@@ -69,8 +69,8 @@ document.querySelectorAll('[data-copy]').forEach(b=>b.addEventListener('click',a
 </html>`;
 }
 
-function copyBox(text, label = 'Copy') {
-  return `<div class="cmd"><code>${esc(text)}</code><button type="button" class="btn small" data-copy="${esc(text)}">${label}</button></div>`;
+function copyBox(text, label = 'Copy', wrap = false) {
+  return `<div class="cmd${wrap ? ' wrap' : ''}"><code>${esc(text)}</code><button type="button" class="btn small" data-copy="${esc(text)}">${label}</button></div>`;
 }
 
 function heroContrast(data) {
@@ -150,15 +150,17 @@ function behaviorPage(b, data, { lab }) {
   }).join('') || `<tr><th scope="row"><code>${esc(w.text)}</code></th><td colspan="4" class="muted">Not run yet</td></tr>`).join('');
 
   const ref = data.referenceVersion;
+  const coded = b.wordings.filter((w) => w.versions[ref]?.codeJs);
   const wrong = b.wordings.find((w) => ['FALSE_GREEN', 'FALSE_RED'].includes(w.versions[ref]?.state));
-  const why = wrong ? `
-<section aria-labelledby="why"><h2 id="why">What Kane did with the wrong wording</h2>
-  ${wrong.versions[ref].codeJs ? `<p>The code Kane recorded to read the page:</p><pre><code>${esc(wrong.versions[ref].codeJs)}</code></pre>` : ''}
-  ${wrong.versions[ref].brokenSummary ? `<p>Kane's summary on the broken page:</p><blockquote>${esc(wrong.versions[ref].brokenSummary)}</blockquote>` : ''}
+  const why = coded.length || wrong?.versions[ref]?.brokenSummary ? `
+<section aria-labelledby="why"><h2 id="why">How Kane read the page</h2>
+  <p>Kane turns each wording into code that reads the page. This is the code it recorded:</p>
+  ${coded.map((w) => `<div class="codepair"><p><code>${esc(w.text)}</code> ${pill(w.versions[ref].state)}</p><pre><code>${esc(w.versions[ref].codeJs)}</code></pre></div>`).join('')}
+  ${wrong?.versions[ref]?.brokenSummary ? `<p>Kane's summary on the broken page with <code>${esc(wrong.text)}</code>:</p><blockquote>${esc(wrong.versions[ref].brokenSummary)}</blockquote>` : ''}
 </section>` : '';
 
   const agentLine = b.recommendedWording
-    ? `<p class="label">Use</p>${copyBox(b.recommendedWording)}`
+    ? `<p class="label">Use</p>${copyBox(b.recommendedWording, 'Copy', true)}`
     : b.state === 'NOT_RUN' ? '<p>Not measured yet.</p>' : '<p><strong>No wording tried so far makes Kane get this right.</strong> Your agent adds a separate check (a unit test or a direct DOM assertion) next to the Kane check.</p>';
   const avoid = b.avoidWordings.length ? `<p class="label">Avoid</p><ul class="avoid">${b.avoidWordings.map((a) => `<li><code>${esc(a.text)}</code> <span class="muted">(${esc(STATE_LABEL[a.state])})</span></li>`).join('')}</ul>` : '';
   const src = (f) => esc(fs.readFileSync(path.join(ROOT, f), 'utf8'));
@@ -176,9 +178,10 @@ function behaviorPage(b, data, { lab }) {
 </section>
 ${why}
 <section aria-labelledby="pages"><h2 id="pages">The two pages</h2>
+  ${b.steps ? `<p class="muted">These are live. To see the difference, do what Kane does: ${esc(b.steps)}</p>` : ""}
   <div class="twins">
-    <figure><figcaption>Correct page (Kane should pass)</figcaption><iframe title="Correct page" sandbox="allow-scripts" src="../fixtures/${esc(b.id)}/correct.html"></iframe><details><summary>Source</summary><pre><code>${src(b.fixture.correct)}</code></pre></details></figure>
-    <figure><figcaption>Broken page (Kane should fail)</figcaption><iframe title="Broken page" sandbox="allow-scripts" src="../fixtures/${esc(b.id)}/broken.html"></iframe><details><summary>Source</summary><pre><code>${src(b.fixture.broken)}</code></pre></details></figure>
+    <figure><figcaption>Correct page (Kane should pass)</figcaption><iframe title="Correct page" loading="lazy" sandbox="allow-scripts allow-same-origin" src="../fixtures/${esc(b.id)}/correct.html"></iframe><details><summary>Source</summary><pre><code>${src(b.fixture.correct)}</code></pre></details></figure>
+    <figure><figcaption>Broken page (Kane should fail)</figcaption><iframe title="Broken page" loading="lazy" sandbox="allow-scripts allow-same-origin" src="../fixtures/${esc(b.id)}/broken.html"></iframe><details><summary>Source</summary><pre><code>${src(b.fixture.broken)}</code></pre></details></figure>
   </div>
 </section>
 <section aria-labelledby="repro"><h2 id="repro">Reproduce it</h2>

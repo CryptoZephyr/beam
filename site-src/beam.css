@@ -126,3 +126,4 @@ label.inline { display: flex; gap: 8px; align-items: center; }
   table.m tbody th { min-width: 200px; }
 }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+.cmd.wrap code { white-space: pre-wrap; word-break: break-word; }

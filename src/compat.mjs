@@ -3,9 +3,30 @@ import fs from 'node:fs';
 import { loadBehaviors } from './behaviors.mjs';
 import { loadResults } from './results.mjs';
 import { gradeBehavior } from './grade.mjs';
-import { DATA_FILE } from './paths.mjs';
+import path from 'node:path';
+import { DATA_FILE, RUNS_DIR } from './paths.mjs';
 
 const ISSUE_URL = (n) => `https://github.com/LambdaTest/kane-cli/issues/${n}`;
+
+// The code Kane recorded to read the page lives in the recording, not in replay output.
+function recordedCode(behaviorId, wordingId) {
+  const base = path.join(RUNS_DIR, behaviorId, `output-${wordingId}`, '.internal', 'steps');
+  if (!fs.existsSync(base)) return null;
+  const found = [];
+  for (const step of fs.readdirSync(base)) {
+    const flows = path.join(base, step, 'flows');
+    if (!fs.existsSync(flows)) continue;
+    for (const flow of fs.readdirSync(flows)) {
+      const f = path.join(flows, flow, 'actions.ndjson');
+      if (!fs.existsSync(f)) continue;
+      for (const m of fs.readFileSync(f, 'utf8').matchAll(/"code_js":\s*"((?:[^"\\]|\\.)*)"/g)) {
+        const code = JSON.parse(`"${m[1]}"`);
+        if (code && !found.includes(code)) found.push(code);
+      }
+    }
+  }
+  return found.length ? found.join('\n') : null;
+}
 
 function cmpVersion(a, b) {
   const pa = a.split('.').map(Number);
@@ -46,7 +67,7 @@ export function buildCompat({ write = true } = {}) {
           broken: rv.broken?.verdict || null,
           brokenSummary: rv.broken?.summary || null,
           correctSummary: rv.correct?.summary || null,
-          codeJs: rv.broken?.codeJs || rv.correct?.codeJs || null,
+          codeJs: rv.broken?.codeJs || rv.correct?.codeJs || recordedCode(m.id, w.id),
           stored: { correct: rv.correct?.stored || {}, broken: rv.broken?.stored || {} },
           testUrl: rv.correct?.testUrl || rv.broken?.testUrl || null,
           at: rv.broken?.at || rv.correct?.at || null,
