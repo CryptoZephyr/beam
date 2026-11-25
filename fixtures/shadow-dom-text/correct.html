@@ -1,0 +1,13 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>store</title></head><body>
+<h1>Store</h1>
+<price-tag></price-tag>
+<script>
+  class PriceTag extends HTMLElement {
+    constructor() {
+      super();
+      const root = this.attachShadow({ mode: 'open' });
+      root.innerHTML = '<span class="price">Price: $49</span>';
+    }
+  }
+  customElements.define('price-tag', PriceTag);
+</script></body></html>

@@ -1,0 +1,13 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Settings</title><style>body{font:18px system-ui,sans-serif;margin:24px}button{font-size:18px;padding:8px 14px}.toast{position:fixed;bottom:24px;left:24px;background:#222;color:#fff;padding:12px 18px;border-radius:6px;opacity:0;visibility:hidden;transition:opacity .5s,visibility .5s}.toast.show{opacity:1;visibility:visible}.toast.fade{opacity:0;visibility:hidden}</style></head><body>
+<h1>Settings</h1>
+<button id="save">Save</button>
+<div id="toast" class="toast" role="status"></div>
+<script>
+  let timer;
+  document.getElementById('save').addEventListener('click', () => {
+    const toast = document.getElementById('toast');
+    toast.textContent = 'Settings saved'; toast.className = 'toast show';
+    clearTimeout(timer);
+    timer = setTimeout(() => { toast.className = 'toast fade'; }, 4000);
+  });
+</script></body></html>

@@ -1,0 +1,14 @@
+{
+  "id": "collapsed-section",
+  "title": "Task inside a collapsed section",
+  "summary": "The Activity panel's collapsed \"Upcoming & Overdue\" section contains the task \"Call Kane Hot Co\".",
+  "tags": ["collapsed", "details", "panel", "hidden-content"],
+  "issue": 212,
+  "what_differs": "The broken page lists a different task, \"Email Acme Ltd\", in the same collapsed section.",
+  "expected": { "correct": "PASS", "broken": "FAIL" },
+  "steps": "",
+  "wordings": [
+    { "id": "w1", "origin": "issue", "text": "Verify a task named \"Call Kane Hot Co\" is listed in the Activity panel." },
+    { "id": "w2", "origin": "baseline", "text": "Expand the \"Upcoming & Overdue\" section if it is collapsed, then verify a task named \"Call Kane Hot Co\" is listed." }
+  ]
+}

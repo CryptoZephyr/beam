@@ -1,0 +1,14 @@
+{
+  "id": "reload-persists",
+  "title": "To-do survives a page reload",
+  "summary": "After adding a to-do and reloading the page, the to-do is still listed because it is saved in localStorage (Kane issue 252 reported the reload being done as a Ctrl+R key press).",
+  "tags": ["reload", "persistence", "localstorage", "todo"],
+  "issue": 252,
+  "what_differs": "The broken page keeps to-dos only in memory and never reads them back, so a real reload clears the list.",
+  "expected": { "correct": "PASS", "broken": "FAIL" },
+  "steps": "Type \"pay rent\" into the \"New to-do\" box and press Enter. Reload the page.",
+  "wordings": [
+    { "id": "w1", "origin": "issue", "text": "Verify the to-do list shows \"pay rent\"." },
+    { "id": "w2", "origin": "baseline", "text": "Verify the exact visible text of the to-do list includes \"pay rent\" after the page has been reloaded." }
+  ]
+}

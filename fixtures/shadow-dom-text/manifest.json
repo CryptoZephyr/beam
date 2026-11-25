@@ -1,0 +1,14 @@
+{
+  "id": "shadow-dom-text",
+  "title": "Price inside a shadow root",
+  "summary": "A custom <price-tag> element shows \"Price: $49\" inside its open shadow root.",
+  "tags": ["shadow-dom", "custom-element", "text", "price"],
+  "issue": null,
+  "what_differs": "The broken page renders \"Price: $94\" inside the shadow root instead.",
+  "expected": { "correct": "PASS", "broken": "FAIL" },
+  "steps": "",
+  "wordings": [
+    { "id": "w1", "origin": "baseline", "text": "Verify the price shown is $49." },
+    { "id": "w2", "origin": "baseline", "text": "Verify the exact visible text of the price tag is \"Price: $49\"." }
+  ]
+}

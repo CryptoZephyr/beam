@@ -1,0 +1,17 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>editor</title></head><body>
+<h1>Editor</h1>
+<textarea id="doc" rows="4" cols="40">Draft text</textarea>
+<br>
+<button id="save" type="button">Save</button>
+<p id="msg" style="color:green"></p>
+<script>
+  document.getElementById('save').addEventListener('click', async () => {
+    const msg = document.getElementById('msg');
+    try {
+      const res = await fetch('missing.json');
+      msg.textContent = 'Saved';
+    } catch (e) {
+      msg.textContent = '';
+    }
+  });
+</script></body></html>

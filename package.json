@@ -7,7 +7,7 @@
   "files": ["bin/", "skill/", "beam.json", "src/installer.mjs", "src/match.mjs"],
   "engines": { "node": ">=20" },
   "scripts": {
-    "test": "node --test test/",
+    "test": "node --test test/*.test.mjs",
     "suite": "node src/cli.mjs suite",
     "add-issue": "node src/cli.mjs add-issue",
     "kane:install": "node src/cli.mjs kane-install",

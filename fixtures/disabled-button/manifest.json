@@ -1,0 +1,14 @@
+{
+  "id": "disabled-button",
+  "title": "Create button disabled while Email is empty",
+  "summary": "On a sign-up form with an empty Email field, the \"Create account\" button is disabled.",
+  "tags": ["form", "button", "disabled", "state"],
+  "issue": null,
+  "what_differs": "The broken page leaves the \"Create account\" button enabled while the Email field is empty, and it looks the same.",
+  "expected": { "correct": "PASS", "broken": "FAIL" },
+  "steps": "",
+  "wordings": [
+    { "id": "w1", "origin": "baseline", "text": "Verify the \"Create account\" button is disabled." },
+    { "id": "w2", "origin": "baseline", "text": "Verify that the \"Create account\" button has the disabled state and cannot be clicked while the Email field is empty." }
+  ]
+}

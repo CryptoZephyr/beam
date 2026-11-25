@@ -1,0 +1,14 @@
+{
+  "id": "iframe-text",
+  "title": "Invoice total inside an iframe",
+  "summary": "An embedded invoice frame shows the total \"Total: $120.00\".",
+  "tags": ["iframe", "text", "invoice", "number"],
+  "issue": null,
+  "what_differs": "The broken page shows \"Total: $12.00\" inside the invoice frame.",
+  "expected": { "correct": "PASS", "broken": "FAIL" },
+  "steps": "",
+  "wordings": [
+    { "id": "w1", "origin": "baseline", "text": "Verify the invoice total is $120.00." },
+    { "id": "w2", "origin": "baseline", "text": "Verify the exact visible text inside the embedded invoice frame includes \"Total: $120.00\"." }
+  ]
+}

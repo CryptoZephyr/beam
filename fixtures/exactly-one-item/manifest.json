@@ -1,0 +1,14 @@
+{
+  "id": "exactly-one-item",
+  "title": "Exactly one to-do after adding one",
+  "summary": "After adding the to-do \"b\", the list shows exactly one row, and that row reads \"b\".",
+  "tags": ["list", "count", "empty-item", "todo"],
+  "issue": 233,
+  "what_differs": "The broken page renders an extra empty list item above \"b\", which appears as a blank row.",
+  "expected": { "correct": "PASS", "broken": "FAIL" },
+  "steps": "Type \"b\" into the \"New to-do\" box and press Enter.",
+  "wordings": [
+    { "id": "w1", "origin": "issue", "text": "Verify the todo list shows exactly one todo, \"b\"." },
+    { "id": "w2", "origin": "baseline", "text": "Verify the to-do list has exactly 1 item and that item's text is \"b\"." }
+  ]
+}

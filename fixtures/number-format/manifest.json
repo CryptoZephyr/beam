@@ -1,0 +1,14 @@
+{
+  "id": "number-format",
+  "title": "Thousands separator in item count",
+  "summary": "The order summary shows \"Items: 1,250\" with a thousands separator.",
+  "tags": ["number", "format", "text", "order"],
+  "issue": null,
+  "what_differs": "The broken page shows \"Items: 1250\" with no thousands separator.",
+  "expected": { "correct": "PASS", "broken": "FAIL" },
+  "steps": "",
+  "wordings": [
+    { "id": "w1", "origin": "baseline", "text": "Verify the order summary shows 1,250 items." },
+    { "id": "w2", "origin": "baseline", "text": "Verify the exact visible text of the items line is \"Items: 1,250\"." }
+  ]
+}

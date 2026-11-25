@@ -1,0 +1,20 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>dashboard</title>
+<style>
+  body { font-family: sans-serif; }
+  .menu { position: relative; display: inline-block; }
+  .trigger { padding: 8px 12px; border: 1px solid #888; background: #fff; cursor: pointer; }
+  .items { display: none; position: absolute; top: 100%; left: 0; min-width: 140px; background: #fff; border: 1px solid #888; }
+  .menu:hover .items { display: block; }
+  .items a { display: block; padding: 8px 12px; color: #000; text-decoration: none; }
+  .items a:hover { background: #eee; }
+</style></head><body>
+<h1>Dashboard</h1>
+<div class="menu">
+  <button class="trigger" type="button">Account</button>
+  <div class="items">
+    <a href="#profile">Profile</a>
+    <a href="#billing">Billing</a>
+    <a href="#signout">Sign out</a>
+  </div>
+</div>
+</body></html>

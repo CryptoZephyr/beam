@@ -1,0 +1,14 @@
+{
+  "id": "hover-menu",
+  "title": "Account menu items on hover",
+  "summary": "Hovering over \"Account\" reveals a menu with \"Profile\", \"Billing\" and \"Sign out\".",
+  "tags": ["hover", "menu", "css", "navigation"],
+  "issue": null,
+  "what_differs": "The broken page's Account menu has \"Profile\" and \"Sign out\" but no \"Billing\" item.",
+  "expected": { "correct": "PASS", "broken": "FAIL" },
+  "steps": "Hover over \"Account\".",
+  "wordings": [
+    { "id": "w1", "origin": "baseline", "text": "Verify the Account menu has a \"Billing\" option." },
+    { "id": "w2", "origin": "baseline", "text": "Verify that after hovering over \"Account\", an item with the exact text \"Billing\" is visible in the menu." }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "id": "hidden-request-failure",
+  "title": "Saved message despite failed request",
+  "summary": "Clicking \"Save\" fetches ok.json successfully and then shows \"Saved\" in green.",
+  "tags": ["network", "fetch", "silent-failure", "button"],
+  "issue": null,
+  "what_differs": "The broken page requests a missing file, which returns 404, but still shows \"Saved\".",
+  "expected": { "correct": "PASS", "broken": "FAIL" },
+  "steps": "Click \"Save\".",
+  "wordings": [
+    { "id": "w1", "origin": "baseline", "text": "Verify the page shows \"Saved\"." },
+    { "id": "w2", "origin": "baseline", "text": "Verify the page shows \"Saved\" and that the save request made after clicking Save succeeded with no failed network requests." }
+  ]
+}

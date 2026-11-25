@@ -1,0 +1,14 @@
+{
+  "id": "localstorage-key",
+  "title": "To-dos saved under the react-todos key",
+  "summary": "Each added to-do is saved as a JSON array under the localStorage key \"react-todos\".",
+  "tags": ["localstorage", "storage-key", "persistence", "todo"],
+  "issue": 255,
+  "what_differs": "The broken page renders the list but never writes anything to localStorage.",
+  "expected": { "correct": "PASS", "broken": "FAIL" },
+  "steps": "Type \"milk\" into the \"What needs to be done?\" box and press Enter. Type \"eggs\" into the same box and press Enter.",
+  "wordings": [
+    { "id": "w1", "origin": "issue", "text": "Verify the browser localStorage key \"react-todos\" holds exactly 2 todos." },
+    { "id": "w2", "origin": "baseline", "text": "Verify that the localStorage value stored under the key \"react-todos\" is a list containing \"milk\" and \"eggs\"." }
+  ]
+}

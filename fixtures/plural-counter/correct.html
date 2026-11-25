@@ -1,0 +1,13 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>todos</title></head><body>
+<h1>todos</h1>
+<input id="new" placeholder="What needs to be done?">
+<span class="todo-count" data-testid="todo-count"></span>
+<script>
+  let n = 0;
+  const out = document.querySelector('.todo-count');
+  document.getElementById('new').addEventListener('keydown', e => {
+    if (e.key !== 'Enter') return;
+    n++;
+    out.innerHTML = '<strong>' + n + '</strong> ' + (n === 1 ? 'item' : 'items') + ' left';
+  });
+</script></body></html>

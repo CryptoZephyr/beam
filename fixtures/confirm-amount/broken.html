@@ -1,0 +1,12 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Swap</title><style>body{font:18px system-ui,sans-serif;margin:24px}input,button{font-size:18px;padding:8px}</style></head><body>
+<h1>Swap</h1>
+<label for="pay">You pay</label>
+<input id="pay" type="text" inputmode="decimal">
+<button id="review">Review swap</button>
+<p id="confirm" role="status"></p>
+<script>
+  document.getElementById('review').addEventListener('click', () => {
+    const v = document.getElementById('pay').value.trim();
+    document.getElementById('confirm').textContent = 'You pay ' + (parseFloat(v) / 10) + ' ETH';
+  });
+</script></body></html>

@@ -1,0 +1,14 @@
+{
+  "id": "not-visible",
+  "title": "Bar hides after clearing selection",
+  "summary": "Clicking Clear selection hides the blue \"3 items selected\" bar.",
+  "tags": ["visibility", "hidden", "negative-check", "selection"],
+  "issue": 65,
+  "what_differs": "The broken page's Clear selection button does nothing, so the bar stays visible.",
+  "expected": { "correct": "PASS", "broken": "FAIL" },
+  "steps": "Click \"Clear selection\".",
+  "wordings": [
+    { "id": "w1", "origin": "issue", "text": "Assert that the \"3 items selected\" bar is NOT visible." },
+    { "id": "w2", "origin": "baseline", "text": "Verify that no element with the text \"3 items selected\" is visible on the page." }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "id": "delayed-element",
+  "title": "Result appears after a delay",
+  "summary": "After clicking \"Load report\" and waiting 2.5 seconds, the page shows \"Report ready: 42 rows\".",
+  "tags": [
+    "async",
+    "timing",
+    "text",
+    "button"
+  ],
+  "issue": null,
+  "what_differs": "The broken page shows \"Report ready: 0 rows\" once the delay passes.",
+  "expected": {
+    "correct": "PASS",
+    "broken": "FAIL"
+  },
+  "steps": "Click \"Load report\".",
+  "wordings": [
+    {
+      "id": "w1",
+      "origin": "baseline",
+      "text": "Verify the page says \"Report ready: 42 rows\"."
+    },
+    {
+      "id": "w2",
+      "origin": "baseline",
+      "text": "Verify that once a line starting with \"Report ready\" appears, its exact visible text is \"Report ready: 42 rows\"."
+    }
+  ]
+}

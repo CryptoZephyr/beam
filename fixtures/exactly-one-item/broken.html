@@ -1,0 +1,15 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>To-dos</title><style>body{font:18px system-ui,sans-serif;margin:24px}input{font-size:18px;padding:6px}</style></head><body>
+<h1>To-dos</h1>
+<input id="new" placeholder="New to-do" aria-label="New to-do">
+<ul id="list"><li></li></ul>
+<script>
+  const input = document.getElementById('new');
+  const list = document.getElementById('list');
+  input.addEventListener('keydown', e => {
+    if (e.key !== 'Enter' || !input.value.trim()) return;
+    const li = document.createElement('li');
+    li.textContent = input.value.trim();
+    list.appendChild(li);
+    input.value = '';
+  });
+</script></body></html>

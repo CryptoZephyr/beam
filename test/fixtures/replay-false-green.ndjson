@@ -1,0 +1,39 @@
+{"type":"stream_start","cli_version":"0.10.9","surface":"testmd","pid":10716,"v":1,"ts":"2026-11-25T12:14:29.010Z"}
+{"type":"test_md_step_start","step_index":1,"heading":"Add one todo","ref":null,"v":1,"ts":"2026-11-25T12:15:23.816Z"}
+{"type":"run_start","objective":"Type \"buy some cheese\" into the \"What needs to be done?\" box and press Enter.\nVerify the todo counter reads \"1 item left\".","timestamp":1795608926,"environment":{"resolution":"1920x1080"},"v":1,"ts":"2026-11-25T12:15:26.007Z"}
+{"type":"step_event","index":0,"event":"replay_started","detail":"replaying 6 actions","recording_length":6,"v":1,"ts":"2026-11-25T12:15:26.113Z"}
+{"type":"step_start","index":1,"objective":"Step 1","v":1,"ts":"2026-11-25T12:15:26.194Z"}
+{"type":"step_event","index":1,"event":"screenshot","detail":"https://kaneai-playground.lambdatest.io/","v":1,"ts":"2026-11-25T12:15:26.802Z"}
+{"type":"step_event","index":1,"event":"action","detail":"Navigate to http://127.0.0.1:4318/todo254/index.html","action_type":"navigate","success":true,"v":1,"ts":"2026-11-25T12:15:27.344Z"}
+{"type":"step_event","index":1,"event":"reasoning","detail":"Navigate to http://127.0.0.1:4318/todo254/index.html","action_type":"navigate","v":1,"ts":"2026-11-25T12:15:27.346Z"}
+{"type":"step_end","index":1,"status":"passed","duration":1.2,"summary":"navigate: Navigate to http://127.0.0.1:4318/todo254/index.html","ordinal":1,"id":"0-1","kind":"navigate","screenshot":"screenshot.jpg","action_id":"3b8e7618-cd47-4176-b4ac-40c3004f5534","v":1,"ts":"2026-11-25T12:15:27.409Z"}
+{"type":"step_start","index":2,"objective":"Step 2","v":1,"ts":"2026-11-25T12:15:27.411Z"}
+{"type":"step_event","index":2,"event":"screenshot","detail":"http://127.0.0.1:4318/todo254/index.html","v":1,"ts":"2026-11-25T12:15:27.811Z"}
+{"type":"step_event","index":2,"event":"action","detail":"Waiting for the next queued step to load","action_type":"wait","success":true,"v":1,"ts":"2026-11-25T12:15:28.878Z"}
+{"type":"step_event","index":2,"event":"reasoning","detail":"Waiting for the next queued step to load","action_type":"wait","v":1,"ts":"2026-11-25T12:15:28.881Z"}
+{"type":"step_end","index":2,"status":"passed","duration":1.5,"summary":"wait: Waiting for the next queued step to load","ordinal":2,"id":"0-2","kind":"wait","screenshot":"screenshot.jpg","action_id":"daaa6dfd-ce79-4e5a-9357-2075197e2eb3","v":1,"ts":"2026-11-25T12:15:28.912Z"}
+{"type":"step_start","index":3,"objective":"Step 3","v":1,"ts":"2026-11-25T12:15:28.934Z"}
+{"type":"step_event","index":3,"event":"screenshot","detail":"http://127.0.0.1:4318/todo254/index.html","v":1,"ts":"2026-11-25T12:15:29.105Z"}
+{"type":"step_event","index":3,"event":"action","detail":"Type \"buy some cheese\" into \"What needs to be done?\"","action_type":"fill","success":true,"v":1,"ts":"2026-11-25T12:15:29.647Z"}
+{"type":"step_event","index":3,"event":"reasoning","detail":"Type \"buy some cheese\" into \"What needs to be done?\"","action_type":"fill","v":1,"ts":"2026-11-25T12:15:29.649Z"}
+{"type":"step_end","index":3,"status":"passed","duration":0.7,"summary":"fill: Type \"buy some cheese\" into \"What needs to be done?\"","ordinal":3,"id":"0-3","kind":"fill","screenshot":"screenshot.jpg","action_id":"79d45347-3bd9-44b8-9464-5e22327e6acd","v":1,"ts":"2026-11-25T12:15:29.904Z"}
+{"type":"step_start","index":4,"objective":"Step 4","v":1,"ts":"2026-11-25T12:15:29.906Z"}
+{"type":"step_event","index":4,"event":"screenshot","detail":"http://127.0.0.1:4318/todo254/index.html","v":1,"ts":"2026-11-25T12:15:30.096Z"}
+{"type":"step_event","index":4,"event":"action","detail":"Pressing the Enter key","action_type":"press_key","success":true,"v":1,"ts":"2026-11-25T12:15:30.706Z"}
+{"type":"step_event","index":4,"event":"reasoning","detail":"Pressing the Enter key","action_type":"press_key","v":1,"ts":"2026-11-25T12:15:30.708Z"}
+{"type":"step_end","index":4,"status":"passed","duration":0.8,"summary":"press_key: Pressing the Enter key","ordinal":4,"id":"0-4","kind":"press_key","screenshot":"screenshot.jpg","action_id":"528fd25e-881b-443f-898f-ec2390dac3a2","v":1,"ts":"2026-11-25T12:15:30.727Z"}
+{"type":"step_start","index":5,"objective":"Step 5","v":1,"ts":"2026-11-25T12:15:30.729Z"}
+{"type":"step_event","index":5,"event":"screenshot","detail":"http://127.0.0.1:4318/todo254/index.html","v":1,"ts":"2026-11-25T12:15:30.913Z"}
+{"type":"step_event","index":5,"event":"action","detail":"Reading the todo counter","action_type":"analyze","success":true,"v":1,"ts":"2026-11-25T12:15:32.647Z"}
+{"type":"step_event","index":5,"event":"reasoning","detail":"Reading the todo counter","action_type":"analyze","v":1,"ts":"2026-11-25T12:15:32.654Z"}
+{"type":"step_end","index":5,"status":"passed","duration":1.9,"summary":"analyze: Reading the todo counter","ordinal":5,"id":"0-5","kind":"analyze","screenshot":"screenshot.jpg","action_id":"0c426263-d0a6-435a-9413-c88d38d060ad","v":1,"ts":"2026-11-25T12:15:32.672Z"}
+{"type":"step_start","index":6,"objective":"Step 6","v":1,"ts":"2026-11-25T12:15:32.674Z"}
+{"type":"step_event","index":6,"event":"screenshot","detail":"http://127.0.0.1:4318/todo254/index.html","v":1,"ts":"2026-11-25T12:15:32.856Z"}
+{"type":"step_event","index":6,"event":"assertion","detail":"the todo counter reads \"1 item left\"","passed":true,"v":1,"ts":"2026-11-25T12:15:32.886Z"}
+{"type":"step_end","index":6,"status":"passed","duration":0.2,"summary":"assert: the todo counter reads \"1 item left\"","ordinal":6,"id":"0-6","kind":"assert","screenshot":"screenshot.jpg","action_id":"eb42a660-8bd0-476a-8949-e543c95a7048","v":1,"ts":"2026-11-25T12:15:32.893Z"}
+{"type":"run_end","run_id":"run-0","status":"passed","summary":"","reason":"replay completed","duration":8.99,"final_url":"http://127.0.0.1:4318/todo254/index.html","actions_executed":6,"screenshot_path":"~\\.testmuai\\kaneai\\sessions\\9762a708-1e43-4c1f-8617-d3e3927db44e\\scratch\\0\\replay-test\\screenshots/step_006.png","run_dir":"~\\.testmuai\\kaneai\\sessions\\9762a708-1e43-4c1f-8617-d3e3927db44e\\scratch\\0\\replay-test","total_runs":1,"context":{"memory":{},"variables":{"todo_counter_text":{"syntax":"{{todo_counter_text}}","value":"1 item left","secret":false}},"pointer":""},"variables_out":{"todo_counter_text":{"syntax":"{{todo_counter_text}}","value":"1 item left","secret":false}},"store_out":{},"result_code":100,"reason_code":"success.complete","v":1,"ts":"2026-11-25T12:15:32.919Z"}
+{"type":"test_md_step_end","step_index":1,"status":"passed","duration_s":8.99,"ref_kind":null,"unit_kind":null,"inlined_count":null,"failed_sub_step_index":null,"v":1,"ts":"2026-11-25T12:15:32.922Z"}
+{"type":"test_md_evidence_ingest","status":"ok","evidence_id":"3234fa0c-83cf-44e7-9ab7-7aada7882c33","v":1,"ts":"2026-11-25T12:15:38.937Z"}
+{"type":"test_md_summary","overall_status":"passed","duration_s":55,"steps":{"total":1,"passed":1,"failed":0,"skipped":0,"replay_decisions":1,"author_decisions":0},"adaptive_heal":{"triggered":false},"commit":{"committed":false,"reason":"readonly_fallback"},"artifacts":{"replaced":false},"upload":{"performed":true,"succeeded":true},"cancelled":false,"v":1,"ts":"2026-11-25T12:15:38.946Z"}
+{"type":"coverage","status":"skipped","reason":"not_assurance_project","pack":"~\\.testmuai\\kaneai\\sessions\\9762a708-1e43-4c1f-8617-d3e3927db44e\\evidence\\3234fa0c-83cf-44e7-9ab7-7aada7882c33.evidence","v":1,"ts":"2026-11-25T12:15:39.005Z"}
+{"type":"test_md_done","overall_status":"passed","duration_s":55,"session_id":"9762a708-1e43-4c1f-8617-d3e3927db44e","coverage":{"status":"skipped"},"v":1,"ts":"2026-11-25T12:15:39.007Z"}

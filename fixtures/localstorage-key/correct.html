@@ -1,0 +1,26 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Todos</title><style>body{font:18px system-ui,sans-serif;margin:24px}input{font-size:18px;padding:6px}</style></head><body>
+<h1>todos</h1>
+<input id="new" placeholder="What needs to be done?">
+<ul id="list"></ul>
+<script>
+  const KEY = 'react-todos';
+  let todos = JSON.parse(localStorage.getItem(KEY) || '[]');
+  const input = document.getElementById('new');
+  const list = document.getElementById('list');
+  function render() {
+    list.innerHTML = '';
+    for (const t of todos) {
+      const li = document.createElement('li');
+      li.textContent = t;
+      list.appendChild(li);
+    }
+  }
+  input.addEventListener('keydown', e => {
+    if (e.key !== 'Enter' || !input.value.trim()) return;
+    todos.push(input.value.trim());
+    localStorage.setItem(KEY, JSON.stringify(todos));
+    input.value = '';
+    render();
+  });
+  render();
+</script></body></html>

@@ -1,0 +1,11 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>reports</title></head><body>
+<h1>reports</h1>
+<button id="load" type="button">Load report</button>
+<p id="status" data-testid="status"></p>
+<script>
+  document.getElementById('load').addEventListener('click', () => {
+    setTimeout(() => {
+      document.getElementById('status').textContent = 'Report ready: 42 rows';
+    }, 2500);
+  });
+</script></body></html>

@@ -1,0 +1,14 @@
+{
+  "id": "case-sensitive-text",
+  "title": "Status badge capitalisation",
+  "summary": "The status badge reads \"Active\" with a capital A.",
+  "tags": ["text", "case", "badge", "status"],
+  "issue": null,
+  "what_differs": "The broken page's status badge reads \"active\" in lowercase.",
+  "expected": { "correct": "PASS", "broken": "FAIL" },
+  "steps": "",
+  "wordings": [
+    { "id": "w1", "origin": "baseline", "text": "Verify the status is Active." },
+    { "id": "w2", "origin": "baseline", "text": "Verify the exact visible text of the status badge is \"Active\", with a capital A." }
+  ]
+}

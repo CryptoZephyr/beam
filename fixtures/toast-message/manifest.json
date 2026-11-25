@@ -1,0 +1,14 @@
+{
+  "id": "toast-message",
+  "title": "Save shows a settings toast",
+  "summary": "Clicking Save shows a toast reading \"Settings saved\" that stays for 4 seconds and then fades.",
+  "tags": ["toast", "notification", "timing", "feedback"],
+  "issue": 165,
+  "what_differs": "The broken page sets the toast text but never makes the toast visible, so clicking Save shows nothing.",
+  "expected": { "correct": "PASS", "broken": "FAIL" },
+  "steps": "Click \"Save\".",
+  "wordings": [
+    { "id": "w1", "origin": "issue", "text": "Verify a toast message \"Settings saved\" appears." },
+    { "id": "w2", "origin": "baseline", "text": "Verify that within 3 seconds of clicking Save, a message with the exact text \"Settings saved\" is visible." }
+  ]
+}

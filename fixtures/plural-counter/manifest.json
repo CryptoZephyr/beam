@@ -1,0 +1,14 @@
+{
+  "id": "plural-counter",
+  "title": "Counter label, singular vs plural",
+  "summary": "After adding one to-do, the counter should read \"1 item left\". The broken page always says \"items\".",
+  "tags": ["text", "plural", "counter", "label", "todo"],
+  "issue": 254,
+  "what_differs": "The broken page always renders \"items\", so one to-do shows \"1 items left\".",
+  "expected": { "correct": "PASS", "broken": "FAIL" },
+  "steps": "Type \"buy some cheese\" into the \"What needs to be done?\" box and press Enter.",
+  "wordings": [
+    { "id": "w1", "origin": "issue", "text": "Verify the todo counter reads \"1 item left\"." },
+    { "id": "w2", "origin": "issue", "text": "Verify the exact visible text of the todo counter is \"1 item left\"." }
+  ]
+}
