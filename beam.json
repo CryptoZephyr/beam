@@ -1,0 +1,925 @@
+{
+  "schema": 1,
+  "generated": "2026-11-25T17:22:39.321Z",
+  "lastRun": "2026-11-25T14:00:15.368Z",
+  "referenceVersion": "0.10.9",
+  "versions": [
+    "0.10.9",
+    "0.10.8"
+  ],
+  "creditsReported": 48,
+  "behaviors": [
+    {
+      "id": "plural-counter",
+      "title": "Counter label, singular vs plural",
+      "summary": "After adding one to-do, the counter should read \"1 item left\".",
+      "whatDiffers": "The broken page always renders \"items\", so one to-do shows \"1 items left\".",
+      "tags": [
+        "text",
+        "plural",
+        "counter",
+        "label",
+        "todo"
+      ],
+      "issue": {
+        "number": 254,
+        "url": "https://github.com/LambdaTest/kane-cli/issues/254"
+      },
+      "steps": "Type \"buy some cheese\" into the \"What needs to be done?\" box and press Enter.",
+      "state": "FIXED_BY_WORDING",
+      "limitation": false,
+      "recommendedWording": "Verify the exact visible text of the todo counter is \"1 item left\".",
+      "avoidWordings": [
+        {
+          "text": "Verify the todo counter reads \"1 item left\".",
+          "state": "FALSE_GREEN"
+        }
+      ],
+      "cells": {
+        "0.10.9": {
+          "state": "FIXED_BY_WORDING",
+          "recommended": "w2"
+        },
+        "0.10.8": {
+          "state": "FIXED_BY_WORDING",
+          "recommended": "w2"
+        }
+      },
+      "wordings": [
+        {
+          "id": "w1",
+          "origin": "issue",
+          "text": "Verify the todo counter reads \"1 item left\".",
+          "versions": {
+            "0.10.9": {
+              "state": "FALSE_GREEN",
+              "correct": "PASS",
+              "broken": "PASS",
+              "brokenSummary": null,
+              "correctSummary": null,
+              "codeJs": "el(3).textContent",
+              "stored": {
+                "correct": {},
+                "broken": {}
+              },
+              "testUrl": null,
+              "at": "2026-11-25T13:14:16.960Z"
+            },
+            "0.10.8": {
+              "state": "FALSE_GREEN",
+              "correct": "PASS",
+              "broken": "PASS",
+              "brokenSummary": null,
+              "correctSummary": null,
+              "codeJs": "el(3).textContent",
+              "stored": {
+                "correct": {},
+                "broken": {}
+              },
+              "testUrl": null,
+              "at": "2026-11-25T13:17:28.944Z"
+            }
+          }
+        },
+        {
+          "id": "w2",
+          "origin": "issue",
+          "text": "Verify the exact visible text of the todo counter is \"1 item left\".",
+          "versions": {
+            "0.10.9": {
+              "state": "CORRECT",
+              "correct": "PASS",
+              "broken": "FAIL",
+              "brokenSummary": null,
+              "correctSummary": "Added “buy some cheese” to the to-do list as requested.\nThe to-do counter showed “1 item left,” confirming the item was added.",
+              "codeJs": "el(3).textContent + (el(3).nextSibling ? el(3).nextSibling.textContent : '')",
+              "stored": {
+                "correct": {},
+                "broken": {}
+              },
+              "testUrl": null,
+              "at": "2026-11-25T13:26:06.445Z"
+            },
+            "0.10.8": {
+              "state": "CORRECT",
+              "correct": "PASS",
+              "broken": "FAIL",
+              "brokenSummary": null,
+              "correctSummary": null,
+              "codeJs": "el(3).textContent + (el(3).nextSibling ? el(3).nextSibling.textContent : '')",
+              "stored": {
+                "correct": {},
+                "broken": {}
+              },
+              "testUrl": null,
+              "at": "2026-11-25T13:29:36.376Z"
+            }
+          }
+        }
+      ],
+      "fixture": {
+        "correct": "fixtures/plural-counter/correct.html",
+        "broken": "fixtures/plural-counter/broken.html"
+      }
+    },
+    {
+      "id": "case-sensitive-text",
+      "title": "Status badge capitalisation",
+      "summary": "The status badge reads \"Active\" with a capital A.",
+      "whatDiffers": "The broken page's status badge reads \"active\" in lowercase.",
+      "tags": [
+        "text",
+        "case",
+        "badge",
+        "status"
+      ],
+      "issue": null,
+      "steps": "",
+      "state": "CORRECT",
+      "limitation": false,
+      "recommendedWording": "Verify the status is Active.",
+      "avoidWordings": [],
+      "cells": {
+        "0.10.9": {
+          "state": "CORRECT",
+          "recommended": "w1"
+        },
+        "0.10.8": {
+          "state": "CORRECT",
+          "recommended": "w1"
+        }
+      },
+      "wordings": [
+        {
+          "id": "w1",
+          "origin": "baseline",
+          "text": "Verify the status is Active.",
+          "versions": {
+            "0.10.9": {
+              "state": "CORRECT",
+              "correct": "PASS",
+              "broken": "FAIL",
+              "brokenSummary": null,
+              "correctSummary": "Checked the account status on the case-sensitive-text page.\nConfirmed that the displayed status is Active.",
+              "codeJs": "el(2).innerText.split(':').slice(1).join(':').trim()",
+              "stored": {
+                "correct": {},
+                "broken": {}
+              },
+              "testUrl": null,
+              "at": "2026-11-25T13:41:45.665Z"
+            },
+            "0.10.8": {
+              "state": "CORRECT",
+              "correct": "PASS",
+              "broken": "FAIL",
+              "brokenSummary": null,
+              "correctSummary": null,
+              "codeJs": "el(2).innerText.split(':').slice(1).join(':').trim()",
+              "stored": {
+                "correct": {},
+                "broken": {}
+              },
+              "testUrl": null,
+              "at": "2026-11-25T13:44:55.771Z"
+            }
+          }
+        },
+        {
+          "id": "w2",
+          "origin": "baseline",
+          "text": "Verify the exact visible text of the status badge is \"Active\", with a capital A.",
+          "versions": {
+            "0.10.9": {
+              "state": "CORRECT",
+              "correct": "PASS",
+              "broken": "FAIL",
+              "brokenSummary": null,
+              "correctSummary": "Checked the account section on the case-sensitive text page.\nConfirmed that the status badge displayed exactly \"Active\" with a capital A.\nThe requested status text was verified successfully.",
+              "codeJs": "el(2).querySelector('[data-testid=\"status-badge\"]').innerText.trim()",
+              "stored": {
+                "correct": {},
+                "broken": {}
+              },
+              "testUrl": null,
+              "at": "2026-11-25T13:48:50.090Z"
+            },
+            "0.10.8": {
+              "state": "CORRECT",
+              "correct": "PASS",
+              "broken": "FAIL",
+              "brokenSummary": null,
+              "correctSummary": null,
+              "codeJs": "el(2).querySelector('[data-testid=\"status-badge\"]').innerText.trim()",
+              "stored": {
+                "correct": {},
+                "broken": {}
+              },
+              "testUrl": null,
+              "at": "2026-11-25T13:53:54.602Z"
+            }
+          }
+        }
+      ],
+      "fixture": {
+        "correct": "fixtures/case-sensitive-text/correct.html",
+        "broken": "fixtures/case-sensitive-text/broken.html"
+      }
+    },
+    {
+      "id": "collapsed-section",
+      "title": "Task inside a collapsed section",
+      "summary": "The Activity panel's collapsed \"Upcoming & Overdue\" section contains the task \"Call Kane Hot Co\".",
+      "whatDiffers": "The broken page lists a different task, \"Email Acme Ltd\", in the same collapsed section.",
+      "tags": [
+        "collapsed",
+        "details",
+        "panel",
+        "hidden-content"
+      ],
+      "issue": {
+        "number": 212,
+        "url": "https://github.com/LambdaTest/kane-cli/issues/212"
+      },
+      "steps": "",
+      "state": "CORRECT",
+      "limitation": false,
+      "recommendedWording": "Verify a task named \"Call Kane Hot Co\" is listed in the Activity panel.",
+      "avoidWordings": [],
+      "cells": {
+        "0.10.9": {
+          "state": "CORRECT",
+          "recommended": "w1"
+        },
+        "0.10.8": {
+          "state": "ERROR",
+          "recommended": null
+        }
+      },
+      "wordings": [
+        {
+          "id": "w1",
+          "origin": "issue",
+          "text": "Verify a task named \"Call Kane Hot Co\" is listed in the Activity panel.",
+          "versions": {
+            "0.10.9": {
+              "state": "CORRECT",
+              "correct": "PASS",
+              "broken": "FAIL",
+              "brokenSummary": null,
+              "correctSummary": "Verified that the Activity panel lists the task “Call Kane Hot Co.”\nThe requested task was present on the page.",
+              "codeJs": "Array.from(el(2).querySelectorAll('*')).some(node => node.children.length === 0 && node.textContent.trim() === 'Call Kane Hot Co')",
+              "stored": {
+                "correct": {},
+                "broken": {}
+              },
+              "testUrl": null,
+              "at": "2026-11-25T13:58:46.615Z"
+            },
+            "0.10.8": {
+              "state": "ERROR",
+              "correct": "PASS",
+              "broken": "ERROR",
+              "brokenSummary": null,
+              "correctSummary": null,
+              "codeJs": "Array.from(el(2).querySelectorAll('*')).some(node => node.children.length === 0 && node.textContent.trim() === 'Call Kane Hot Co')",
+              "stored": {
+                "correct": {},
+                "broken": {}
+              },
+              "testUrl": null,
+              "at": "2026-11-25T14:00:15.361Z"
+            }
+          }
+        },
+        {
+          "id": "w2",
+          "origin": "baseline",
+          "text": "Expand the \"Upcoming & Overdue\" section if it is collapsed, then verify a task named \"Call Kane Hot Co\" is listed.",
+          "versions": {}
+        }
+      ],
+      "fixture": {
+        "correct": "fixtures/collapsed-section/correct.html",
+        "broken": "fixtures/collapsed-section/broken.html"
+      }
+    },
+    {
+      "id": "hover-menu",
+      "title": "Account menu items on hover",
+      "summary": "Hovering over \"Account\" reveals a menu with \"Profile\", \"Billing\" and \"Sign out\".",
+      "whatDiffers": "The broken page's Account menu has \"Profile\" and \"Sign out\" but no \"Billing\" item.",
+      "tags": [
+        "hover",
+        "menu",
+        "css",
+        "navigation"
+      ],
+      "issue": null,
+      "steps": "Hover over \"Account\".",
+      "state": "NOT_RUN",
+      "limitation": false,
+      "recommendedWording": null,
+      "avoidWordings": [],
+      "cells": {
+        "0.10.9": {
+          "state": "NOT_RUN",
+          "recommended": null
+        },
+        "0.10.8": {
+          "state": "NOT_RUN",
+          "recommended": null
+        }
+      },
+      "wordings": [
+        {
+          "id": "w1",
+          "origin": "baseline",
+          "text": "Verify the Account menu has a \"Billing\" option.",
+          "versions": {}
+        },
+        {
+          "id": "w2",
+          "origin": "baseline",
+          "text": "Verify that after hovering over \"Account\", an item with the exact text \"Billing\" is visible in the menu.",
+          "versions": {}
+        }
+      ],
+      "fixture": {
+        "correct": "fixtures/hover-menu/correct.html",
+        "broken": "fixtures/hover-menu/broken.html"
+      }
+    },
+    {
+      "id": "not-visible",
+      "title": "Bar hides after clearing selection",
+      "summary": "Clicking Clear selection hides the blue \"3 items selected\" bar.",
+      "whatDiffers": "The broken page's Clear selection button does nothing, so the bar stays visible.",
+      "tags": [
+        "visibility",
+        "hidden",
+        "negative-check",
+        "selection"
+      ],
+      "issue": {
+        "number": 65,
+        "url": "https://github.com/LambdaTest/kane-cli/issues/65"
+      },
+      "steps": "Click \"Clear selection\".",
+      "state": "NOT_RUN",
+      "limitation": false,
+      "recommendedWording": null,
+      "avoidWordings": [],
+      "cells": {
+        "0.10.9": {
+          "state": "NOT_RUN",
+          "recommended": null
+        },
+        "0.10.8": {
+          "state": "NOT_RUN",
+          "recommended": null
+        }
+      },
+      "wordings": [
+        {
+          "id": "w1",
+          "origin": "issue",
+          "text": "Assert that the \"3 items selected\" bar is NOT visible.",
+          "versions": {}
+        },
+        {
+          "id": "w2",
+          "origin": "baseline",
+          "text": "Verify that no element with the text \"3 items selected\" is visible on the page.",
+          "versions": {}
+        }
+      ],
+      "fixture": {
+        "correct": "fixtures/not-visible/correct.html",
+        "broken": "fixtures/not-visible/broken.html"
+      }
+    },
+    {
+      "id": "disabled-button",
+      "title": "Create button disabled while Email is empty",
+      "summary": "On a sign-up form with an empty Email field, the \"Create account\" button is disabled.",
+      "whatDiffers": "The broken page leaves the \"Create account\" button enabled while the Email field is empty, and it looks the same.",
+      "tags": [
+        "form",
+        "button",
+        "disabled",
+        "state"
+      ],
+      "issue": null,
+      "steps": "",
+      "state": "NOT_RUN",
+      "limitation": false,
+      "recommendedWording": null,
+      "avoidWordings": [],
+      "cells": {
+        "0.10.9": {
+          "state": "NOT_RUN",
+          "recommended": null
+        },
+        "0.10.8": {
+          "state": "NOT_RUN",
+          "recommended": null
+        }
+      },
+      "wordings": [
+        {
+          "id": "w1",
+          "origin": "baseline",
+          "text": "Verify the \"Create account\" button is disabled.",
+          "versions": {}
+        },
+        {
+          "id": "w2",
+          "origin": "baseline",
+          "text": "Verify that the \"Create account\" button has the disabled state and cannot be clicked while the Email field is empty.",
+          "versions": {}
+        }
+      ],
+      "fixture": {
+        "correct": "fixtures/disabled-button/correct.html",
+        "broken": "fixtures/disabled-button/broken.html"
+      }
+    },
+    {
+      "id": "exactly-one-item",
+      "title": "Exactly one to-do after adding one",
+      "summary": "After adding the to-do \"b\", the list shows exactly one row, and that row reads \"b\".",
+      "whatDiffers": "The broken page renders an extra empty list item above \"b\", which appears as a blank row.",
+      "tags": [
+        "list",
+        "count",
+        "empty-item",
+        "todo"
+      ],
+      "issue": {
+        "number": 233,
+        "url": "https://github.com/LambdaTest/kane-cli/issues/233"
+      },
+      "steps": "Type \"b\" into the \"New to-do\" box and press Enter.",
+      "state": "NOT_RUN",
+      "limitation": false,
+      "recommendedWording": null,
+      "avoidWordings": [],
+      "cells": {
+        "0.10.9": {
+          "state": "NOT_RUN",
+          "recommended": null
+        },
+        "0.10.8": {
+          "state": "NOT_RUN",
+          "recommended": null
+        }
+      },
+      "wordings": [
+        {
+          "id": "w1",
+          "origin": "issue",
+          "text": "Verify the todo list shows exactly one todo, \"b\".",
+          "versions": {}
+        },
+        {
+          "id": "w2",
+          "origin": "baseline",
+          "text": "Verify the to-do list has exactly 1 item and that item's text is \"b\".",
+          "versions": {}
+        }
+      ],
+      "fixture": {
+        "correct": "fixtures/exactly-one-item/correct.html",
+        "broken": "fixtures/exactly-one-item/broken.html"
+      }
+    },
+    {
+      "id": "iframe-text",
+      "title": "Invoice total inside an iframe",
+      "summary": "An embedded invoice frame shows the total \"Total: $120.00\".",
+      "whatDiffers": "The broken page shows \"Total: $12.00\" inside the invoice frame.",
+      "tags": [
+        "iframe",
+        "text",
+        "invoice",
+        "number"
+      ],
+      "issue": null,
+      "steps": "",
+      "state": "NOT_RUN",
+      "limitation": false,
+      "recommendedWording": null,
+      "avoidWordings": [],
+      "cells": {
+        "0.10.9": {
+          "state": "NOT_RUN",
+          "recommended": null
+        },
+        "0.10.8": {
+          "state": "NOT_RUN",
+          "recommended": null
+        }
+      },
+      "wordings": [
+        {
+          "id": "w1",
+          "origin": "baseline",
+          "text": "Verify the invoice total is $120.00.",
+          "versions": {}
+        },
+        {
+          "id": "w2",
+          "origin": "baseline",
+          "text": "Verify the exact visible text inside the embedded invoice frame includes \"Total: $120.00\".",
+          "versions": {}
+        }
+      ],
+      "fixture": {
+        "correct": "fixtures/iframe-text/correct.html",
+        "broken": "fixtures/iframe-text/broken.html"
+      }
+    },
+    {
+      "id": "shadow-dom-text",
+      "title": "Price inside a shadow root",
+      "summary": "A custom <price-tag> element shows \"Price: $49\" inside its open shadow root.",
+      "whatDiffers": "The broken page renders \"Price: $94\" inside the shadow root instead.",
+      "tags": [
+        "shadow-dom",
+        "custom-element",
+        "text",
+        "price"
+      ],
+      "issue": null,
+      "steps": "",
+      "state": "NOT_RUN",
+      "limitation": false,
+      "recommendedWording": null,
+      "avoidWordings": [],
+      "cells": {
+        "0.10.9": {
+          "state": "NOT_RUN",
+          "recommended": null
+        },
+        "0.10.8": {
+          "state": "NOT_RUN",
+          "recommended": null
+        }
+      },
+      "wordings": [
+        {
+          "id": "w1",
+          "origin": "baseline",
+          "text": "Verify the price shown is $49.",
+          "versions": {}
+        },
+        {
+          "id": "w2",
+          "origin": "baseline",
+          "text": "Verify the exact visible text of the price tag is \"Price: $49\".",
+          "versions": {}
+        }
+      ],
+      "fixture": {
+        "correct": "fixtures/shadow-dom-text/correct.html",
+        "broken": "fixtures/shadow-dom-text/broken.html"
+      }
+    },
+    {
+      "id": "delayed-element",
+      "title": "Result appears after a delay",
+      "summary": "After clicking \"Load report\" and waiting 2.5 seconds, the page shows \"Report ready: 42 rows\".",
+      "whatDiffers": "The broken page shows \"Report ready: 0 rows\" once the delay passes.",
+      "tags": [
+        "async",
+        "timing",
+        "text",
+        "button"
+      ],
+      "issue": null,
+      "steps": "Click \"Load report\".",
+      "state": "NOT_RUN",
+      "limitation": false,
+      "recommendedWording": null,
+      "avoidWordings": [],
+      "cells": {
+        "0.10.9": {
+          "state": "NOT_RUN",
+          "recommended": null
+        },
+        "0.10.8": {
+          "state": "NOT_RUN",
+          "recommended": null
+        }
+      },
+      "wordings": [
+        {
+          "id": "w1",
+          "origin": "baseline",
+          "text": "Verify the page says \"Report ready: 42 rows\".",
+          "versions": {}
+        },
+        {
+          "id": "w2",
+          "origin": "baseline",
+          "text": "Verify that once a line starting with \"Report ready\" appears, its exact visible text is \"Report ready: 42 rows\".",
+          "versions": {}
+        }
+      ],
+      "fixture": {
+        "correct": "fixtures/delayed-element/correct.html",
+        "broken": "fixtures/delayed-element/broken.html"
+      }
+    },
+    {
+      "id": "toast-message",
+      "title": "Save shows a settings toast",
+      "summary": "Clicking Save shows a toast reading \"Settings saved\" that stays for 4 seconds and then fades.",
+      "whatDiffers": "The broken page sets the toast text but never makes the toast visible, so clicking Save shows nothing.",
+      "tags": [
+        "toast",
+        "notification",
+        "timing",
+        "feedback"
+      ],
+      "issue": {
+        "number": 165,
+        "url": "https://github.com/LambdaTest/kane-cli/issues/165"
+      },
+      "steps": "Click \"Save\".",
+      "state": "NOT_RUN",
+      "limitation": false,
+      "recommendedWording": null,
+      "avoidWordings": [],
+      "cells": {
+        "0.10.9": {
+          "state": "NOT_RUN",
+          "recommended": null
+        },
+        "0.10.8": {
+          "state": "NOT_RUN",
+          "recommended": null
+        }
+      },
+      "wordings": [
+        {
+          "id": "w1",
+          "origin": "issue",
+          "text": "Verify a toast message \"Settings saved\" appears.",
+          "versions": {}
+        },
+        {
+          "id": "w2",
+          "origin": "baseline",
+          "text": "Verify that within 3 seconds of clicking Save, a message with the exact text \"Settings saved\" is visible.",
+          "versions": {}
+        }
+      ],
+      "fixture": {
+        "correct": "fixtures/toast-message/correct.html",
+        "broken": "fixtures/toast-message/broken.html"
+      }
+    },
+    {
+      "id": "hidden-request-failure",
+      "title": "Saved message despite failed request",
+      "summary": "Clicking \"Save\" fetches ok.json successfully and then shows \"Saved\" in green.",
+      "whatDiffers": "The broken page requests a missing file, which returns 404, but still shows \"Saved\".",
+      "tags": [
+        "network",
+        "fetch",
+        "silent-failure",
+        "button"
+      ],
+      "issue": null,
+      "steps": "Click \"Save\".",
+      "state": "NOT_RUN",
+      "limitation": false,
+      "recommendedWording": null,
+      "avoidWordings": [],
+      "cells": {
+        "0.10.9": {
+          "state": "NOT_RUN",
+          "recommended": null
+        },
+        "0.10.8": {
+          "state": "NOT_RUN",
+          "recommended": null
+        }
+      },
+      "wordings": [
+        {
+          "id": "w1",
+          "origin": "baseline",
+          "text": "Verify the page shows \"Saved\".",
+          "versions": {}
+        },
+        {
+          "id": "w2",
+          "origin": "baseline",
+          "text": "Verify the page shows \"Saved\" and that the save request made after clicking Save succeeded with no failed network requests.",
+          "versions": {}
+        }
+      ],
+      "fixture": {
+        "correct": "fixtures/hidden-request-failure/correct.html",
+        "broken": "fixtures/hidden-request-failure/broken.html"
+      }
+    },
+    {
+      "id": "confirm-amount",
+      "title": "Swap confirmation shows the typed amount",
+      "summary": "After typing 0.5 into the You pay field and clicking Review swap, the confirmation line reads \"You pay 0.5 ETH\".",
+      "whatDiffers": "The broken page divides the typed amount by ten, so the confirmation reads \"You pay 0.05 ETH\".",
+      "tags": [
+        "swap",
+        "amount",
+        "confirmation",
+        "form",
+        "number"
+      ],
+      "issue": {
+        "number": 239,
+        "url": "https://github.com/LambdaTest/kane-cli/issues/239"
+      },
+      "steps": "Type 0.5 into the \"You pay\" field and click \"Review swap\".",
+      "state": "NOT_RUN",
+      "limitation": false,
+      "recommendedWording": null,
+      "avoidWordings": [],
+      "cells": {
+        "0.10.9": {
+          "state": "NOT_RUN",
+          "recommended": null
+        },
+        "0.10.8": {
+          "state": "NOT_RUN",
+          "recommended": null
+        }
+      },
+      "wordings": [
+        {
+          "id": "w1",
+          "origin": "issue",
+          "text": "Assert the confirmation shows You pay 0.5 ETH.",
+          "versions": {}
+        },
+        {
+          "id": "w2",
+          "origin": "baseline",
+          "text": "Verify the exact visible text of the confirmation line is \"You pay 0.5 ETH\".",
+          "versions": {}
+        }
+      ],
+      "fixture": {
+        "correct": "fixtures/confirm-amount/correct.html",
+        "broken": "fixtures/confirm-amount/broken.html"
+      }
+    },
+    {
+      "id": "number-format",
+      "title": "Thousands separator in item count",
+      "summary": "The order summary shows \"Items: 1,250\" with a thousands separator.",
+      "whatDiffers": "The broken page shows \"Items: 1250\" with no thousands separator.",
+      "tags": [
+        "number",
+        "format",
+        "text",
+        "order"
+      ],
+      "issue": null,
+      "steps": "",
+      "state": "NOT_RUN",
+      "limitation": false,
+      "recommendedWording": null,
+      "avoidWordings": [],
+      "cells": {
+        "0.10.9": {
+          "state": "NOT_RUN",
+          "recommended": null
+        },
+        "0.10.8": {
+          "state": "NOT_RUN",
+          "recommended": null
+        }
+      },
+      "wordings": [
+        {
+          "id": "w1",
+          "origin": "baseline",
+          "text": "Verify the order summary shows 1,250 items.",
+          "versions": {}
+        },
+        {
+          "id": "w2",
+          "origin": "baseline",
+          "text": "Verify the exact visible text of the items line is \"Items: 1,250\".",
+          "versions": {}
+        }
+      ],
+      "fixture": {
+        "correct": "fixtures/number-format/correct.html",
+        "broken": "fixtures/number-format/broken.html"
+      }
+    },
+    {
+      "id": "reload-persists",
+      "title": "To-do survives a page reload",
+      "summary": "After adding a to-do and reloading the page, the to-do is still listed because it is saved in localStorage (Kane issue 252 reported the reload being done as a Ctrl+R key press).",
+      "whatDiffers": "The broken page keeps to-dos only in memory and never reads them back, so a real reload clears the list.",
+      "tags": [
+        "reload",
+        "persistence",
+        "localstorage",
+        "todo"
+      ],
+      "issue": {
+        "number": 252,
+        "url": "https://github.com/LambdaTest/kane-cli/issues/252"
+      },
+      "steps": "Type \"pay rent\" into the \"New to-do\" box and press Enter. Reload the page.",
+      "state": "NOT_RUN",
+      "limitation": false,
+      "recommendedWording": null,
+      "avoidWordings": [],
+      "cells": {
+        "0.10.9": {
+          "state": "NOT_RUN",
+          "recommended": null
+        },
+        "0.10.8": {
+          "state": "NOT_RUN",
+          "recommended": null
+        }
+      },
+      "wordings": [
+        {
+          "id": "w1",
+          "origin": "issue",
+          "text": "Verify the to-do list shows \"pay rent\".",
+          "versions": {}
+        },
+        {
+          "id": "w2",
+          "origin": "baseline",
+          "text": "Verify the exact visible text of the to-do list includes \"pay rent\" after the page has been reloaded.",
+          "versions": {}
+        }
+      ],
+      "fixture": {
+        "correct": "fixtures/reload-persists/correct.html",
+        "broken": "fixtures/reload-persists/broken.html"
+      }
+    },
+    {
+      "id": "localstorage-key",
+      "title": "To-dos saved under the react-todos key",
+      "summary": "Each added to-do is saved as a JSON array under the localStorage key \"react-todos\".",
+      "whatDiffers": "The broken page renders the list but never writes anything to localStorage.",
+      "tags": [
+        "localstorage",
+        "storage-key",
+        "persistence",
+        "todo"
+      ],
+      "issue": {
+        "number": 255,
+        "url": "https://github.com/LambdaTest/kane-cli/issues/255"
+      },
+      "steps": "Type \"milk\" into the \"What needs to be done?\" box and press Enter. Type \"eggs\" into the same box and press Enter.",
+      "state": "NOT_RUN",
+      "limitation": false,
+      "recommendedWording": null,
+      "avoidWordings": [],
+      "cells": {
+        "0.10.9": {
+          "state": "NOT_RUN",
+          "recommended": null
+        },
+        "0.10.8": {
+          "state": "NOT_RUN",
+          "recommended": null
+        }
+      },
+      "wordings": [
+        {
+          "id": "w1",
+          "origin": "issue",
+          "text": "Verify the browser localStorage key \"react-todos\" holds exactly 2 todos.",
+          "versions": {}
+        },
+        {
+          "id": "w2",
+          "origin": "baseline",
+          "text": "Verify that the localStorage value stored under the key \"react-todos\" is a list containing \"milk\" and \"eggs\".",
+          "versions": {}
+        }
+      ],
+      "fixture": {
+        "correct": "fixtures/localstorage-key/correct.html",
+        "broken": "fixtures/localstorage-key/broken.html"
+      }
+    }
+  ]
+}
