@@ -1,6 +1,6 @@
 # Beam design system (proposal)
 
-Status: revision 1, 25 November 2026. Proposal. Section 13 lists the decisions that wait for the owner. Nothing in the UI changes until they're locked.
+Status: revision 2, 25 November 2026. Revision 2 reworks colour and type from the assay idea, at the owner's request: revision 1's cobalt and JetBrains Mono were too close to generic developer-tool defaults. Proposal. Section 13 lists the decisions that wait for the owner. Nothing in the UI changes until they're locked.
 
 Built the way the owner's earlier systems were built (Fuse: Switchgear Panel; Bulkhead: hull plates and seams): one physical idea taken from the product's meaning, a 60/30/10 palette with every contrast pair computed, status as a word plus a mark, and a banned list. The look itself is new.
 
@@ -51,53 +51,42 @@ A screen with any of these fails review.
 
 ## 5. Colour
 
-Two options, both 60/30/10, both checked against WCAG 2.2 AA (computed 25 Nov). The owner picks one (decision D1).
+Revision 2: the palette comes from what an assayer actually uses, not from developer-tool defaults. See `site/_brand/palettes.html` in a local build for the live sheet. Contrast computed 25 Nov (WCAG 2.2).
 
-### Option A: Graphite and Cobalt (recommended)
+### Option T: Touchstone (recommended), dark first
 
-A steel instrument: cool grey working surface, graphite frame, one cobalt signal.
+An assayer rubs gold on a black touchstone and reads the streak it leaves. The page is the stone. The gold streak marks what you operate.
 
-- 60%, Steel #E4E7EA. The page and working area.
-- 30%, Graphite #16191D. The frame: top bar, the hero contrast, command boxes, the lab's run panel, the footer.
-- 10%, Cobalt #2E5BFF. The parts you operate and the live reading: primary buttons, the copy action, focus, the running cell's needle. Cobalt Text #1F45D6 is the only cobalt allowed as text on Steel.
+- 60%, Basanite #141619 (the touchstone).
+- 30%, Stone #22262B (frames: top bar, command frames, run panel, footer).
+- 10%, Streak #E9B824 (the gold streak): button fills, the copy action, focus, the live reading needle, and the mark on "True with wording". Button labels are Basanite on Streak, 9.8:1.
+- Text #E9E7E2 (14.7:1 on Basanite, 12.3:1 on Stone). Muted #A7ACB2 (7.9:1, 6.7:1).
+- Readings: True #5CCB8A (8.9:1), False #FF7A85 (7.2:1), Couldn't run #8E959C (6.0:1). Streak as text 9.8:1.
+- No amber state. "True with wording" is the True colour plus a small Streak mark on the glyph, so the accent and a state never compete.
 
-Supporting: Sheet #F2F4F5 (tables, inputs, code), Muted #4A525B, On-Graphite #EEF1F3.
+Light mode (assay paper): Paper #E7E9E6 (60%), Basanite #141619 frames (30%), Streak #E9B824 fills only (1.5:1 on paper, so never text or a thin mark on paper). Streak as text becomes #7A5A00 (5.2:1). Readings: True #17663D 5.7, False #B0173A 5.7, Couldn't run #59616A 5.1, Muted #4B5157 6.6, Ink 14.8.
 
-Readings (the states):
-- True #17663D, Fixed by wording #8A4F00, False #B0173A, Couldn't run #59616A.
+Why it isn't generic: dark-first with a gold streak is drawn from the touchstone test itself, and gold appears only as a streak or fill, never as a gradient, glow or "luxury" brass. Not the AI-default cobalt/violet, and not the banned beige-and-brass family (Basanite is cool near-black, not espresso; Streak is a clean yellow, not brass #b08947).
 
-Contrast:
-- Graphite on Steel 14.2:1, on Sheet 16.0:1. On-Graphite on Graphite 15.5:1.
-- Muted on Steel 6.4:1. Cobalt Text on Steel 5.9:1, on Sheet 6.6:1.
-- White label on a Cobalt button 5.2:1. Cobalt as a mark on Graphite 3.4:1 (non-text only).
-- True 5.6, Fixed 5.3, False 5.6, Couldn't run 5.1 on Steel (6.3, 5.9, 6.3, 5.7 on Sheet).
+### Option R: Assay certificate, light first
 
-### Option B: Field green and Signal coral
+Navy ink on cool paper, with verdigris (the green patina on tested metal) as the stamp colour. Paper #E6E9EC, Navy #122033 (13.5:1), Verdigris #0F7C74 (white label 5.1:1, as text #0B6660 5.6:1).
 
-A field instrument: grey-green working surface, deep green frame, one coral signal.
-
-- 60% Mist #DCE3DF, 30% Field #102420, 10% Coral #FF5A36 (Coral Text #B3330F on Mist).
-- Same reading colours (True #17663D, Fixed #7E5200, False #A4133C, Couldn't run #56605C).
-- Contrast: Field on Mist 12.4:1. Coral Text on Mist 4.7:1 (passes, but tight). Coral buttons need a Field label (5.2:1), because white on coral is only 3.1:1. False on Mist 5.9:1.
-- Risk: coral sits close to False red, so the signal and the worst state compete. That's why A is recommended.
-
-### Dark mode (Option A)
-
-Night #0F1215 (60%), Bench #1B2026 (30%), Cobalt #6E8BFF (10%, lifted for dark). Text #E8ECEF. Readings lifted: True #4CC487, Fixed #E2A443, False #FF7A8E, Couldn't run #9BA3AB. All to be computed at lock and listed here (AA minimum). Follows the device, with no toggle on the site (one less control). The demo video is recorded in light.
+Risk: verdigris is green, so it competes with the True reading, the same conflict Bulkhead had with Kelp. Kept as the runner-up.
 
 ## 6. Type
 
-One font per role.
+One font per role, all open licence (OFL), self-hosted at build. Revision 2 drops JetBrains Mono and Source Sans 3 as too common on developer sites.
 
-| Role | Proposal (D2) | Use |
+| Role | Proposal (D2) | Why |
 |---|---|---|
-| Headings | Archivo (semi-condensed, 600–700) | h1–h3. Measured, engineered, not soft |
-| Body | Source Sans 3 (400, 600) | paragraphs, nav, labels, buttons, table text |
-| Mono | JetBrains Mono (400, 600) | Kane wordings, commands, recorded code_js, fixture source. Nothing else |
+| Headings | Big Shoulders Display, 700 to 800 | Condensed and punched, like the letters struck into a hallmark. h1 to h3 only |
+| Body | Atkinson Hyperlegible Next, 400 and 600 | Designed for legibility (Braille Institute), and it doesn't look like every other SaaS body face |
+| Mono | Martian Mono, 400 | Kane wordings, commands, recorded code_js and fixture source only. Wide and engineered |
 
-Scale (desktop / phone): h1 44/32, h2 24/21, h3 18/17, body 17/16, small 14, label 13 (sentence case, never uppercase tracking). Numbers are always tabular.
+Alternative heading (if Big Shoulders reads too loud): Schibsted Grotesk 700. Rejected: Martian Grotesk (proprietary licence, checked 25 Nov), Inter, Geist and Space Grotesk (the owner's banned list).
 
-Self-hosted at build (no Google Fonts link in production), `font-display: swap`.
+Scale (desktop / phone): h1 48/34 (Big Shoulders runs narrow, so it sits larger), h2 26/22, h3 19/18, body 17/16, small 14, label 13 in sentence case. Numbers are tabular.
 
 ## 7. The beam reading (the signature element)
 
@@ -106,11 +95,11 @@ Every state is drawn as a small **beam glyph** plus its word. The glyph is a 20�
 | State | Glyph | Word |
 |---|---|---|
 | True (Correct) | Beam level, both pans even | **True** |
-| Fixed by wording | Beam level, with a small cobalt mark on the right pan (the better wording) | **True with wording** |
+| Fixed by wording | Beam level, with a small Streak mark on the right pan (the better wording) | **True with wording** |
 | False green | Beam tipped down to the left (the pass side heavy) | **False green** |
 | False red | Beam tipped down to the right | **False red** |
 | Couldn't run | Beam drawn as a dashed outline | **Couldn't run** |
-| Running (lab) | Beam level, the bar drawn in cobalt, a needle that settles once when the result arrives | **Reading…** |
+| Running (lab) | Beam level, the bar drawn in Streak, a needle that settles once when the result arrives | **Reading…** |
 | Not run | Empty fulcrum, no beam | **Not run** |
 
 Readings sit on a 2px hairline baseline, with no fill and no rounded container. Colour is the reading colour on text and glyph only. This replaces the pills.
@@ -129,12 +118,12 @@ Naming change (D3): the cell states read **True / True with wording / False gree
 
 - **Top bar:** Graphite frame, the Beam mark (D4) plus the wordmark in Archivo, nav in body, the scale rule under it. Lab mode adds "Lab" as plain text next to the wordmark and two actions on the right (Run, Add from issue).
 - **Hero:** left-aligned. Headline (max 2 lines), one sentence of sub-text, then the **contrast frame**: a Graphite frame with the two wordings, each with its reading against the broken page. Then the install command frame. No other text in the hero. The scope line moves under the hero as plain muted text.
-- **Command frame:** Graphite, mono text, a Cobalt "Copy" button. Commands stay on one line and scroll. Wordings wrap.
-- **Matrix:** a Sheet table. The behavior column is pinned on scroll. Each version column header shows the exact version and its run date. Cells hold a reading (glyph plus word). A changed cell gets a cobalt tick above the glyph and "changed since 0.10.8" in its title.
+- **Command frame:** Graphite, mono text, a Streak "Copy" button. Commands stay on one line and scroll. Wordings wrap.
+- **Matrix:** a Sheet table. The behavior column is pinned on scroll. Each version column header shows the exact version and its run date. Cells hold a reading (glyph plus word). A changed cell gets a Streak tick above the glyph and "changed since 0.10.8" in its title.
 - **Filter:** a segmented control on a single 1px frame (not chips): All, True, True with wording, False. A search field to the left, with its label above it.
 - **Behavior page:** title, reading, issue link (plain link, not a badge). Then "What your agent will do" as a Sheet with a Graphite heading bar (no left stripe): Use (wording frame plus Copy), Avoid (list). Then results, how Kane read the page (code pairs side by side, each with its reading), the two pages, and reproduce.
 - **Results table:** rows grouped by wording, with a hairline between groups only (no rule on every row).
-- **Buttons:** primary is a Cobalt fill with a white label, 44px tall. Secondary is a Graphite outline. Pressed state: one shade darker and 1px down, 120ms. One primary per view.
+- **Buttons:** primary is a Streak fill with a Basanite label, 44px tall. Secondary is a Stone outline. Pressed state: one shade darker and 1px down, 120ms. One primary per view.
 - **Lab run panel:** a dialog (Sheet) with a Graphite heading bar, behaviors and versions as checkboxes, budget, show browser, and the estimate from real costs.
 - **Lab live cell:** the running glyph plus "Reading 0.10.9 · broken page" and Kane's latest step underneath in muted body text.
 - **Run status:** a Graphite frame bottom-right with the last 5 events as text. No toast stack, no spinner.
@@ -174,8 +163,8 @@ Home (data, no data yet), matrix (filtered empty, search empty), behavior page (
 
 ## 13. Decisions for the owner
 
-- **D1 Palette:** A Graphite and Cobalt (recommended), or B Field green and Signal coral.
-- **D2 Type:** Archivo, Source Sans 3 and JetBrains Mono, or the 911 set (Cabinet Grotesk, Inter, Departure Mono).
+- **D1 Palette:** T Touchstone (recommended) or R Assay certificate.
+- **D2 Type:** Big Shoulders Display, Atkinson Hyperlegible Next and Martian Mono (recommended), or Schibsted Grotesk as the heading face.
 - **D3 State names:** True / True with wording / False green / False red / Couldn't run, instead of Correct / Fixed by wording / Wrong.
 - **D4 Mark:** LOCKED 25 Nov (B1 + B3 small cut, section 12).
 - **D5 Dark mode:** follow the device with no toggle (recommended), or add a toggle.
