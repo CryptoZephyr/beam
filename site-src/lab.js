@@ -119,10 +119,23 @@ if (liveTest) {
     liveTest.innerHTML = tests.map((t) => `<option value="${esc(t.id)}">${esc(t.id)}</option>`).join('');
   });
   document.getElementById('live-go').addEventListener('click', async () => {
-    kaneList.innerHTML = ''; appList.innerHTML = ''; verdictEl.innerHTML = ''; kaneV.textContent = '';
-    cap.textContent = `Verifying ${liveTest.value}…`;
+    const go = document.getElementById('live-go');
+    go.disabled = true;
     const r = await fetch('/api/verify', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ id: liveTest.value, headed: document.getElementById('live-headed').checked }) });
-    if (!r.ok) cap.textContent = (await r.json()).error;
+    if (!r.ok) {
+      // A run is already going (or the request was refused): keep the live view as it is.
+      const msg = (await r.json()).error;
+      go.disabled = false;
+      const note = document.createElement('span');
+      note.className = 'muted busy';
+      note.setAttribute('role', 'status');
+      note.textContent = ` ${msg}`;
+      go.after(note);
+      setTimeout(() => document.querySelectorAll('#live .busy').forEach((n) => n.remove()), 4000);
+      return;
+    }
+    kaneList.innerHTML = ''; appList.innerHTML = ''; verdictEl.innerHTML = ''; kaneV.textContent = '';
+    cap.textContent = `Verifying ${liveTest.value}… Kane takes about 40 seconds to start.`;
   });
   es.addEventListener('verify:step', (e) => {
     const { remark } = JSON.parse(e.data);
@@ -138,6 +151,7 @@ if (liveTest) {
     appList.innerHTML = rows.join('');
   });
   es.addEventListener('verify:done', (e) => {
+    document.getElementById('live-go').disabled = false;
     const r = JSON.parse(e.data);
     const kane = r.kane === 'PASS' ? 'passed' : r.kane === 'FAIL' ? 'failed' : "couldn't run";
     kaneV.innerHTML = `Verdict: <strong>${kane}</strong>`;
