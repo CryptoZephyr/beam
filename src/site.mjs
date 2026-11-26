@@ -446,7 +446,8 @@ function labPanels() {
 
 export function buildSite({ lab = false, outDir = SITE_DIR } = {}) {
   const data = buildCompat();
-  fs.rmSync(outDir, { recursive: true, force: true });
+  // Keep the Vercel project link (.vercel) so redeploys go to the same project.
+  if (fs.existsSync(outDir)) for (const e of fs.readdirSync(outDir)) if (e !== ".vercel") fs.rmSync(path.join(outDir, e), { recursive: true, force: true });
   fs.mkdirSync(path.join(outDir, 'b'), { recursive: true });
   fs.writeFileSync(path.join(outDir, 'index.html'), indexPage(data, { lab }));
   for (const b of data.behaviors) fs.writeFileSync(path.join(outDir, 'b', `${b.id}.html`), behaviorPage(b, data, { lab }));
