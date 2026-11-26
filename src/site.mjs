@@ -214,6 +214,18 @@ function indexPage(data, { lab }) {
   const n = data.behaviors.length;
   const issues = data.behaviors.filter((b) => b.issue).length;
   const demo = checkoutDemo();
+  if (lab) {
+    // The lab is a local tool: open straight on the work, not the marketing page.
+    const labBody = `
+<header class="phero labhead">
+  <h1>Lab</h1>
+  <p class="lede">Run Kane on this machine. Verify a demo app live and watch both pans fill in, or re-measure behaviors in the matrix with <strong>Run</strong>. Runs use your Kane credits; replays of recorded tests are free.</p>
+</header>
+${liveVerify()}
+${matrix(data, { lab })}
+${labPanels()}`;
+    return layout({ title: 'Lab · Beam', body: labBody, lab, page: 'matrix' });
+  }
   const body = `
 <section class="hero">
   <div class="hero-copy">
@@ -439,8 +451,8 @@ function liveVerify() {
   <figure class="balance" aria-live="polite">
     <figcaption id="live-cap">Pick a demo test and press Verify. Kane drives the app on the left; the app reports itself on the right.</figcaption>
     <div class="pans">
-      <div class="pan"><p class="pan-h">Kane <span>reads the screen</span></p><ul class="steps-live" id="live-kane"></ul><p class="pan-v" id="live-kane-v"></p></div>
-      <div class="pan"><p class="pan-h">Your app <span>reports its own state</span></p><ul class="app" id="live-app"></ul></div>
+      <div class="pan"><p class="pan-h">Kane <span>reads the screen</span></p><ul class="steps-live" id="live-kane"><li class="ph">Kane's steps appear here as it runs.</li></ul><p class="pan-v" id="live-kane-v"></p></div>
+      <div class="pan"><p class="pan-h">Your app <span>reports its own state</span></p><ul class="app" id="live-app"><li class="ph">The app's values and requests appear here, live.</li></ul></div>
     </div>
     <p class="verdict" id="live-verdict"></p>
   </figure>

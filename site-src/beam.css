@@ -412,3 +412,10 @@ section.split > .scale { grid-column: 1 / -1; }
 .contrast .r-CORRECT, .contrast .r-FIXED_BY_WORDING { color: #5CCB8A; }
 .contrast .r-FALSE_GREEN, .contrast .r-FALSE_RED { color: #FF7A85; }
 .contrast li span:not(.reading), .contrast li .muted { color: rgb(236 234 228 / 0.82); }
+
+/* Lab (revision 3). */
+.labtag { color: var(--streak); font-weight: 700; }
+.labhead { padding-top: 44px; }
+#live .controls select { min-width: 280px; min-height: 44px; }
+.steps-live .ph, .pan .app .ph { display: block; color: rgb(236 234 228 / 0.55); font-weight: 400; font-style: italic; }
+.steps-live li.ph:last-child { color: rgb(236 234 228 / 0.55); font-weight: 400; }
