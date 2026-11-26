@@ -1,14 +1,205 @@
 {
   "schema": 1,
-  "generated": "2026-11-25T17:22:39.321Z",
-  "lastRun": "2026-11-25T14:00:15.368Z",
+  "generated": "2026-11-26T13:10:31.444Z",
+  "lastRun": "2026-11-26T13:09:41.445Z",
   "referenceVersion": "0.10.9",
   "versions": [
     "0.10.9",
     "0.10.8"
   ],
-  "creditsReported": 48,
+  "creditsReported": 286,
   "behaviors": [
+    {
+      "id": "hidden-request-failure",
+      "title": "Saved message despite failed request",
+      "summary": "Clicking \"Save\" fetches ok.json successfully and then shows \"Saved\" in green.",
+      "whatDiffers": "The broken page requests a missing file, which returns 404, but still shows \"Saved\".",
+      "tags": [
+        "network",
+        "fetch",
+        "silent-failure",
+        "button"
+      ],
+      "issue": null,
+      "steps": "Click \"Save\".",
+      "state": "FALSE_GREEN",
+      "limitation": true,
+      "recommendedWording": null,
+      "avoidWordings": [
+        {
+          "text": "Verify the page shows \"Saved\".",
+          "state": "FALSE_GREEN"
+        },
+        {
+          "text": "Verify the page shows \"Saved\" and that the save request made after clicking Save succeeded with no failed network requests.",
+          "state": "FALSE_RED"
+        },
+        {
+          "text": "Verify that the save request triggered by the Save click returned an HTTP 200 response and that the exact visible text of the status message is \"Saved\".",
+          "state": "FALSE_RED"
+        },
+        {
+          "text": "Assert that the status message's exact visible text is \"Saved\" in its green success styling and that the request the save made for its data file completed successfully with a 2xx status.",
+          "state": "FALSE_RED"
+        }
+      ],
+      "cells": {
+        "0.10.9": {
+          "state": "FALSE_GREEN",
+          "recommended": null
+        },
+        "0.10.8": {
+          "state": "FALSE_GREEN",
+          "recommended": null
+        }
+      },
+      "wordings": [
+        {
+          "id": "w1",
+          "origin": "baseline",
+          "text": "Verify the page shows \"Saved\".",
+          "versions": {
+            "0.10.9": {
+              "state": "FALSE_GREEN",
+              "correct": "PASS",
+              "broken": "PASS",
+              "brokenSummary": null,
+              "correctSummary": "You asked to click “Save.”\nClicked the Save button on the page.\nThe page displayed “Saved,” confirming the action was completed.",
+              "codeJs": "el(6).innerText.trim() === 'Saved' && !!(el(6).offsetWidth || el(6).offsetHeight || el(6).getClientRects().length)",
+              "stored": {
+                "correct": {},
+                "broken": {}
+              },
+              "testUrl": null,
+              "at": "2026-11-26T12:58:19.935Z"
+            },
+            "0.10.8": {
+              "state": "FALSE_GREEN",
+              "correct": "PASS",
+              "broken": "PASS",
+              "brokenSummary": null,
+              "correctSummary": null,
+              "codeJs": "el(6).innerText.trim() === 'Saved' && !!(el(6).offsetWidth || el(6).offsetHeight || el(6).getClientRects().length)",
+              "stored": {
+                "correct": {},
+                "broken": {}
+              },
+              "testUrl": null,
+              "at": "2026-11-26T10:40:43.108Z"
+            }
+          }
+        },
+        {
+          "id": "w2",
+          "origin": "baseline",
+          "text": "Verify the page shows \"Saved\" and that the save request made after clicking Save succeeded with no failed network requests.",
+          "versions": {
+            "0.10.9": {
+              "state": "FALSE_RED",
+              "correct": "FAIL",
+              "broken": "FAIL",
+              "brokenSummary": "The save action triggers a request for a missing file, but the page still tells the user that the save worked.\nFix the save flow so every request it needs succeeds before showing “Saved”; show an error and do not claim success when a required request fails.\nevidence: console_error: Failed to load resource: the server responded with a status of 404 (Not Found)\nevidence: network_failure: GET http://127.0.0.1:4318/f/hidden-request-failure/missing.json -> 404",
+              "correctSummary": "The check waited for a save request it did not recognize. The only request recorded after the click was a successful request for ok.json, and no failed request was recorded.\nReview the network assertion's request matcher and expected method or URL so it recognizes the successful request triggered by Save.",
+              "codeJs": "el(6).innerText.trim() === 'Saved'",
+              "stored": {
+                "correct": {},
+                "broken": {}
+              },
+              "testUrl": null,
+              "at": "2026-11-26T10:51:10.686Z"
+            },
+            "0.10.8": {
+              "state": "FALSE_RED",
+              "correct": "FAIL",
+              "broken": "FAIL",
+              "brokenSummary": "The save flow asks for a file that is missing. The page still tells the user that the save worked, so the required clean successful network result cannot be met.\nFix the Save flow so it does not request the missing file, or ensure that file is available. Only show “Saved” after all save-related requests have completed successfully.\nevidence: console_error: Failed to load resource: the server responded with a status of 404 (Not Found)\nevidence: network_failure: GET http://127.0.0.1:4318/f/hidden-request-failure/missing.json -> 404",
+              "correctSummary": "The test was configured to require a particular save-request record, but after Save it recorded a successful request for ok.json and did not recognize it as satisfying the check.\nUpdate the network assertion to match the request actually made by this save flow, or change the flow so it makes the documented save request; keep the check scoped to requests after the Save click.",
+              "codeJs": "el(6).innerText.trim() === 'Saved'",
+              "stored": {
+                "correct": {},
+                "broken": {}
+              },
+              "testUrl": null,
+              "at": "2026-11-26T11:02:44.861Z"
+            }
+          }
+        },
+        {
+          "id": "w3",
+          "origin": "agent",
+          "text": "Verify that the save request triggered by the Save click returned an HTTP 200 response and that the exact visible text of the status message is \"Saved\".",
+          "versions": {
+            "0.10.9": {
+              "state": "FALSE_RED",
+              "correct": "FAIL",
+              "broken": "FAIL",
+              "brokenSummary": "The Save action requests a file that is not available, but the page still tells the user that the save worked.\nFix the Save flow so it requests an available resource and only shows “Saved” after the save request succeeds with HTTP 200.\nevidence: http_error_response: GET http://127.0.0.1:4318/f/hidden-request-failure/missing.json -> 404\nevidence: console_error: Failed to load resource: the server responded with a status of 404 (Not Found)",
+              "correctSummary": "AP produced no action for 3 consecutive steps",
+              "codeJs": "el(6).innerText.trim()",
+              "stored": {
+                "correct": {},
+                "broken": {}
+              },
+              "testUrl": null,
+              "at": "2026-11-26T11:15:30.416Z"
+            },
+            "0.10.8": {
+              "state": "FALSE_RED",
+              "correct": "FAIL",
+              "broken": "FAIL",
+              "brokenSummary": "Saving tries to load a file that is missing, but the page still tells the user that the save worked.\nFix the save flow so it uses an available save endpoint and show “Saved” only after that request succeeds with HTTP 200.\nevidence: network_failure: GET http://127.0.0.1:4318/f/hidden-request-failure/missing.json -> 404",
+              "correctSummary": "After Save was clicked, the run recorded a successful request for ok.json and the page showed “Saved.” The automation did not treat that request as the save request required by its check, so it had no next action even though the visible result was correct.\nUpdate the save-request matcher to associate the request made after the Save click with the save operation, and mark the objective complete when that request returns 200 and the status reads exactly “Saved.”",
+              "codeJs": "el(6).innerText.trim()",
+              "stored": {
+                "correct": {},
+                "broken": {}
+              },
+              "testUrl": null,
+              "at": "2026-11-26T11:27:32.265Z"
+            }
+          }
+        },
+        {
+          "id": "w4",
+          "origin": "agent",
+          "text": "Assert that the status message's exact visible text is \"Saved\" in its green success styling and that the request the save made for its data file completed successfully with a 2xx status.",
+          "versions": {
+            "0.10.9": {
+              "state": "FALSE_RED",
+              "correct": "FAIL",
+              "broken": "FAIL",
+              "brokenSummary": "After Save is clicked, the page asks for a data file that is missing, but it still tells the user that the save worked.\nFix the save flow to use an available data file and show an error instead of “Saved” whenever that required request fails.\nevidence: network_failure: GET http://127.0.0.1:4318/f/hidden-request-failure/missing.json -> 404",
+              "correctSummary": "The check looked for a request pattern that was not present or did not match the recorded save request. The only recorded data-file request completed successfully.\nUpdate the network check to recognize the save flow's recorded ok.json request and accept its 2xx response.",
+              "codeJs": "getComputedStyle(el(6)).color === 'rgb(0, 128, 0)'",
+              "stored": {
+                "correct": {},
+                "broken": {}
+              },
+              "testUrl": null,
+              "at": "2026-11-26T13:05:37.595Z"
+            },
+            "0.10.8": {
+              "state": "FALSE_RED",
+              "correct": "FAIL",
+              "broken": "FAIL",
+              "brokenSummary": "The Save action asks for a data file that is missing, but the page still reports that saving worked.\nFix the Save flow to use an available data file and show an error instead of “Saved” when its request fails.\nevidence: network_failure: GET http://127.0.0.1:4318/f/hidden-request-failure/missing.json -> 404",
+              "correctSummary": "The test expected a different save-related network event than the successful data-file request that actually occurred after Save was clicked.\nUpdate the network assertion to match the data-file request the Save action actually sends, including ok.json, and accept its 2xx response.",
+              "codeJs": "getComputedStyle(el(6)).color === 'rgb(0, 128, 0)'",
+              "stored": {
+                "correct": {},
+                "broken": {}
+              },
+              "testUrl": null,
+              "at": "2026-11-26T13:09:41.429Z"
+            }
+          }
+        }
+      ],
+      "fixture": {
+        "correct": "fixtures/hidden-request-failure/correct.html",
+        "broken": "fixtures/hidden-request-failure/broken.html"
+      }
+    },
     {
       "id": "plural-counter",
       "title": "Counter label, singular vs plural",
@@ -123,6 +314,321 @@
       }
     },
     {
+      "id": "disabled-button",
+      "title": "Create button disabled while Email is empty",
+      "summary": "On a sign-up form with an empty Email field, the \"Create account\" button is disabled.",
+      "whatDiffers": "The broken page leaves the \"Create account\" button enabled while the Email field is empty, and it looks the same.",
+      "tags": [
+        "form",
+        "button",
+        "disabled",
+        "state"
+      ],
+      "issue": null,
+      "steps": "",
+      "state": "CORRECT",
+      "limitation": false,
+      "recommendedWording": "Verify the \"Create account\" button is disabled.",
+      "avoidWordings": [],
+      "cells": {
+        "0.10.9": {
+          "state": "CORRECT",
+          "recommended": "w1"
+        },
+        "0.10.8": {
+          "state": "CORRECT",
+          "recommended": "w1"
+        }
+      },
+      "wordings": [
+        {
+          "id": "w1",
+          "origin": "baseline",
+          "text": "Verify the \"Create account\" button is disabled.",
+          "versions": {
+            "0.10.9": {
+              "state": "CORRECT",
+              "correct": "PASS",
+              "broken": "FAIL",
+              "brokenSummary": null,
+              "correctSummary": "Checked the sign-up form as requested.\nConfirmed that the “Create account” button was disabled.\nThe requested button state was present on the final page.",
+              "codeJs": "el(5).matches(':enabled')",
+              "stored": {
+                "correct": {},
+                "broken": {}
+              },
+              "testUrl": null,
+              "at": "2026-11-25T18:30:12.588Z"
+            },
+            "0.10.8": {
+              "state": "CORRECT",
+              "correct": "PASS",
+              "broken": "FAIL",
+              "brokenSummary": null,
+              "correctSummary": null,
+              "codeJs": "el(5).matches(':enabled')",
+              "stored": {
+                "correct": {},
+                "broken": {}
+              },
+              "testUrl": null,
+              "at": "2026-11-25T18:32:29.860Z"
+            }
+          }
+        },
+        {
+          "id": "w2",
+          "origin": "baseline",
+          "text": "Verify that the \"Create account\" button has the disabled state and cannot be clicked while the Email field is empty.",
+          "versions": {
+            "0.10.9": {
+              "state": "CORRECT",
+              "correct": "PASS",
+              "broken": "FAIL",
+              "brokenSummary": null,
+              "correctSummary": "Verified the sign-up form with the Email field left empty, as requested.\nConfirmed that the “Create account” button was disabled and could not be clicked while no email was entered.\nThe requested button-disabled behavior was present.",
+              "codeJs": "el(4).value === '' ? 'empty' : 'nonempty'",
+              "stored": {
+                "correct": {},
+                "broken": {}
+              },
+              "testUrl": null,
+              "at": "2026-11-25T18:35:48.572Z"
+            },
+            "0.10.8": {
+              "state": "CORRECT",
+              "correct": "PASS",
+              "broken": "FAIL",
+              "brokenSummary": null,
+              "correctSummary": null,
+              "codeJs": "el(5).matches(':enabled')\nel(4).value === '' ? 'empty' : 'nonempty'",
+              "stored": {
+                "correct": {},
+                "broken": {}
+              },
+              "testUrl": null,
+              "at": "2026-11-25T18:38:22.615Z"
+            }
+          }
+        }
+      ],
+      "fixture": {
+        "correct": "fixtures/disabled-button/correct.html",
+        "broken": "fixtures/disabled-button/broken.html"
+      }
+    },
+    {
+      "id": "exactly-one-item",
+      "title": "Exactly one to-do after adding one",
+      "summary": "After adding the to-do \"b\", the list shows exactly one row, and that row reads \"b\".",
+      "whatDiffers": "The broken page renders an extra empty list item above \"b\", which appears as a blank row.",
+      "tags": [
+        "list",
+        "count",
+        "empty-item",
+        "todo"
+      ],
+      "issue": {
+        "number": 233,
+        "url": "https://github.com/LambdaTest/kane-cli/issues/233"
+      },
+      "steps": "Type \"b\" into the \"New to-do\" box and press Enter.",
+      "state": "CORRECT",
+      "limitation": false,
+      "recommendedWording": "Verify the todo list shows exactly one todo, \"b\".",
+      "avoidWordings": [],
+      "cells": {
+        "0.10.9": {
+          "state": "CORRECT",
+          "recommended": "w1"
+        },
+        "0.10.8": {
+          "state": "CORRECT",
+          "recommended": "w1"
+        }
+      },
+      "wordings": [
+        {
+          "id": "w1",
+          "origin": "issue",
+          "text": "Verify the todo list shows exactly one todo, \"b\".",
+          "versions": {
+            "0.10.9": {
+              "state": "CORRECT",
+              "correct": "PASS",
+              "broken": "FAIL",
+              "brokenSummary": null,
+              "correctSummary": "Added \"b\" to the New to-do box and submitted it.\nThe to-do list now contains exactly one item: \"b\".",
+              "codeJs": "JSON.stringify(Array.from(el(3).querySelectorAll(':scope > li'), li => li.innerText.trim()))",
+              "stored": {
+                "correct": {},
+                "broken": {}
+              },
+              "testUrl": null,
+              "at": "2026-11-25T18:42:06.599Z"
+            },
+            "0.10.8": {
+              "state": "CORRECT",
+              "correct": "PASS",
+              "broken": "FAIL",
+              "brokenSummary": null,
+              "correctSummary": null,
+              "codeJs": "el(3).querySelectorAll(':scope > li').length\nJSON.stringify(Array.from(el(3).querySelectorAll(':scope > li'), li => li.innerText.trim()))",
+              "stored": {
+                "correct": {},
+                "broken": {}
+              },
+              "testUrl": null,
+              "at": "2026-11-25T18:44:40.934Z"
+            }
+          }
+        },
+        {
+          "id": "w2",
+          "origin": "baseline",
+          "text": "Verify the to-do list has exactly 1 item and that item's text is \"b\".",
+          "versions": {
+            "0.10.9": {
+              "state": "CORRECT",
+              "correct": "PASS",
+              "broken": "FAIL",
+              "brokenSummary": null,
+              "correctSummary": "Added the requested to-do item “b” to the list.\nThe list now contains exactly one item, and its text is “b”.",
+              "codeJs": "el(4).innerText.trim()",
+              "stored": {
+                "correct": {},
+                "broken": {}
+              },
+              "testUrl": null,
+              "at": "2026-11-25T18:48:32.484Z"
+            },
+            "0.10.8": {
+              "state": "CORRECT",
+              "correct": "PASS",
+              "broken": "FAIL",
+              "brokenSummary": null,
+              "correctSummary": null,
+              "codeJs": "el(3).querySelectorAll(':scope > li').length\nel(4).innerText.trim()",
+              "stored": {
+                "correct": {},
+                "broken": {}
+              },
+              "testUrl": null,
+              "at": "2026-11-25T18:52:08.570Z"
+            }
+          }
+        }
+      ],
+      "fixture": {
+        "correct": "fixtures/exactly-one-item/correct.html",
+        "broken": "fixtures/exactly-one-item/broken.html"
+      }
+    },
+    {
+      "id": "delayed-element",
+      "title": "Result appears after a delay",
+      "summary": "After clicking \"Load report\" and waiting 2.5 seconds, the page shows \"Report ready: 42 rows\".",
+      "whatDiffers": "The broken page shows \"Report ready: 0 rows\" once the delay passes.",
+      "tags": [
+        "async",
+        "timing",
+        "text",
+        "button"
+      ],
+      "issue": null,
+      "steps": "Click \"Load report\".",
+      "state": "CORRECT",
+      "limitation": false,
+      "recommendedWording": "Verify the page says \"Report ready: 42 rows\".",
+      "avoidWordings": [],
+      "cells": {
+        "0.10.9": {
+          "state": "CORRECT",
+          "recommended": "w1"
+        },
+        "0.10.8": {
+          "state": "CORRECT",
+          "recommended": "w1"
+        }
+      },
+      "wordings": [
+        {
+          "id": "w1",
+          "origin": "baseline",
+          "text": "Verify the page says \"Report ready: 42 rows\".",
+          "versions": {
+            "0.10.9": {
+              "state": "CORRECT",
+              "correct": "PASS",
+              "broken": "FAIL",
+              "brokenSummary": null,
+              "correctSummary": "You asked to load the report.\nClicked “Load report” on the report page.\nThe report finished loading and displayed “Report ready: 42 rows.”",
+              "codeJs": "el(3).innerText.trim() === 'Report ready: 42 rows'",
+              "stored": {
+                "correct": {},
+                "broken": {}
+              },
+              "testUrl": null,
+              "at": "2026-11-25T18:16:16.161Z"
+            },
+            "0.10.8": {
+              "state": "CORRECT",
+              "correct": "PASS",
+              "broken": "FAIL",
+              "brokenSummary": null,
+              "correctSummary": null,
+              "codeJs": "el(3).innerText.trim() === 'Report ready: 42 rows'",
+              "stored": {
+                "correct": {},
+                "broken": {}
+              },
+              "testUrl": null,
+              "at": "2026-11-25T18:20:17.928Z"
+            }
+          }
+        },
+        {
+          "id": "w2",
+          "origin": "baseline",
+          "text": "Verify that once a line starting with \"Report ready\" appears, its exact visible text is \"Report ready: 42 rows\".",
+          "versions": {
+            "0.10.9": {
+              "state": "CORRECT",
+              "correct": "PASS",
+              "broken": "FAIL",
+              "brokenSummary": null,
+              "correctSummary": "You asked to load the report.\nClicked “Load report” and waited for the report status to appear.\nThe report loaded successfully and showed “Report ready: 42 rows”.",
+              "codeJs": "el(3).innerText.trim()",
+              "stored": {
+                "correct": {},
+                "broken": {}
+              },
+              "testUrl": null,
+              "at": "2026-11-25T18:24:43.486Z"
+            },
+            "0.10.8": {
+              "state": "CORRECT",
+              "correct": "PASS",
+              "broken": "FAIL",
+              "brokenSummary": null,
+              "correctSummary": null,
+              "codeJs": "el(3).innerText.trim()",
+              "stored": {
+                "correct": {},
+                "broken": {}
+              },
+              "testUrl": null,
+              "at": "2026-11-25T18:27:18.489Z"
+            }
+          }
+        }
+      ],
+      "fixture": {
+        "correct": "fixtures/delayed-element/correct.html",
+        "broken": "fixtures/delayed-element/broken.html"
+      }
+    },
+    {
       "id": "case-sensitive-text",
       "title": "Status badge capitalisation",
       "summary": "The status badge reads \"Active\" with a capital A.",
@@ -227,6 +733,114 @@
       }
     },
     {
+      "id": "confirm-amount",
+      "title": "Swap confirmation shows the typed amount",
+      "summary": "After typing 0.5 into the You pay field and clicking Review swap, the confirmation line reads \"You pay 0.5 ETH\".",
+      "whatDiffers": "The broken page divides the typed amount by ten, so the confirmation reads \"You pay 0.05 ETH\".",
+      "tags": [
+        "swap",
+        "amount",
+        "confirmation",
+        "form",
+        "number"
+      ],
+      "issue": {
+        "number": 239,
+        "url": "https://github.com/LambdaTest/kane-cli/issues/239"
+      },
+      "steps": "Type 0.5 into the \"You pay\" field and click \"Review swap\".",
+      "state": "CORRECT",
+      "limitation": false,
+      "recommendedWording": "Assert the confirmation shows You pay 0.5 ETH.",
+      "avoidWordings": [],
+      "cells": {
+        "0.10.9": {
+          "state": "CORRECT",
+          "recommended": "w1"
+        },
+        "0.10.8": {
+          "state": "CORRECT",
+          "recommended": "w1"
+        }
+      },
+      "wordings": [
+        {
+          "id": "w1",
+          "origin": "issue",
+          "text": "Assert the confirmation shows You pay 0.5 ETH.",
+          "versions": {
+            "0.10.9": {
+              "state": "CORRECT",
+              "correct": "PASS",
+              "broken": "FAIL",
+              "brokenSummary": null,
+              "correctSummary": "Entered 0.5 in the “You pay” field and selected “Review swap”.\nThe confirmation page showed “You pay 0.5 ETH,” completing the requested swap review step.",
+              "codeJs": "el(5).innerText.trim() === 'You pay 0.5 ETH'",
+              "stored": {
+                "correct": {},
+                "broken": {}
+              },
+              "testUrl": null,
+              "at": "2026-11-25T18:03:45.786Z"
+            },
+            "0.10.8": {
+              "state": "CORRECT",
+              "correct": "PASS",
+              "broken": "FAIL",
+              "brokenSummary": null,
+              "correctSummary": null,
+              "codeJs": "el(5).innerText.trim() === 'You pay 0.5 ETH'",
+              "stored": {
+                "correct": {},
+                "broken": {}
+              },
+              "testUrl": null,
+              "at": "2026-11-25T18:06:05.600Z"
+            }
+          }
+        },
+        {
+          "id": "w2",
+          "origin": "baseline",
+          "text": "Verify the exact visible text of the confirmation line is \"You pay 0.5 ETH\".",
+          "versions": {
+            "0.10.9": {
+              "state": "CORRECT",
+              "correct": "PASS",
+              "broken": "FAIL",
+              "brokenSummary": null,
+              "correctSummary": "Entered 0.5 in the “You pay” field and selected “Review swap.”\nReached the swap confirmation page, which displayed “You pay 0.5 ETH.”",
+              "codeJs": "el(5).innerText.trim()",
+              "stored": {
+                "correct": {},
+                "broken": {}
+              },
+              "testUrl": null,
+              "at": "2026-11-25T18:09:23.466Z"
+            },
+            "0.10.8": {
+              "state": "CORRECT",
+              "correct": "PASS",
+              "broken": "FAIL",
+              "brokenSummary": null,
+              "correctSummary": null,
+              "codeJs": "el(5).innerText.trim()",
+              "stored": {
+                "correct": {},
+                "broken": {}
+              },
+              "testUrl": null,
+              "at": "2026-11-25T18:11:42.563Z"
+            }
+          }
+        }
+      ],
+      "fixture": {
+        "correct": "fixtures/confirm-amount/correct.html",
+        "broken": "fixtures/confirm-amount/broken.html"
+      }
+    },
+    {
       "id": "collapsed-section",
       "title": "Task inside a collapsed section",
       "summary": "The Activity panel's collapsed \"Upcoming & Overdue\" section contains the task \"Call Kane Hot Co\".",
@@ -252,8 +866,8 @@
           "recommended": "w1"
         },
         "0.10.8": {
-          "state": "ERROR",
-          "recommended": null
+          "state": "CORRECT",
+          "recommended": "w1"
         }
       },
       "wordings": [
@@ -277,9 +891,9 @@
               "at": "2026-11-25T13:58:46.615Z"
             },
             "0.10.8": {
-              "state": "ERROR",
+              "state": "CORRECT",
               "correct": "PASS",
-              "broken": "ERROR",
+              "broken": "FAIL",
               "brokenSummary": null,
               "correctSummary": null,
               "codeJs": "Array.from(el(2).querySelectorAll('*')).some(node => node.children.length === 0 && node.textContent.trim() === 'Call Kane Hot Co')",
@@ -288,7 +902,7 @@
                 "broken": {}
               },
               "testUrl": null,
-              "at": "2026-11-25T14:00:15.361Z"
+              "at": "2026-11-25T17:54:10.400Z"
             }
           }
         },
@@ -296,7 +910,36 @@
           "id": "w2",
           "origin": "baseline",
           "text": "Expand the \"Upcoming & Overdue\" section if it is collapsed, then verify a task named \"Call Kane Hot Co\" is listed.",
-          "versions": {}
+          "versions": {
+            "0.10.9": {
+              "state": "CORRECT",
+              "correct": "PASS",
+              "broken": "FAIL",
+              "brokenSummary": null,
+              "correctSummary": "The requested Activity page update was completed.\nThe “Upcoming & Overdue” section was left collapsed.\nThe task “Call Kane Hot Co” is listed in the Activity task list.",
+              "codeJs": "Array.from(el(4).querySelectorAll(':scope > li')).some(li => li.innerText.trim() === 'Call Kane Hot Co')",
+              "stored": {
+                "correct": {},
+                "broken": {}
+              },
+              "testUrl": null,
+              "at": "2026-11-25T17:57:48.984Z"
+            },
+            "0.10.8": {
+              "state": "CORRECT",
+              "correct": "PASS",
+              "broken": "FAIL",
+              "brokenSummary": null,
+              "correctSummary": null,
+              "codeJs": "el(3).getAttribute('aria-expanded') === 'true'\nArray.from(el(4).querySelectorAll(':scope > li')).some(li => li.innerText.trim() === 'Call Kane Hot Co')",
+              "stored": {
+                "correct": {},
+                "broken": {}
+              },
+              "testUrl": null,
+              "at": "2026-11-25T18:00:06.658Z"
+            }
+          }
         }
       ],
       "fixture": {
@@ -400,101 +1043,6 @@
       }
     },
     {
-      "id": "disabled-button",
-      "title": "Create button disabled while Email is empty",
-      "summary": "On a sign-up form with an empty Email field, the \"Create account\" button is disabled.",
-      "whatDiffers": "The broken page leaves the \"Create account\" button enabled while the Email field is empty, and it looks the same.",
-      "tags": [
-        "form",
-        "button",
-        "disabled",
-        "state"
-      ],
-      "issue": null,
-      "steps": "",
-      "state": "NOT_RUN",
-      "limitation": false,
-      "recommendedWording": null,
-      "avoidWordings": [],
-      "cells": {
-        "0.10.9": {
-          "state": "NOT_RUN",
-          "recommended": null
-        },
-        "0.10.8": {
-          "state": "NOT_RUN",
-          "recommended": null
-        }
-      },
-      "wordings": [
-        {
-          "id": "w1",
-          "origin": "baseline",
-          "text": "Verify the \"Create account\" button is disabled.",
-          "versions": {}
-        },
-        {
-          "id": "w2",
-          "origin": "baseline",
-          "text": "Verify that the \"Create account\" button has the disabled state and cannot be clicked while the Email field is empty.",
-          "versions": {}
-        }
-      ],
-      "fixture": {
-        "correct": "fixtures/disabled-button/correct.html",
-        "broken": "fixtures/disabled-button/broken.html"
-      }
-    },
-    {
-      "id": "exactly-one-item",
-      "title": "Exactly one to-do after adding one",
-      "summary": "After adding the to-do \"b\", the list shows exactly one row, and that row reads \"b\".",
-      "whatDiffers": "The broken page renders an extra empty list item above \"b\", which appears as a blank row.",
-      "tags": [
-        "list",
-        "count",
-        "empty-item",
-        "todo"
-      ],
-      "issue": {
-        "number": 233,
-        "url": "https://github.com/LambdaTest/kane-cli/issues/233"
-      },
-      "steps": "Type \"b\" into the \"New to-do\" box and press Enter.",
-      "state": "NOT_RUN",
-      "limitation": false,
-      "recommendedWording": null,
-      "avoidWordings": [],
-      "cells": {
-        "0.10.9": {
-          "state": "NOT_RUN",
-          "recommended": null
-        },
-        "0.10.8": {
-          "state": "NOT_RUN",
-          "recommended": null
-        }
-      },
-      "wordings": [
-        {
-          "id": "w1",
-          "origin": "issue",
-          "text": "Verify the todo list shows exactly one todo, \"b\".",
-          "versions": {}
-        },
-        {
-          "id": "w2",
-          "origin": "baseline",
-          "text": "Verify the to-do list has exactly 1 item and that item's text is \"b\".",
-          "versions": {}
-        }
-      ],
-      "fixture": {
-        "correct": "fixtures/exactly-one-item/correct.html",
-        "broken": "fixtures/exactly-one-item/broken.html"
-      }
-    },
-    {
       "id": "iframe-text",
       "title": "Invoice total inside an iframe",
       "summary": "An embedded invoice frame shows the total \"Total: $120.00\".",
@@ -587,52 +1135,6 @@
       }
     },
     {
-      "id": "delayed-element",
-      "title": "Result appears after a delay",
-      "summary": "After clicking \"Load report\" and waiting 2.5 seconds, the page shows \"Report ready: 42 rows\".",
-      "whatDiffers": "The broken page shows \"Report ready: 0 rows\" once the delay passes.",
-      "tags": [
-        "async",
-        "timing",
-        "text",
-        "button"
-      ],
-      "issue": null,
-      "steps": "Click \"Load report\".",
-      "state": "NOT_RUN",
-      "limitation": false,
-      "recommendedWording": null,
-      "avoidWordings": [],
-      "cells": {
-        "0.10.9": {
-          "state": "NOT_RUN",
-          "recommended": null
-        },
-        "0.10.8": {
-          "state": "NOT_RUN",
-          "recommended": null
-        }
-      },
-      "wordings": [
-        {
-          "id": "w1",
-          "origin": "baseline",
-          "text": "Verify the page says \"Report ready: 42 rows\".",
-          "versions": {}
-        },
-        {
-          "id": "w2",
-          "origin": "baseline",
-          "text": "Verify that once a line starting with \"Report ready\" appears, its exact visible text is \"Report ready: 42 rows\".",
-          "versions": {}
-        }
-      ],
-      "fixture": {
-        "correct": "fixtures/delayed-element/correct.html",
-        "broken": "fixtures/delayed-element/broken.html"
-      }
-    },
-    {
       "id": "toast-message",
       "title": "Save shows a settings toast",
       "summary": "Clicking Save shows a toast reading \"Settings saved\" that stays for 4 seconds and then fades.",
@@ -679,102 +1181,6 @@
       "fixture": {
         "correct": "fixtures/toast-message/correct.html",
         "broken": "fixtures/toast-message/broken.html"
-      }
-    },
-    {
-      "id": "hidden-request-failure",
-      "title": "Saved message despite failed request",
-      "summary": "Clicking \"Save\" fetches ok.json successfully and then shows \"Saved\" in green.",
-      "whatDiffers": "The broken page requests a missing file, which returns 404, but still shows \"Saved\".",
-      "tags": [
-        "network",
-        "fetch",
-        "silent-failure",
-        "button"
-      ],
-      "issue": null,
-      "steps": "Click \"Save\".",
-      "state": "NOT_RUN",
-      "limitation": false,
-      "recommendedWording": null,
-      "avoidWordings": [],
-      "cells": {
-        "0.10.9": {
-          "state": "NOT_RUN",
-          "recommended": null
-        },
-        "0.10.8": {
-          "state": "NOT_RUN",
-          "recommended": null
-        }
-      },
-      "wordings": [
-        {
-          "id": "w1",
-          "origin": "baseline",
-          "text": "Verify the page shows \"Saved\".",
-          "versions": {}
-        },
-        {
-          "id": "w2",
-          "origin": "baseline",
-          "text": "Verify the page shows \"Saved\" and that the save request made after clicking Save succeeded with no failed network requests.",
-          "versions": {}
-        }
-      ],
-      "fixture": {
-        "correct": "fixtures/hidden-request-failure/correct.html",
-        "broken": "fixtures/hidden-request-failure/broken.html"
-      }
-    },
-    {
-      "id": "confirm-amount",
-      "title": "Swap confirmation shows the typed amount",
-      "summary": "After typing 0.5 into the You pay field and clicking Review swap, the confirmation line reads \"You pay 0.5 ETH\".",
-      "whatDiffers": "The broken page divides the typed amount by ten, so the confirmation reads \"You pay 0.05 ETH\".",
-      "tags": [
-        "swap",
-        "amount",
-        "confirmation",
-        "form",
-        "number"
-      ],
-      "issue": {
-        "number": 239,
-        "url": "https://github.com/LambdaTest/kane-cli/issues/239"
-      },
-      "steps": "Type 0.5 into the \"You pay\" field and click \"Review swap\".",
-      "state": "NOT_RUN",
-      "limitation": false,
-      "recommendedWording": null,
-      "avoidWordings": [],
-      "cells": {
-        "0.10.9": {
-          "state": "NOT_RUN",
-          "recommended": null
-        },
-        "0.10.8": {
-          "state": "NOT_RUN",
-          "recommended": null
-        }
-      },
-      "wordings": [
-        {
-          "id": "w1",
-          "origin": "issue",
-          "text": "Assert the confirmation shows You pay 0.5 ETH.",
-          "versions": {}
-        },
-        {
-          "id": "w2",
-          "origin": "baseline",
-          "text": "Verify the exact visible text of the confirmation line is \"You pay 0.5 ETH\".",
-          "versions": {}
-        }
-      ],
-      "fixture": {
-        "correct": "fixtures/confirm-amount/correct.html",
-        "broken": "fixtures/confirm-amount/broken.html"
       }
     },
     {

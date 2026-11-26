@@ -1,0 +1,39 @@
+{
+  "test_id": "9c8c42a3-add0-45a2-8451-be3f8f6a02fb",
+  "project_id": "01M8821R0E1P53CSDCTADBRY1D",
+  "folder_id": "01M8821SQAVMA0YG031KR77PF7",
+  "org_id": "3451126",
+  "session_name": "w2",
+  "commit_id": "80dcfa71-5cb8-467f-ad6f-445fa3d899d0",
+  "testcase_id": "01M89ZPH2GP84GE89GE8CZSZES",
+  "executions": [
+    {
+      "execution_id": "9b7d27a3-a199-4954-b8a4-0cf812d7c885",
+      "run_kind": "author",
+      "status": "passed",
+      "valid": true,
+      "at": "2026-11-25T18:33:55.338Z"
+    },
+    {
+      "execution_id": "43b20014-e2a5-4879-9f39-7dc2244e7128",
+      "run_kind": "replay",
+      "status": "broken",
+      "valid": true,
+      "at": "2026-11-25T18:35:43.344Z"
+    },
+    {
+      "execution_id": "fbbe379f-2164-4f44-9d6c-c14f2924de7c",
+      "run_kind": "replay",
+      "status": "passed",
+      "valid": true,
+      "at": "2026-11-25T18:36:40.611Z"
+    },
+    {
+      "execution_id": "d93acae4-79bb-4ae0-94f0-b6961db0f71e",
+      "run_kind": "replay",
+      "status": "broken",
+      "valid": true,
+      "at": "2026-11-25T18:38:16.471Z"
+    }
+  ]
+}

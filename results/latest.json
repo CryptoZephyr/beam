@@ -1,0 +1,1371 @@
+{
+  "updated": "2026-11-26T13:09:41.445Z",
+  "behaviors": {
+    "plural-counter": {
+      "wordings": {
+        "w1": {
+          "text": "Verify the todo counter reads \"1 item left\".",
+          "origin": "issue",
+          "versions": {
+            "0.10.9": {
+              "correct": {
+                "verdict": "PASS",
+                "at": "2026-11-25T13:21:18.602Z",
+                "replay": true,
+                "authored": 0,
+                "replayed": 1,
+                "credits": null,
+                "durationS": 12.11,
+                "summary": "",
+                "reasonCode": "success.complete",
+                "codeJs": null,
+                "stored": {},
+                "testUrl": null,
+                "exitCode": 0
+              },
+              "state": "FALSE_GREEN",
+              "broken": {
+                "verdict": "PASS",
+                "at": "2026-11-25T13:14:16.960Z",
+                "replay": true,
+                "authored": 0,
+                "replayed": 1,
+                "credits": null,
+                "durationS": 6.8,
+                "summary": "",
+                "reasonCode": "success.complete",
+                "codeJs": null,
+                "stored": {},
+                "testUrl": null,
+                "exitCode": 0
+              }
+            },
+            "0.10.8": {
+              "correct": {
+                "verdict": "PASS",
+                "at": "2026-11-25T13:16:13.298Z",
+                "replay": true,
+                "authored": 0,
+                "replayed": 1,
+                "credits": null,
+                "durationS": 7.31,
+                "summary": "",
+                "reasonCode": "success.complete",
+                "codeJs": null,
+                "stored": {},
+                "testUrl": null,
+                "exitCode": 0
+              },
+              "state": "FALSE_GREEN",
+              "broken": {
+                "verdict": "PASS",
+                "at": "2026-11-25T13:17:28.944Z",
+                "replay": true,
+                "authored": 0,
+                "replayed": 1,
+                "credits": null,
+                "durationS": 14.09,
+                "summary": "",
+                "reasonCode": "success.complete",
+                "codeJs": null,
+                "stored": {},
+                "testUrl": null,
+                "exitCode": 0
+              }
+            }
+          }
+        },
+        "w2": {
+          "text": "Verify the exact visible text of the todo counter is \"1 item left\".",
+          "origin": "issue",
+          "versions": {
+            "0.10.9": {
+              "correct": {
+                "verdict": "PASS",
+                "at": "2026-11-25T13:24:07.988Z",
+                "replay": false,
+                "authored": 1,
+                "replayed": 0,
+                "credits": 13.781526999999999,
+                "durationS": 70.7,
+                "summary": "Added “buy some cheese” to the to-do list as requested.\nThe to-do counter showed “1 item left,” confirming the item was added.",
+                "reasonCode": "success.complete",
+                "codeJs": "el(3).textContent + (el(3).nextSibling ? el(3).nextSibling.textContent : '')",
+                "stored": {},
+                "testUrl": null,
+                "exitCode": 0
+              },
+              "state": "CORRECT",
+              "broken": {
+                "verdict": "FAIL",
+                "at": "2026-11-25T13:26:06.445Z",
+                "replay": true,
+                "authored": 0,
+                "replayed": 1,
+                "credits": null,
+                "durationS": 36.7,
+                "summary": "",
+                "reasonCode": null,
+                "codeJs": null,
+                "stored": {},
+                "testUrl": null,
+                "exitCode": 1
+              }
+            },
+            "0.10.8": {
+              "correct": {
+                "verdict": "PASS",
+                "at": "2026-11-25T13:27:46.589Z",
+                "replay": true,
+                "authored": 0,
+                "replayed": 1,
+                "credits": null,
+                "durationS": 12.77,
+                "summary": "",
+                "reasonCode": "success.complete",
+                "codeJs": null,
+                "stored": {},
+                "testUrl": null,
+                "exitCode": 0
+              },
+              "state": "CORRECT",
+              "broken": {
+                "verdict": "FAIL",
+                "at": "2026-11-25T13:29:36.376Z",
+                "replay": true,
+                "authored": 0,
+                "replayed": 1,
+                "credits": null,
+                "durationS": 38.77,
+                "summary": "",
+                "reasonCode": null,
+                "codeJs": null,
+                "stored": {},
+                "testUrl": null,
+                "exitCode": 1
+              }
+            }
+          }
+        }
+      }
+    },
+    "case-sensitive-text": {
+      "wordings": {
+        "w1": {
+          "text": "Verify the status is Active.",
+          "origin": "baseline",
+          "versions": {
+            "0.10.9": {
+              "correct": {
+                "verdict": "PASS",
+                "at": "2026-11-25T13:39:28.239Z",
+                "replay": false,
+                "authored": 1,
+                "replayed": 0,
+                "credits": 14.133037499999999,
+                "durationS": 38.1,
+                "summary": "Checked the account status on the case-sensitive-text page.\nConfirmed that the displayed status is Active.",
+                "reasonCode": "success.complete",
+                "codeJs": "el(2).innerText.split(':').slice(1).join(':').trim()",
+                "stored": {},
+                "testUrl": null,
+                "exitCode": 0
+              },
+              "state": "CORRECT",
+              "broken": {
+                "verdict": "FAIL",
+                "at": "2026-11-25T13:41:45.665Z",
+                "replay": true,
+                "authored": 0,
+                "replayed": 1,
+                "credits": null,
+                "durationS": 30.17,
+                "summary": "",
+                "reasonCode": null,
+                "codeJs": null,
+                "stored": {},
+                "testUrl": null,
+                "exitCode": 1
+              }
+            },
+            "0.10.8": {
+              "correct": {
+                "verdict": "PASS",
+                "at": "2026-11-25T13:43:13.874Z",
+                "replay": true,
+                "authored": 0,
+                "replayed": 1,
+                "credits": null,
+                "durationS": 6.17,
+                "summary": "",
+                "reasonCode": "success.complete",
+                "codeJs": null,
+                "stored": {},
+                "testUrl": null,
+                "exitCode": 0
+              },
+              "state": "CORRECT",
+              "broken": {
+                "verdict": "FAIL",
+                "at": "2026-11-25T13:44:55.771Z",
+                "replay": true,
+                "authored": 0,
+                "replayed": 1,
+                "credits": null,
+                "durationS": 28.38,
+                "summary": "",
+                "reasonCode": null,
+                "codeJs": null,
+                "stored": {},
+                "testUrl": null,
+                "exitCode": 1
+              }
+            }
+          }
+        },
+        "w2": {
+          "text": "Verify the exact visible text of the status badge is \"Active\", with a capital A.",
+          "origin": "baseline",
+          "versions": {
+            "0.10.9": {
+              "correct": {
+                "verdict": "PASS",
+                "at": "2026-11-25T13:47:02.675Z",
+                "replay": false,
+                "authored": 1,
+                "replayed": 0,
+                "credits": 9.79371,
+                "durationS": 34.8,
+                "summary": "Checked the account section on the case-sensitive text page.\nConfirmed that the status badge displayed exactly \"Active\" with a capital A.\nThe requested status text was verified successfully.",
+                "reasonCode": "success.complete",
+                "codeJs": "el(2).querySelector('[data-testid=\"status-badge\"]').innerText.trim()",
+                "stored": {},
+                "testUrl": null,
+                "exitCode": 0
+              },
+              "state": "CORRECT",
+              "broken": {
+                "verdict": "FAIL",
+                "at": "2026-11-25T13:48:50.090Z",
+                "replay": true,
+                "authored": 0,
+                "replayed": 1,
+                "credits": null,
+                "durationS": 31.48,
+                "summary": "",
+                "reasonCode": null,
+                "codeJs": null,
+                "stored": {},
+                "testUrl": null,
+                "exitCode": 1
+              }
+            },
+            "0.10.8": {
+              "correct": {
+                "verdict": "PASS",
+                "at": "2026-11-25T13:51:02.924Z",
+                "replay": true,
+                "authored": 0,
+                "replayed": 1,
+                "credits": null,
+                "durationS": 10.75,
+                "summary": "",
+                "reasonCode": "success.complete",
+                "codeJs": null,
+                "stored": {},
+                "testUrl": null,
+                "exitCode": 0
+              },
+              "state": "CORRECT",
+              "broken": {
+                "verdict": "FAIL",
+                "at": "2026-11-25T13:53:54.602Z",
+                "replay": true,
+                "authored": 0,
+                "replayed": 1,
+                "credits": null,
+                "durationS": 30.66,
+                "summary": "",
+                "reasonCode": null,
+                "codeJs": null,
+                "stored": {},
+                "testUrl": null,
+                "exitCode": 1
+              }
+            }
+          }
+        }
+      }
+    },
+    "collapsed-section": {
+      "wordings": {
+        "w1": {
+          "text": "Verify a task named \"Call Kane Hot Co\" is listed in the Activity panel.",
+          "origin": "issue",
+          "versions": {
+            "0.10.9": {
+              "correct": {
+                "verdict": "PASS",
+                "at": "2026-11-25T13:56:21.720Z",
+                "replay": false,
+                "authored": 1,
+                "replayed": 0,
+                "credits": 10.165709999999999,
+                "durationS": 32.6,
+                "summary": "Verified that the Activity panel lists the task “Call Kane Hot Co.”\nThe requested task was present on the page.",
+                "reasonCode": "success.complete",
+                "codeJs": "Array.from(el(2).querySelectorAll('*')).some(node => node.children.length === 0 && node.textContent.trim() === 'Call Kane Hot Co')",
+                "stored": {},
+                "testUrl": null,
+                "exitCode": 0
+              },
+              "state": "CORRECT",
+              "broken": {
+                "verdict": "FAIL",
+                "at": "2026-11-25T13:58:46.615Z",
+                "replay": true,
+                "authored": 0,
+                "replayed": 1,
+                "credits": null,
+                "durationS": 37.88,
+                "summary": "",
+                "reasonCode": null,
+                "codeJs": null,
+                "stored": {},
+                "testUrl": null,
+                "exitCode": 1
+              }
+            },
+            "0.10.8": {
+              "correct": {
+                "verdict": "PASS",
+                "at": "2026-11-25T14:00:11.951Z",
+                "replay": true,
+                "authored": 0,
+                "replayed": 1,
+                "credits": null,
+                "durationS": 13.59,
+                "summary": "",
+                "reasonCode": "success.complete",
+                "codeJs": null,
+                "stored": {},
+                "testUrl": null,
+                "exitCode": 0
+              },
+              "state": "CORRECT",
+              "broken": {
+                "verdict": "FAIL",
+                "at": "2026-11-25T17:54:10.400Z",
+                "replay": true,
+                "authored": 0,
+                "replayed": 1,
+                "credits": null,
+                "durationS": 32.94,
+                "summary": "",
+                "reasonCode": null,
+                "codeJs": null,
+                "stored": {},
+                "testUrl": null,
+                "exitCode": 1
+              }
+            }
+          }
+        },
+        "w2": {
+          "text": "Expand the \"Upcoming & Overdue\" section if it is collapsed, then verify a task named \"Call Kane Hot Co\" is listed.",
+          "origin": "baseline",
+          "versions": {
+            "0.10.9": {
+              "correct": {
+                "verdict": "PASS",
+                "at": "2026-11-25T17:56:25.292Z",
+                "replay": false,
+                "authored": 1,
+                "replayed": 0,
+                "credits": 27.719827499999997,
+                "durationS": 63.3,
+                "summary": "The requested Activity page update was completed.\nThe “Upcoming & Overdue” section was left collapsed.\nThe task “Call Kane Hot Co” is listed in the Activity task list.",
+                "reasonCode": "success.complete",
+                "codeJs": "Array.from(el(4).querySelectorAll(':scope > li')).some(li => li.innerText.trim() === 'Call Kane Hot Co')",
+                "stored": {},
+                "testUrl": null,
+                "exitCode": 0
+              },
+              "state": "CORRECT",
+              "broken": {
+                "verdict": "FAIL",
+                "at": "2026-11-25T17:57:48.984Z",
+                "replay": true,
+                "authored": 0,
+                "replayed": 1,
+                "credits": null,
+                "durationS": 31.34,
+                "summary": "",
+                "reasonCode": null,
+                "codeJs": null,
+                "stored": {},
+                "testUrl": null,
+                "exitCode": 1
+              }
+            },
+            "0.10.8": {
+              "correct": {
+                "verdict": "PASS",
+                "at": "2026-11-25T17:58:45.812Z",
+                "replay": true,
+                "authored": 0,
+                "replayed": 1,
+                "credits": null,
+                "durationS": 7.97,
+                "summary": "",
+                "reasonCode": "success.complete",
+                "codeJs": null,
+                "stored": {},
+                "testUrl": null,
+                "exitCode": 0
+              },
+              "state": "CORRECT",
+              "broken": {
+                "verdict": "FAIL",
+                "at": "2026-11-25T18:00:06.658Z",
+                "replay": true,
+                "authored": 0,
+                "replayed": 1,
+                "credits": null,
+                "durationS": 30.64,
+                "summary": "",
+                "reasonCode": null,
+                "codeJs": null,
+                "stored": {},
+                "testUrl": null,
+                "exitCode": 1
+              }
+            }
+          }
+        }
+      }
+    },
+    "confirm-amount": {
+      "wordings": {
+        "w1": {
+          "text": "Assert the confirmation shows You pay 0.5 ETH.",
+          "origin": "issue",
+          "versions": {
+            "0.10.9": {
+              "correct": {
+                "verdict": "PASS",
+                "at": "2026-11-25T18:02:19.400Z",
+                "replay": false,
+                "authored": 1,
+                "replayed": 0,
+                "credits": 16.268455,
+                "durationS": 44.3,
+                "summary": "Entered 0.5 in the “You pay” field and selected “Review swap”.\nThe confirmation page showed “You pay 0.5 ETH,” completing the requested swap review step.",
+                "reasonCode": "success.complete",
+                "codeJs": "el(5).innerText.trim() === 'You pay 0.5 ETH'",
+                "stored": {},
+                "testUrl": null,
+                "exitCode": 0
+              },
+              "state": "CORRECT",
+              "broken": {
+                "verdict": "FAIL",
+                "at": "2026-11-25T18:03:45.786Z",
+                "replay": true,
+                "authored": 0,
+                "replayed": 1,
+                "credits": null,
+                "durationS": 31.92,
+                "summary": "",
+                "reasonCode": null,
+                "codeJs": null,
+                "stored": {},
+                "testUrl": null,
+                "exitCode": 1
+              }
+            },
+            "0.10.8": {
+              "correct": {
+                "verdict": "PASS",
+                "at": "2026-11-25T18:04:44.046Z",
+                "replay": true,
+                "authored": 0,
+                "replayed": 1,
+                "credits": null,
+                "durationS": 7.11,
+                "summary": "",
+                "reasonCode": "success.complete",
+                "codeJs": null,
+                "stored": {},
+                "testUrl": null,
+                "exitCode": 0
+              },
+              "state": "CORRECT",
+              "broken": {
+                "verdict": "FAIL",
+                "at": "2026-11-25T18:06:05.600Z",
+                "replay": true,
+                "authored": 0,
+                "replayed": 1,
+                "credits": null,
+                "durationS": 30.45,
+                "summary": "",
+                "reasonCode": null,
+                "codeJs": null,
+                "stored": {},
+                "testUrl": null,
+                "exitCode": 1
+              }
+            }
+          }
+        },
+        "w2": {
+          "text": "Verify the exact visible text of the confirmation line is \"You pay 0.5 ETH\".",
+          "origin": "baseline",
+          "versions": {
+            "0.10.9": {
+              "correct": {
+                "verdict": "PASS",
+                "at": "2026-11-25T18:08:02.906Z",
+                "replay": false,
+                "authored": 1,
+                "replayed": 0,
+                "credits": 17.174575,
+                "durationS": 45.5,
+                "summary": "Entered 0.5 in the “You pay” field and selected “Review swap.”\nReached the swap confirmation page, which displayed “You pay 0.5 ETH.”",
+                "reasonCode": "success.complete",
+                "codeJs": "el(5).innerText.trim()",
+                "stored": {},
+                "testUrl": null,
+                "exitCode": 0
+              },
+              "state": "CORRECT",
+              "broken": {
+                "verdict": "FAIL",
+                "at": "2026-11-25T18:09:23.466Z",
+                "replay": true,
+                "authored": 0,
+                "replayed": 1,
+                "credits": null,
+                "durationS": 29.61,
+                "summary": "",
+                "reasonCode": null,
+                "codeJs": null,
+                "stored": {},
+                "testUrl": null,
+                "exitCode": 1
+              }
+            },
+            "0.10.8": {
+              "correct": {
+                "verdict": "PASS",
+                "at": "2026-11-25T18:10:22.796Z",
+                "replay": true,
+                "authored": 0,
+                "replayed": 1,
+                "credits": null,
+                "durationS": 7.48,
+                "summary": "",
+                "reasonCode": "success.complete",
+                "codeJs": null,
+                "stored": {},
+                "testUrl": null,
+                "exitCode": 0
+              },
+              "state": "CORRECT",
+              "broken": {
+                "verdict": "FAIL",
+                "at": "2026-11-25T18:11:42.563Z",
+                "replay": true,
+                "authored": 0,
+                "replayed": 1,
+                "credits": null,
+                "durationS": 28.41,
+                "summary": "",
+                "reasonCode": null,
+                "codeJs": null,
+                "stored": {},
+                "testUrl": null,
+                "exitCode": 1
+              }
+            }
+          }
+        }
+      }
+    },
+    "delayed-element": {
+      "wordings": {
+        "w1": {
+          "text": "Verify the page says \"Report ready: 42 rows\".",
+          "origin": "baseline",
+          "versions": {
+            "0.10.9": {
+              "correct": {
+                "verdict": "PASS",
+                "at": "2026-11-25T18:14:03.729Z",
+                "replay": false,
+                "authored": 1,
+                "replayed": 0,
+                "credits": 16.4983475,
+                "durationS": 48.9,
+                "summary": "You asked to load the report.\nClicked “Load report” on the report page.\nThe report finished loading and displayed “Report ready: 42 rows.”",
+                "reasonCode": "success.complete",
+                "codeJs": "el(3).innerText.trim() === 'Report ready: 42 rows'",
+                "stored": {},
+                "testUrl": null,
+                "exitCode": 0
+              },
+              "state": "CORRECT",
+              "broken": {
+                "verdict": "FAIL",
+                "at": "2026-11-25T18:16:16.161Z",
+                "replay": true,
+                "authored": 0,
+                "replayed": 1,
+                "credits": null,
+                "durationS": 73.92,
+                "summary": "",
+                "reasonCode": null,
+                "codeJs": null,
+                "stored": {},
+                "testUrl": null,
+                "exitCode": 1
+              }
+            },
+            "0.10.8": {
+              "correct": {
+                "verdict": "PASS",
+                "at": "2026-11-25T18:17:38.158Z",
+                "replay": true,
+                "authored": 0,
+                "replayed": 1,
+                "credits": null,
+                "durationS": 12.61,
+                "summary": "",
+                "reasonCode": "success.complete",
+                "codeJs": null,
+                "stored": {},
+                "testUrl": null,
+                "exitCode": 0
+              },
+              "state": "CORRECT",
+              "broken": {
+                "verdict": "FAIL",
+                "at": "2026-11-25T18:20:17.928Z",
+                "replay": true,
+                "authored": 0,
+                "replayed": 1,
+                "credits": null,
+                "durationS": 79.53,
+                "summary": "",
+                "reasonCode": null,
+                "codeJs": null,
+                "stored": {},
+                "testUrl": null,
+                "exitCode": 1
+              }
+            }
+          }
+        },
+        "w2": {
+          "text": "Verify that once a line starting with \"Report ready\" appears, its exact visible text is \"Report ready: 42 rows\".",
+          "origin": "baseline",
+          "versions": {
+            "0.10.9": {
+              "correct": {
+                "verdict": "PASS",
+                "at": "2026-11-25T18:22:40.385Z",
+                "replay": false,
+                "authored": 1,
+                "replayed": 0,
+                "credits": 16.5985875,
+                "durationS": 46.8,
+                "summary": "You asked to load the report.\nClicked “Load report” and waited for the report status to appear.\nThe report loaded successfully and showed “Report ready: 42 rows”.",
+                "reasonCode": "success.complete",
+                "codeJs": "el(3).innerText.trim()",
+                "stored": {},
+                "testUrl": null,
+                "exitCode": 0
+              },
+              "state": "CORRECT",
+              "broken": {
+                "verdict": "FAIL",
+                "at": "2026-11-25T18:24:43.486Z",
+                "replay": true,
+                "authored": 0,
+                "replayed": 1,
+                "credits": null,
+                "durationS": 44.64,
+                "summary": "",
+                "reasonCode": null,
+                "codeJs": null,
+                "stored": {},
+                "testUrl": null,
+                "exitCode": 1
+              }
+            },
+            "0.10.8": {
+              "correct": {
+                "verdict": "PASS",
+                "at": "2026-11-25T18:25:52.975Z",
+                "replay": true,
+                "authored": 0,
+                "replayed": 1,
+                "credits": null,
+                "durationS": 9.5,
+                "summary": "",
+                "reasonCode": "success.complete",
+                "codeJs": null,
+                "stored": {},
+                "testUrl": null,
+                "exitCode": 0
+              },
+              "state": "CORRECT",
+              "broken": {
+                "verdict": "FAIL",
+                "at": "2026-11-25T18:27:18.489Z",
+                "replay": true,
+                "authored": 0,
+                "replayed": 1,
+                "credits": null,
+                "durationS": 32.02,
+                "summary": "",
+                "reasonCode": null,
+                "codeJs": null,
+                "stored": {},
+                "testUrl": null,
+                "exitCode": 1
+              }
+            }
+          }
+        }
+      }
+    },
+    "disabled-button": {
+      "wordings": {
+        "w1": {
+          "text": "Verify the \"Create account\" button is disabled.",
+          "origin": "baseline",
+          "versions": {
+            "0.10.9": {
+              "correct": {
+                "verdict": "PASS",
+                "at": "2026-11-25T18:28:52.729Z",
+                "replay": false,
+                "authored": 1,
+                "replayed": 0,
+                "credits": 13.967062499999999,
+                "durationS": 25.2,
+                "summary": "Checked the sign-up form as requested.\nConfirmed that the “Create account” button was disabled.\nThe requested button state was present on the final page.",
+                "reasonCode": "success.complete",
+                "codeJs": "el(5).matches(':enabled')",
+                "stored": {},
+                "testUrl": null,
+                "exitCode": 0
+              },
+              "state": "CORRECT",
+              "broken": {
+                "verdict": "FAIL",
+                "at": "2026-11-25T18:30:12.588Z",
+                "replay": true,
+                "authored": 0,
+                "replayed": 1,
+                "credits": null,
+                "durationS": 27.05,
+                "summary": "",
+                "reasonCode": null,
+                "codeJs": null,
+                "stored": {},
+                "testUrl": null,
+                "exitCode": 1
+              }
+            },
+            "0.10.8": {
+              "correct": {
+                "verdict": "PASS",
+                "at": "2026-11-25T18:31:10.255Z",
+                "replay": true,
+                "authored": 0,
+                "replayed": 1,
+                "credits": null,
+                "durationS": 4.23,
+                "summary": "",
+                "reasonCode": "success.complete",
+                "codeJs": null,
+                "stored": {},
+                "testUrl": null,
+                "exitCode": 0
+              },
+              "state": "CORRECT",
+              "broken": {
+                "verdict": "FAIL",
+                "at": "2026-11-25T18:32:29.860Z",
+                "replay": true,
+                "authored": 0,
+                "replayed": 1,
+                "credits": null,
+                "durationS": 28.19,
+                "summary": "",
+                "reasonCode": null,
+                "codeJs": null,
+                "stored": {},
+                "testUrl": null,
+                "exitCode": 1
+              }
+            }
+          }
+        },
+        "w2": {
+          "text": "Verify that the \"Create account\" button has the disabled state and cannot be clicked while the Email field is empty.",
+          "origin": "baseline",
+          "versions": {
+            "0.10.9": {
+              "correct": {
+                "verdict": "PASS",
+                "at": "2026-11-25T18:34:13.850Z",
+                "replay": false,
+                "authored": 1,
+                "replayed": 0,
+                "credits": 10.01727,
+                "durationS": 33.5,
+                "summary": "Verified the sign-up form with the Email field left empty, as requested.\nConfirmed that the “Create account” button was disabled and could not be clicked while no email was entered.\nThe requested button-disabled behavior was present.",
+                "reasonCode": "success.complete",
+                "codeJs": "el(4).value === '' ? 'empty' : 'nonempty'",
+                "stored": {},
+                "testUrl": null,
+                "exitCode": 0
+              },
+              "state": "CORRECT",
+              "broken": {
+                "verdict": "FAIL",
+                "at": "2026-11-25T18:35:48.572Z",
+                "replay": true,
+                "authored": 0,
+                "replayed": 1,
+                "credits": null,
+                "durationS": 43.16,
+                "summary": "",
+                "reasonCode": null,
+                "codeJs": null,
+                "stored": {},
+                "testUrl": null,
+                "exitCode": 1
+              }
+            },
+            "0.10.8": {
+              "correct": {
+                "verdict": "PASS",
+                "at": "2026-11-25T18:36:45.782Z",
+                "replay": true,
+                "authored": 0,
+                "replayed": 1,
+                "credits": null,
+                "durationS": 4.99,
+                "summary": "",
+                "reasonCode": "success.complete",
+                "codeJs": null,
+                "stored": {},
+                "testUrl": null,
+                "exitCode": 0
+              },
+              "state": "CORRECT",
+              "broken": {
+                "verdict": "FAIL",
+                "at": "2026-11-25T18:38:22.615Z",
+                "replay": true,
+                "authored": 0,
+                "replayed": 1,
+                "credits": null,
+                "durationS": 44.31,
+                "summary": "",
+                "reasonCode": null,
+                "codeJs": null,
+                "stored": {},
+                "testUrl": null,
+                "exitCode": 1
+              }
+            }
+          }
+        }
+      }
+    },
+    "exactly-one-item": {
+      "wordings": {
+        "w1": {
+          "text": "Verify the todo list shows exactly one todo, \"b\".",
+          "origin": "issue",
+          "versions": {
+            "0.10.9": {
+              "correct": {
+                "verdict": "PASS",
+                "at": "2026-11-25T18:40:23.683Z",
+                "replay": false,
+                "authored": 1,
+                "replayed": 0,
+                "credits": 17.203692499999995,
+                "durationS": 52.1,
+                "summary": "Added \"b\" to the New to-do box and submitted it.\nThe to-do list now contains exactly one item: \"b\".",
+                "reasonCode": "success.complete",
+                "codeJs": "JSON.stringify(Array.from(el(3).querySelectorAll(':scope > li'), li => li.innerText.trim()))",
+                "stored": {},
+                "testUrl": null,
+                "exitCode": 0
+              },
+              "state": "CORRECT",
+              "broken": {
+                "verdict": "FAIL",
+                "at": "2026-11-25T18:42:06.599Z",
+                "replay": true,
+                "authored": 0,
+                "replayed": 1,
+                "credits": null,
+                "durationS": 49.52,
+                "summary": "",
+                "reasonCode": null,
+                "codeJs": null,
+                "stored": {},
+                "testUrl": null,
+                "exitCode": 1
+              }
+            },
+            "0.10.8": {
+              "correct": {
+                "verdict": "PASS",
+                "at": "2026-11-25T18:43:03.537Z",
+                "replay": true,
+                "authored": 0,
+                "replayed": 1,
+                "credits": null,
+                "durationS": 7.27,
+                "summary": "",
+                "reasonCode": "success.complete",
+                "codeJs": null,
+                "stored": {},
+                "testUrl": null,
+                "exitCode": 0
+              },
+              "state": "CORRECT",
+              "broken": {
+                "verdict": "FAIL",
+                "at": "2026-11-25T18:44:40.934Z",
+                "replay": true,
+                "authored": 0,
+                "replayed": 1,
+                "credits": null,
+                "durationS": 47.72,
+                "summary": "",
+                "reasonCode": null,
+                "codeJs": null,
+                "stored": {},
+                "testUrl": null,
+                "exitCode": 1
+              }
+            }
+          }
+        },
+        "w2": {
+          "text": "Verify the to-do list has exactly 1 item and that item's text is \"b\".",
+          "origin": "baseline",
+          "versions": {
+            "0.10.9": {
+              "correct": {
+                "verdict": "PASS",
+                "at": "2026-11-25T18:46:40.945Z",
+                "replay": false,
+                "authored": 1,
+                "replayed": 0,
+                "credits": 16.990215,
+                "durationS": 47.9,
+                "summary": "Added the requested to-do item “b” to the list.\nThe list now contains exactly one item, and its text is “b”.",
+                "reasonCode": "success.complete",
+                "codeJs": "el(4).innerText.trim()",
+                "stored": {},
+                "testUrl": null,
+                "exitCode": 0
+              },
+              "state": "CORRECT",
+              "broken": {
+                "verdict": "FAIL",
+                "at": "2026-11-25T18:48:32.484Z",
+                "replay": true,
+                "authored": 0,
+                "replayed": 1,
+                "credits": null,
+                "durationS": 37.14,
+                "summary": "",
+                "reasonCode": null,
+                "codeJs": null,
+                "stored": {},
+                "testUrl": null,
+                "exitCode": 1
+              }
+            },
+            "0.10.8": {
+              "correct": {
+                "verdict": "PASS",
+                "at": "2026-11-25T18:50:23.547Z",
+                "replay": true,
+                "authored": 0,
+                "replayed": 1,
+                "credits": null,
+                "durationS": 19.53,
+                "summary": "",
+                "reasonCode": "success.complete",
+                "codeJs": null,
+                "stored": {},
+                "testUrl": null,
+                "exitCode": 0
+              },
+              "state": "CORRECT",
+              "broken": {
+                "verdict": "FAIL",
+                "at": "2026-11-25T18:52:08.570Z",
+                "replay": true,
+                "authored": 0,
+                "replayed": 1,
+                "credits": null,
+                "durationS": 33.84,
+                "summary": "",
+                "reasonCode": null,
+                "codeJs": null,
+                "stored": {},
+                "testUrl": null,
+                "exitCode": 1
+              }
+            }
+          }
+        }
+      }
+    },
+    "hidden-request-failure": {
+      "wordings": {
+        "w1": {
+          "text": "Verify the page shows \"Saved\".",
+          "origin": "baseline",
+          "versions": {
+            "0.10.9": {
+              "correct": {
+                "verdict": "PASS",
+                "at": "2026-11-25T18:54:35.535Z",
+                "replay": false,
+                "authored": 1,
+                "replayed": 0,
+                "credits": 15.6875,
+                "durationS": 44.6,
+                "summary": "You asked to click “Save.”\nClicked the Save button on the page.\nThe page displayed “Saved,” confirming the action was completed.",
+                "reasonCode": "success.complete",
+                "codeJs": "el(6).innerText.trim() === 'Saved' && !!(el(6).offsetWidth || el(6).offsetHeight || el(6).getClientRects().length)",
+                "stored": {},
+                "testUrl": null,
+                "exitCode": 0
+              },
+              "state": "FALSE_GREEN",
+              "broken": {
+                "verdict": "PASS",
+                "at": "2026-11-26T12:58:19.935Z",
+                "replay": true,
+                "authored": 0,
+                "replayed": 1,
+                "credits": null,
+                "durationS": 9.25,
+                "summary": "",
+                "reasonCode": "success.complete",
+                "codeJs": null,
+                "stored": {},
+                "testUrl": null,
+                "exitCode": 0
+              }
+            },
+            "0.10.8": {
+              "correct": {
+                "verdict": "PASS",
+                "at": "2026-11-26T10:37:08.979Z",
+                "replay": true,
+                "authored": 0,
+                "replayed": 1,
+                "credits": null,
+                "durationS": 21.41,
+                "summary": "",
+                "reasonCode": "success.complete",
+                "codeJs": null,
+                "stored": {},
+                "testUrl": null,
+                "exitCode": 0
+              },
+              "state": "FALSE_GREEN",
+              "broken": {
+                "verdict": "PASS",
+                "at": "2026-11-26T10:40:43.108Z",
+                "replay": true,
+                "authored": 0,
+                "replayed": 1,
+                "credits": null,
+                "durationS": 11.62,
+                "summary": "",
+                "reasonCode": "success.complete",
+                "codeJs": null,
+                "stored": {},
+                "testUrl": null,
+                "exitCode": 0
+              }
+            }
+          }
+        },
+        "w2": {
+          "text": "Verify the page shows \"Saved\" and that the save request made after clicking Save succeeded with no failed network requests.",
+          "origin": "baseline",
+          "versions": {
+            "0.10.9": {
+              "correct": {
+                "verdict": "FAIL",
+                "at": "2026-11-26T10:46:21.017Z",
+                "replay": false,
+                "authored": 1,
+                "replayed": 0,
+                "credits": 20.711184999999997,
+                "durationS": 126,
+                "summary": "The check waited for a save request it did not recognize. The only request recorded after the click was a successful request for ok.json, and no failed request was recorded.\nReview the network assertion's request matcher and expected method or URL so it recognizes the successful request triggered by Save.",
+                "reasonCode": "assertion_error.step_not_achievable",
+                "codeJs": "el(6).innerText.trim() === 'Saved'",
+                "stored": {},
+                "testUrl": null,
+                "exitCode": 1
+              },
+              "state": "FALSE_RED",
+              "broken": {
+                "verdict": "FAIL",
+                "at": "2026-11-26T10:51:10.686Z",
+                "replay": true,
+                "authored": null,
+                "replayed": null,
+                "credits": 23.353925499999995,
+                "durationS": 135.7,
+                "summary": "The save action triggers a request for a missing file, but the page still tells the user that the save worked.\nFix the save flow so every request it needs succeeds before showing “Saved”; show an error and do not claim success when a required request fails.\nevidence: console_error: Failed to load resource: the server responded with a status of 404 (Not Found)\nevidence: network_failure: GET http://127.0.0.1:4318/f/hidden-request-failure/missing.json -> 404",
+                "reasonCode": "assertion_error.confirmed_product_bug",
+                "codeJs": "el(6).innerText.trim() === 'Saved'",
+                "stored": {},
+                "testUrl": null,
+                "exitCode": null
+              }
+            },
+            "0.10.8": {
+              "correct": {
+                "verdict": "FAIL",
+                "at": "2026-11-26T13:01:00.203Z",
+                "replay": true,
+                "authored": 1,
+                "replayed": 0,
+                "credits": 27.034757499999998,
+                "durationS": 75.7,
+                "summary": "The test was configured to require a particular save-request record, but after Save it recorded a successful request for ok.json and did not recognize it as satisfying the check.\nUpdate the network assertion to match the request actually made by this save flow, or change the flow so it makes the documented save request; keep the check scoped to requests after the Save click.",
+                "reasonCode": "assertion_error.step_not_achievable",
+                "codeJs": "el(6).innerText.trim() === 'Saved'",
+                "stored": {},
+                "testUrl": null,
+                "exitCode": 1
+              },
+              "state": "FALSE_RED",
+              "broken": {
+                "verdict": "FAIL",
+                "at": "2026-11-26T11:02:44.861Z",
+                "replay": true,
+                "authored": 1,
+                "replayed": 0,
+                "credits": 16.200094999999997,
+                "durationS": 140.2,
+                "summary": "The save flow asks for a file that is missing. The page still tells the user that the save worked, so the required clean successful network result cannot be met.\nFix the Save flow so it does not request the missing file, or ensure that file is available. Only show “Saved” after all save-related requests have completed successfully.\nevidence: console_error: Failed to load resource: the server responded with a status of 404 (Not Found)\nevidence: network_failure: GET http://127.0.0.1:4318/f/hidden-request-failure/missing.json -> 404",
+                "reasonCode": "assertion_error.confirmed_product_bug",
+                "codeJs": "el(6).innerText.trim() === 'Saved'",
+                "stored": {},
+                "testUrl": null,
+                "exitCode": 1
+              }
+            }
+          }
+        },
+        "w3": {
+          "text": "Verify that the save request triggered by the Save click returned an HTTP 200 response and that the exact visible text of the status message is \"Saved\".",
+          "origin": "agent",
+          "versions": {
+            "0.10.9": {
+              "correct": {
+                "verdict": "FAIL",
+                "at": "2026-11-26T11:09:45.115Z",
+                "replay": false,
+                "authored": 1,
+                "replayed": 0,
+                "credits": 0,
+                "durationS": 57.5,
+                "summary": "AP produced no action for 3 consecutive steps",
+                "reasonCode": "agent_error.ap_no_action",
+                "codeJs": null,
+                "stored": {},
+                "testUrl": null,
+                "exitCode": 1
+              },
+              "state": "FALSE_RED",
+              "broken": {
+                "verdict": "FAIL",
+                "at": "2026-11-26T11:15:30.416Z",
+                "replay": true,
+                "authored": 1,
+                "replayed": 0,
+                "credits": 20.6271,
+                "durationS": 91.1,
+                "summary": "The Save action requests a file that is not available, but the page still tells the user that the save worked.\nFix the Save flow so it requests an available resource and only shows “Saved” after the save request succeeds with HTTP 200.\nevidence: http_error_response: GET http://127.0.0.1:4318/f/hidden-request-failure/missing.json -> 404\nevidence: console_error: Failed to load resource: the server responded with a status of 404 (Not Found)",
+                "reasonCode": "assertion_error.confirmed_product_bug",
+                "codeJs": "el(6).innerText.trim()",
+                "stored": {},
+                "testUrl": null,
+                "exitCode": 1
+              }
+            },
+            "0.10.8": {
+              "correct": {
+                "verdict": "FAIL",
+                "at": "2026-11-26T13:03:20.639Z",
+                "replay": true,
+                "authored": 1,
+                "replayed": 0,
+                "credits": 32.51000749999999,
+                "durationS": 84.2,
+                "summary": "After Save was clicked, the run recorded a successful request for ok.json and the page showed “Saved.” The automation did not treat that request as the save request required by its check, so it had no next action even though the visible result was correct.\nUpdate the save-request matcher to associate the request made after the Save click with the save operation, and mark the objective complete when that request returns 200 and the status reads exactly “Saved.”",
+                "reasonCode": "stuck.ap_stuck",
+                "codeJs": "el(6).innerText",
+                "stored": {},
+                "testUrl": null,
+                "exitCode": 1
+              },
+              "state": "FALSE_RED",
+              "broken": {
+                "verdict": "FAIL",
+                "at": "2026-11-26T11:27:32.265Z",
+                "replay": true,
+                "authored": null,
+                "replayed": null,
+                "credits": 15.5446325,
+                "durationS": 119,
+                "summary": "Saving tries to load a file that is missing, but the page still tells the user that the save worked.\nFix the save flow so it uses an available save endpoint and show “Saved” only after that request succeeds with HTTP 200.\nevidence: network_failure: GET http://127.0.0.1:4318/f/hidden-request-failure/missing.json -> 404",
+                "reasonCode": "assertion_error.confirmed_product_bug",
+                "codeJs": "el(6).innerText.trim()",
+                "stored": {},
+                "testUrl": null,
+                "exitCode": null
+              }
+            }
+          }
+        },
+        "w4": {
+          "text": "Assert that the status message's exact visible text is \"Saved\" in its green success styling and that the request the save made for its data file completed successfully with a 2xx status.",
+          "origin": "agent",
+          "versions": {
+            "0.10.9": {
+              "correct": {
+                "verdict": "FAIL",
+                "at": "2026-11-26T11:33:33.232Z",
+                "replay": false,
+                "authored": 1,
+                "replayed": 0,
+                "credits": 27.932917500000002,
+                "durationS": 144.6,
+                "summary": "The check looked for a request pattern that was not present or did not match the recorded save request. The only recorded data-file request completed successfully.\nUpdate the network check to recognize the save flow's recorded ok.json request and accept its 2xx response.",
+                "reasonCode": "assertion_error.step_not_achievable",
+                "codeJs": "el(6).style.color === 'green'",
+                "stored": {},
+                "testUrl": null,
+                "exitCode": null
+              },
+              "state": "FALSE_RED",
+              "broken": {
+                "verdict": "FAIL",
+                "at": "2026-11-26T13:05:37.595Z",
+                "replay": true,
+                "authored": 1,
+                "replayed": 0,
+                "credits": 26.5406525,
+                "durationS": 79.5,
+                "summary": "After Save is clicked, the page asks for a data file that is missing, but it still tells the user that the save worked.\nFix the save flow to use an available data file and show an error instead of “Saved” whenever that required request fails.\nevidence: network_failure: GET http://127.0.0.1:4318/f/hidden-request-failure/missing.json -> 404",
+                "reasonCode": "assertion_error.confirmed_product_bug",
+                "codeJs": "getComputedStyle(el(6)).color === 'rgb(0, 128, 0)'",
+                "stored": {},
+                "testUrl": null,
+                "exitCode": 1
+              }
+            },
+            "0.10.8": {
+              "correct": {
+                "verdict": "FAIL",
+                "at": "2026-11-26T13:07:41.993Z",
+                "replay": true,
+                "authored": 1,
+                "replayed": 0,
+                "credits": 17.359553000000002,
+                "durationS": 67.5,
+                "summary": "The test expected a different save-related network event than the successful data-file request that actually occurred after Save was clicked.\nUpdate the network assertion to match the data-file request the Save action actually sends, including ok.json, and accept its 2xx response.",
+                "reasonCode": "assertion_error.step_not_achievable",
+                "codeJs": "el(6).innerText.trim()",
+                "stored": {},
+                "testUrl": null,
+                "exitCode": 1
+              },
+              "state": "FALSE_RED",
+              "broken": {
+                "verdict": "FAIL",
+                "at": "2026-11-26T13:09:41.429Z",
+                "replay": true,
+                "authored": 1,
+                "replayed": 0,
+                "credits": 10.576659999999999,
+                "durationS": 64.1,
+                "summary": "The Save action asks for a data file that is missing, but the page still reports that saving worked.\nFix the Save flow to use an available data file and show an error instead of “Saved” when its request fails.\nevidence: network_failure: GET http://127.0.0.1:4318/f/hidden-request-failure/missing.json -> 404",
+                "reasonCode": "assertion_error.confirmed_product_bug",
+                "codeJs": "getComputedStyle(el(6)).color === 'rgb(0, 128, 0)'",
+                "stored": {},
+                "testUrl": null,
+                "exitCode": 1
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "runs": [
+    {
+      "started": "2026-11-25T13:19:39.790Z",
+      "finished": "2026-11-25T13:29:36.394Z",
+      "credits": 13.78,
+      "versions": [
+        "0.10.9",
+        "0.10.8"
+      ]
+    },
+    {
+      "started": "2026-11-25T13:36:47.758Z",
+      "finished": "2026-11-25T14:00:15.367Z",
+      "credits": 34.09,
+      "versions": [
+        "0.10.9",
+        "0.10.8"
+      ]
+    },
+    {
+      "started": "2026-11-26T10:26:46.034Z",
+      "finished": "2026-11-26T11:46:52.880Z",
+      "credits": 124.37,
+      "versions": [
+        "0.10.9",
+        "0.10.8"
+      ]
+    },
+    {
+      "started": "2026-11-26T12:56:04.742Z",
+      "finished": "2026-11-26T13:09:41.444Z",
+      "credits": 114.02,
+      "versions": [
+        "0.10.9",
+        "0.10.8"
+      ]
+    }
+  ]
+}
