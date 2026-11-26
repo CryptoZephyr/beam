@@ -323,55 +323,47 @@ ${why}
 }
 
 function installPage() {
+  const step = (n, title, text, code) => `<li class="step"><div class="step-text"><h2 id="s${n}"><span class="step-n">${n}</span>${title}</h2>${text}</div><div class="step-code">${code}</div></li>`;
   const body = `
-<h1>Set up Beam</h1>
-<p class="lede">Three commands: give your agent Beam's tools, let your app report its truth, and verify.</p>
+<header class="phero">
+  <h1>Set up Beam</h1>
+  <p class="lede">Four steps from install to your first verdict: Kane runs your test, and Beam tells you whether your app agrees.</p>
+  <ul class="needs"><li><strong>Node 20+</strong></li><li><strong>Kane CLI</strong>, signed in with <code>kane-cli login</code></li><li><strong>A coding agent</strong>: Claude Code, Cursor, Codex, or any MCP client</li></ul>
+</header>
 
-<section aria-labelledby="i1"><div class="scale" aria-hidden="true"></div>
-<h2 id="i1">1. Give your coding agent Beam</h2>
-${copyBox(INSTALL)}
-<p>Adds Beam's MCP server and skill to the agents it finds:</p>
-<ul>
-  <li><strong>Claude Code:</strong> the <code>beam</code> MCP server (user scope, through <code>claude mcp add</code>) and <code>~/.claude/skills/kane-beam/</code>.</li>
-  <li><strong>Cursor:</strong> <code>beam</code> in <code>~/.cursor/mcp.json</code>.</li>
-  <li><strong>Codex:</strong> <code>[mcp_servers.beam]</code> in <code>~/.codex/config.toml</code> and <code>~/.codex/skills/kane-beam/</code>.</li>
-</ul>
-<p>Your agent gets four tools: <code>beam_verify</code>, <code>beam_app_state</code>, <code>beam_app_history</code> and <code>beam_check_wording</code>. Everything it writes is listed in <code>~/.kane-beam/installed.json</code>.</p>
-</section>
-
-<section aria-labelledby="i2"><div class="scale" aria-hidden="true"></div>
-<h2 id="i2">2. Let your app report its truth</h2>
-${copyBox('npx kane-beam init')}
-<p>Adds the Beam probe to your dev build: a script tag in plain HTML, or a loader behind <code>import.meta.env.DEV</code> in Vite. For Next.js it prints the line to add. Then expose what your code knows, next to the feature:</p>
-<pre><code>if (window.beam) beam.expose('order.amount', () => lastOrder.amount)</code></pre>
-<p>The probe also records your app's own requests with their status codes, JS errors and localStorage, with no extra code.</p>
-<h3>Safety</h3>
-<ul>
-  <li>It does nothing on a page that isn't on your own machine, so shipping it by mistake is harmless.</li>
-  <li>It only talks to the Beam bridge on 127.0.0.1, which refuses other sites and needs a per-session token.</li>
-  <li>Storage values whose keys look like secrets are hidden before they leave the page.</li>
-</ul>
-</section>
-
-<section aria-labelledby="i3"><div class="scale" aria-hidden="true"></div>
-<h2 id="i3">3. Declare the truth and verify</h2>
-<p>Next to a Kane test <code>name_test.md</code>, write <code>name_test.beam.json</code>:</p>
-<pre><code>{ "truth": [
+<ol class="steps">
+${step(1, 'Give your agent Beam', `<p>Adds Beam's MCP server and skill to the agents it finds on this machine: Claude Code, Cursor and Codex. Your agent gets four tools: <code>beam_verify</code>, <code>beam_app_state</code>, <code>beam_app_history</code> and <code>beam_check_wording</code>.</p><p class="muted">Everything it writes is listed in <code>~/.kane-beam/installed.json</code>, and <code>npx kane-beam uninstall</code> removes it all.</p>`,
+  `${copyBox(INSTALL)}<p class="code-label">Any other MCP client: add this server. It's in the MCP registry as <code>app.vercel.kane-beam/beam</code>.</p><pre><code>{ "mcpServers": { "beam": {
+  "command": "npx",
+  "args": ["-y", "kane-beam", "mcp"] } } }</code></pre>`)}
+${step(2, 'Let your app report its truth', `<p>Adds a small probe to your dev build: a script tag in plain HTML, or a loader behind <code>import.meta.env.DEV</code> in Vite. For Next.js it prints the line to add.</p><p>Then, next to the feature, expose what the code knows, not what the screen shows. The probe also records your app's requests with their status codes and its JS errors, with no extra code.</p><p class="muted">It does nothing on a page that isn't on your machine, talks only to Beam on 127.0.0.1 with a per-session token, and hides storage values whose keys look like secrets.</p>`,
+  `${copyBox('npx kane-beam init')}<p class="code-label">In your app code:</p><pre><code>if (window.beam) {
+  beam.expose('order.amount', () => lastOrder.amount);
+}</code></pre>`)}
+${step(3, 'Say what must be true', `<p>Next to a Kane test <code>name_test.md</code>, write <code>name_test.beam.json</code>. Each item is a value with <code>equals</code>, <code>min</code> or <code>present</code>, or one of the two built-in checks.</p><p>Always keep <code>"network": "no-failures"</code>: it catches failed requests the page hides, with no extra code.</p>`,
+  `<p class="code-label">checkout_test.beam.json</p><pre><code>{ "truth": [
   { "key": "order.amount", "equals": 45 },
   { "network": "no-failures" },
   { "errors": "none" }
-] }</code></pre>
-${copyBox('npx kane-beam verify tests/checkout_test.md --record')}
-<p>The first run records the Kane test (Kane credits). Later runs replay it at no credit cost. Exit code 0 means Balanced, 1 means not, so it works in CI. If the test, its recording or its truth file changed since the last verify, Beam refuses to run.</p>
-</section>
+] }</code></pre>`)}
+${step(4, 'Verify', `<p>Kane runs the test in a real browser, and Beam weighs its verdict against what the app reported. The first run records the test, which costs Kane credits. Later runs replay it for free.</p><p>Exit code 0 means Balanced, 1 means not, so it works in CI. Beam refuses to run if the test, its recording or its truth file changed, so a fix has to land in the app.</p><p><strong>Or ask your agent:</strong> “Verify the checkout with Beam and fix what it finds.”</p>`,
+  `${copyBox('npx kane-beam verify tests/checkout_test.md --record')}<p class="code-label">What a catch looks like:</p><pre class="out"><code>False green: Kane passed, the app says it's broken.
+  ok  cart.total: expected 45, app reported 45
+  NO  order.amount: expected 45, app reported 50
+  NO  no failed requests: POST /api/orders → 500</code></pre>`)}
+</ol>
 
-<section aria-labelledby="i4"><div class="scale" aria-hidden="true"></div>
-<h2 id="i4">Look up a wording</h2>
-${copyBox(`npx kane-beam check "Verify the todo counter reads '1 item left'"`)}
-<p>Exits with code 1 on a wording measured to pass broken pages, and prints the wording that's right.</p>
-<h2>Update and remove</h2>
-${copyBox('npx kane-beam update')}
-${copyBox('npx kane-beam uninstall')}
+<section aria-labelledby="ref"><div class="scale" aria-hidden="true"></div>
+<h2 id="ref">All commands</h2>
+<div class="tablewrap"><table class="cmds"><tbody>
+<tr><th scope="row"><code>npx kane-beam install</code></th><td>Add the MCP server and skill to your agents.</td></tr>
+<tr><th scope="row"><code>npx kane-beam init</code></th><td>Add the probe to your app's dev build.</td></tr>
+<tr><th scope="row"><code>npx kane-beam verify &lt;test&gt;</code></th><td>Run a Kane test and weigh it. <code>--record</code> the first time, <code>--accept-changes</code> after an intended test change.</td></tr>
+<tr><th scope="row"><code>npx kane-beam check "&lt;wording&gt;"</code></th><td>Look up a Kane check wording. Exits 1 on a measured false green and prints the wording that works.</td></tr>
+<tr><th scope="row"><code>npx kane-beam update</code></th><td>Get the latest measured results.</td></tr>
+<tr><th scope="row"><code>npx kane-beam where</code></th><td>Show what's installed.</td></tr>
+<tr><th scope="row"><code>npx kane-beam uninstall</code></th><td>Remove everything install added.</td></tr>
+</tbody></table></div>
 </section>`;
   return layout({ title: 'Set up · Beam', body, page: 'install' });
 }
