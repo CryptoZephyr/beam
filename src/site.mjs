@@ -297,11 +297,11 @@ function behaviorPage(b, data, { lab }) {
   const src = (f) => esc(fs.readFileSync(path.join(ROOT, f), 'utf8'));
   const body = `
 <p class="crumb"><a href="../index.html">Matrix</a> / ${esc(b.title)}</p>
-<header class="bhead">
+<header class="bhero">
   <h1>${esc(b.title)}</h1>
-  <div>${pill(b.state)} ${b.issue ? `<a class="issue" href="${esc(b.issue.url)}">Kane issue #${b.issue.number}</a>` : ''}</div>
+  <p class="bmeta">${pill(b.state)}${b.issue ? `<a class="issue" href="${esc(b.issue.url)}">Kane issue #${b.issue.number}</a>` : '<span class="muted">Not from a Kane issue</span>'}<span class="muted">Measured on Kane ${vs.map(esc).join(' and ')}</span></p>
+  <p class="lede">${esc(b.summary)} ${esc(b.whatDiffers)}</p>
 </header>
-<p class="lede">${esc(b.summary)} ${esc(b.whatDiffers)}</p>
 <section class="agent" aria-labelledby="ag"><h2 id="ag">What your agent will do with Beam installed</h2><div class="agent-body">${agentLine}${avoid}</div></section>
 <section aria-labelledby="res"><div class="scale" aria-hidden="true"></div><h2 id="res">Results</h2>
   ${b.steps ? `<p>Before each check, Kane does: <em>${esc(b.steps)}</em></p>` : ''}
@@ -311,8 +311,8 @@ ${why}
 <section aria-labelledby="pages"><div class="scale" aria-hidden="true"></div><h2 id="pages">The two pages</h2>
   ${b.steps ? `<p class="muted">These are live. To see the difference, do what Kane does: ${esc(b.steps)}</p>` : ""}
   <div class="twins">
-    <figure><figcaption>Correct page (Kane should pass)</figcaption><iframe title="Correct page" loading="lazy" sandbox="allow-scripts" src="../fixtures/${esc(b.id)}/correct.html"></iframe><details><summary>Source</summary><pre><code>${src(b.fixture.correct)}</code></pre></details></figure>
-    <figure><figcaption>Broken page (Kane should fail)</figcaption><iframe title="Broken page" loading="lazy" sandbox="allow-scripts" src="../fixtures/${esc(b.id)}/broken.html"></iframe><details><summary>Source</summary><pre><code>${src(b.fixture.broken)}</code></pre></details></figure>
+    <figure class="device"><figcaption><span><strong>Correct page</strong> <span class="muted">Kane should pass</span></span><a href="../fixtures/${esc(b.id)}/correct.html" target="_blank" rel="noopener">Open full page</a></figcaption><iframe title="Correct page" loading="lazy" sandbox="allow-scripts" src="../fixtures/${esc(b.id)}/correct.html"></iframe><details><summary>Source</summary><pre><code>${src(b.fixture.correct)}</code></pre></details></figure>
+    <figure class="device"><figcaption><span><strong>Broken page</strong> <span class="muted">Kane should fail</span></span><a href="../fixtures/${esc(b.id)}/broken.html" target="_blank" rel="noopener">Open full page</a></figcaption><iframe title="Broken page" loading="lazy" sandbox="allow-scripts" src="../fixtures/${esc(b.id)}/broken.html"></iframe><details><summary>Source</summary><pre><code>${src(b.fixture.broken)}</code></pre></details></figure>
   </div>
 </section>
 <section aria-labelledby="repro"><div class="scale" aria-hidden="true"></div><h2 id="repro">Reproduce it</h2>

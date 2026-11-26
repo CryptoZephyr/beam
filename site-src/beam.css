@@ -342,3 +342,25 @@ section > .scale { margin: 88px 0 26px; }
 .foot-base nav a:hover { text-decoration: underline; text-decoration-color: var(--streak); }
 .foot-base p { margin: 0 0 0 auto; color: rgb(233 231 226 / 0.6); }
 @media (max-width: 960px) { .foot-hero { grid-template-columns: minmax(0, 1fr); gap: 32px; padding-top: 48px; } .foot-base p { margin-left: 0; } }
+
+/* Behavior page (revision 3): a clear header, framed demo pages, a light "Use" panel. */
+.bhero { margin-top: 8px; max-width: 900px; }
+.bhero h1 { font-size: clamp(32px, 4vw, 52px); margin: 0 0 14px; }
+.bmeta { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 22px; margin: 0 0 18px; font-size: 16px; }
+.bhero .lede { margin-bottom: 0; }
+.agent .cmd { background: var(--page); color: var(--text); border: 1px solid var(--line); max-width: none; }
+.agent .cmd code { color: var(--text); }
+.twins { gap: 24px; }
+.device { background: var(--frame); border-radius: var(--r); padding: 0 6px 6px; }
+.device figcaption { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 12px 10px 10px; margin: 0; color: var(--on-frame); font-size: 15px; font-weight: 400; }
+.device figcaption .muted { color: rgb(236 234 228 / 0.65); }
+.device figcaption a { color: var(--on-frame); font-weight: 600; font-size: 14px; white-space: nowrap; }
+.device iframe { display: block; height: 300px; border: 0; border-radius: 2px; }
+.device details { padding: 8px 10px 4px; }
+.device summary { color: var(--on-frame); }
+.device pre { background: var(--page); color: var(--text); max-height: 320px; overflow: auto; }
+table.r tbody th { font-weight: 400; }
+table.r tbody th code { font-weight: 400; }
+.device iframe { height: 230px; }
+@media (max-width: 640px) { .device figcaption { flex-direction: column; gap: 4px; } .bmeta { gap: 8px 16px; } }
+@media (max-width: 640px) { table.r { min-width: 620px; } table.r tbody th { min-width: 230px; } }
