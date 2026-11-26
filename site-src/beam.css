@@ -406,3 +406,9 @@ section.split > .scale { grid-column: 1 / -1; }
   .flow li + li { border-left: 0; border-top: 1px solid var(--line); }
   .flow li + li::before { display: none; }
 }
+/* Readings on dark frames use the bright pair, like the balance frame. */
+.contrast { color: var(--on-frame); }
+.contrast li { color: rgb(236 234 228 / 0.8); }
+.contrast .r-CORRECT, .contrast .r-FIXED_BY_WORDING { color: #5CCB8A; }
+.contrast .r-FALSE_GREEN, .contrast .r-FALSE_RED { color: #FF7A85; }
+.contrast li span:not(.reading), .contrast li .muted { color: rgb(236 234 228 / 0.82); }
