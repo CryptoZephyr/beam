@@ -240,7 +240,7 @@ ${labPanels()}`;
     <h1>Kane checks the screen. <em>Your app confirms it.</em></h1>
     <p class="lede">Beam weighs every Kane verdict against what your app knows to be true, and hands any difference to your coding agent.</p>
     ${copyBox(INSTALL)}
-    <p class="hero-links"><a href="#how">How the balance works</a><a href="#matrix">See the matrix</a><a href="https://github.com/CryptoZephyr/beam">Source on GitHub</a></p>
+    <p class="hero-links"><a href="https://youtu.be/Cp9pHYh0asY">Watch the demo (1:26)</a><a href="#how">How the balance works</a><a href="#matrix">See the matrix</a><a href="https://github.com/CryptoZephyr/beam">Source on GitHub</a></p>
   </div>
   ${heroBalance()}
 </section>

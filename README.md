@@ -2,7 +2,7 @@
 
 **Kane checks the screen. Your app confirms it.**
 
-[Site](https://kane-beam.vercel.app) · [npm: `kane-beam`](https://www.npmjs.com/package/kane-beam) · MCP registry: `app.vercel.kane-beam/beam`
+[Demo video (1:26)](https://youtu.be/Cp9pHYh0asY) · [Site](https://kane-beam.vercel.app) · [npm: `kane-beam`](https://www.npmjs.com/package/kane-beam) · MCP registry: `app.vercel.kane-beam/beam`
 
 A coding agent adds a discount code to a checkout, writes a [Kane CLI](https://www.testmuai.com/support/docs/kane-cli-introduction/) test, runs it, and gets a green. Done.
 
