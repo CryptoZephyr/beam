@@ -36,6 +36,6 @@
     "mcp-server",
     "model-context-protocol"
   ],
-  "mcpName": "io.github.kane-beam/beam",
+  "mcpName": "app.vercel.kane-beam/beam",
   "homepage": "https://kane-beam.vercel.app"
 }

@@ -1,6 +1,6 @@
 {
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
-  "name": "io.github.kane-beam/beam",
+  "name": "app.vercel.kane-beam/beam",
   "description": "Weighs Kane CLI verdicts against your app's own state, so coding agents catch false greens.",
   "repository": {
     "url": "https://github.com/CryptoZephyr/beam",

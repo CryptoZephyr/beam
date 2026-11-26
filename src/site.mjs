@@ -473,6 +473,7 @@ export function buildSite({ lab = false, outDir = SITE_DIR } = {}) {
   fs.writeFileSync(path.join(outDir, 'beam.json'), JSON.stringify(data, null, 2));
   for (const f of ['beam.css', 'favicon.svg', 'favicon-32.png', 'apple-touch-icon.png', ...(lab ? ['lab.js'] : [])]) fs.copyFileSync(path.join(ROOT, 'site-src', f), path.join(outDir, f));
   fs.cpSync(path.join(ROOT, 'site-src', 'fonts'), path.join(outDir, 'fonts'), { recursive: true });
+  if (fs.existsSync(path.join(ROOT, 'site-src', '.well-known'))) fs.cpSync(path.join(ROOT, 'site-src', '.well-known'), path.join(outDir, '.well-known'), { recursive: true });
   fs.cpSync(path.join(ROOT, 'fixtures'), path.join(outDir, 'fixtures'), { recursive: true, filter: (s) => !s.includes('_drafts') });
   if (!lab) console.log(`Site built: ${data.behaviors.length} behaviors → ${path.relative(ROOT, outDir)}/`);
   return data;
