@@ -84,7 +84,7 @@ ${body}
   </div>
   <div class="wrap foot-base">
     <a class="brand" href="${up}index.html" aria-label="Beam home"><svg width="20" height="20" aria-hidden="true" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M2 6 6 2H18L22 6V18L18 22H6L2 18ZM4 6.83 6.83 4H17.17L20 6.83V17.17L17.17 20H6.83L4 17.17Z M6 7.5H18V9H6ZM11.25 9H12.75V16H11.25ZM8.5 16H15.5V17.5H8.5ZM7.4 9H8.6V11.5H7.4ZM15.4 9H16.6V11.5H15.4ZM5.5 11.5H10.5A2.5 2.5 0 0 1 5.5 11.5ZM13.5 11.5H18.5A2.5 2.5 0 0 1 13.5 11.5Z"/></svg>Beam</a>
-    <nav aria-label="Footer"><a href="${up}install.html">Set up</a><a href="${up}about.html">How it works</a><a href="https://github.com/CryptoZephyr/beam">GitHub</a><a href="https://www.npmjs.com/package/kane-beam">npm</a><a href="${up}beam.json">beam.json</a></nav>
+    <nav aria-label="Footer"><a href="${up}install.html">Set up</a><a href="${up}about.html">How it works</a><a href="https://github.com/CryptoZephyr/beam">GitHub</a></nav>
     <p>MIT licensed. Built for the KaneCLI hackathon. Not affiliated with TestMu AI.</p>
   </div>
 </footer>
