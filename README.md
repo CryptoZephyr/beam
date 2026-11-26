@@ -2,12 +2,13 @@
 
 **Kane checks the screen. Your app confirms it.**
 
-[Kane CLI](https://www.testmuai.com/support/docs/kane-cli-introduction/) judges a web app by what the page shows. The page can look right while the app is wrong:
+[Site](https://kane-beam.vercel.app) · [npm: `kane-beam`](https://www.npmjs.com/package/kane-beam) · MCP registry: `app.vercel.kane-beam/beam`
 
-- The total reads **$45.00**, but the order is sent for **$50.00**.
-- The page says **"Order placed"**, but `POST /api/orders` returned **500**.
+A coding agent adds a discount code to a checkout, writes a [Kane CLI](https://www.testmuai.com/support/docs/kane-cli-introduction/) test, runs it, and gets a green. Done.
 
-Kane passes both. Beam is the second witness. Your app reports its own truth through a small dev-only probe. Beam then weighs every Kane verdict against that truth, and against the failed requests in Kane's own evidence pack:
+Except the total reads **$45.00** while the order is sent for **$50.00**. And the page says **"Order placed"** while `POST /api/orders` returned **500**. Kane judged what the screen showed, and the screen looked right. The agent trusted the green.
+
+Beam is the second witness. Your app reports its own truth through a small dev-only probe. Beam then weighs every Kane verdict against that truth, and against the failed requests in Kane's own evidence pack:
 
 | Kane says | App says | Beam says |
 |---|---|---|
@@ -33,6 +34,12 @@ This adds the Beam skill and registers the `beam` MCP server for the agents it f
 - **Codex:** `config.toml`
 
 Run `npx kane-beam where` to see what it changed, and `npx kane-beam uninstall` to undo it all.
+
+**Any other MCP client:** add this server. It's also listed in the [MCP registry](https://registry.modelcontextprotocol.io) as `app.vercel.kane-beam/beam`.
+
+```json
+{ "mcpServers": { "beam": { "command": "npx", "args": ["-y", "kane-beam", "mcp"] } } }
+```
 
 ## Use it in 4 steps
 
@@ -113,6 +120,30 @@ node bin/kane-beam.mjs verify demo/checkout/tests/checkout_test.md --record
 ```
 
 The checkout has two bugs: it sends the subtotal instead of the discounted total, and it ignores a failed order request. Kane passes it, and Beam says **False green**. Run `npm run lab` to watch the same verify live in the browser at `localhost:4317`.
+
+## The agent loop, recorded
+
+On the checkout demo, Claude Code had only Beam's MCP tools and a customer's complaint. It called `beam_verify`, read `order.amount: expected 45, app reported 50` and the failed `POST /api/orders`, then changed the app and nothing in the tests:
+
+1. Charged the discounted total instead of the subtotal.
+2. Added the `SAVE10` code the server didn't know about.
+3. Made the page check the order request, so a failed order never says "Order placed".
+
+It verified again and got **Balanced**. The replays cost 0 Kane credits. The transcript and both results are in `demo/checkout/evidence/`.
+
+## What we measured about Kane
+
+Kane's verdict depends on how a check is worded. `beam.json` holds behaviors measured on paired pages: a correct page Kane should pass and a broken page it should fail. Recordings were made on Kane 0.10.9, then replayed on 0.10.9 and 0.10.8. Every result is on the [site](https://kane-beam.vercel.app), with the code Kane recorded.
+
+- **Plural counter ([Kane #254](https://github.com/LambdaTest/kane-cli/issues/254)):** `Verify the todo counter reads "1 item left".` passes a page that says "1 items left". `Verify the exact visible text of the todo counter is "1 item left".` fails it, as it should.
+- **Saved message over a failed request:** a check on the visible "Saved" passes a page whose save request failed. Wordings that ask Kane about the request itself catch the broken page, but also fail the correct one, because Kane can't tell which request was the save. That's the gap Beam's `{ "network": "no-failures" }` truth fills.
+
+## Limits
+
+- Desktop Chrome web apps. The probe needs the page to run in a dev build on your machine.
+- Truth is what you expose. Beam checks the values you name, the app's own requests and its JS errors, not everything the app does.
+- Version columns replay recordings made with Kane 0.10.9. They test how each version replays a check, not how it would author one.
+- Not every behavior in the matrix has been run yet. The site marks those as "Not run".
 
 ## Develop
 
