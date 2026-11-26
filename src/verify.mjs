@@ -1,6 +1,7 @@
 // One Beam verify: run a Kane test against the app and weigh Kane's verdict against the app's truth.
 import fs from 'node:fs';
 import path from 'node:path';
+import os from 'node:os';
 import { ensureBridge, getSnapshots, resetSnapshots, BRIDGE_PORT } from './bridge.mjs';
 import { readTruth, weigh, contractHash, truthFileFor } from './balance.mjs';
 import { runTest, verdictOf } from './kane.mjs';
@@ -64,7 +65,7 @@ export async function verify(testFile, { replayOnly = true, headed = false, acce
       kaneRun: { summary: run.summary, testUrl: run.testUrl, credits: run.credits || 0, replayed: run.replayDecisions, authored: run.authorDecisions, codeJs: run.codeJs },
       kanePack: pack ? { file: run.packPath && path.basename(run.packPath), failedRequests: pack.failedRequests, consoleErrors: pack.consoleErrors, error: pack.error } : null,
     };
-    if (run.packPath && fs.existsSync(run.packPath) && result.checks) result.beamVerdictFile = writeBeamVerdict(run.packPath, result);
+    if (run.packPath && fs.existsSync(run.packPath) && result.checks) result.beamVerdictFile = writeBeamVerdict(run.packPath, result).replace(os.homedir(), '~'); // no local user path in files that get committed
     if (!fs.existsSync(lockFile) || acceptChanges) fs.writeFileSync(lockFile, JSON.stringify({ hash: contractHash(file), at: result.at }, null, 2) + '\n');
     fs.writeFileSync(resultFileFor(file), JSON.stringify(result, null, 2) + '\n');
     return result;
