@@ -369,46 +369,61 @@ ${step(4, 'Verify', `<p>Kane runs the test in a real browser, and Beam weighs it
 }
 
 function aboutPage(data) {
+  const flow = (n, who, what) => `<li><span class="flow-n">${n}</span><h3>${who}</h3><p>${what}</p></li>`;
   const body = `
-<h1>How Beam works</h1>
-<p class="lede">A Kane check is only useful if it fails when the app is broken. Beam checks that, on real apps and on test pages with known answers.</p>
+<header class="phero">
+  <h1>How Beam works</h1>
+  <p class="lede">A Kane check is only useful if it fails when the app is broken. Beam makes sure it does, by asking the app itself.</p>
+</header>
 
 <section aria-labelledby="a1"><div class="scale" aria-hidden="true"></div>
-<h2 id="a1">The balance</h2>
-<ol class="steps">
-  <li><strong>Kane drives the real flow</strong> in a real browser and gives its verdict from what the page shows.</li>
-  <li><strong>Your app reports its own state</strong> during that same run, through the probe: exposed values, request status codes, errors, storage.</li>
-  <li><strong>Beam weighs the two</strong> against the truth you declared. <em>Balanced</em> when they agree. <em>False green</em> when Kane passed but the app says broken. <em>False red</em> when Kane failed but the app says working. <em>Couldn't run</em> is never counted either way.</li>
-  <li><strong>Your agent gets the difference</strong> through MCP, fixes the app and verifies again. It can't pass by editing the test: Beam hashes the test, its recording and its truth file, and refuses a run where they changed.</li>
+<h2 id="a1">The balance, in one run</h2>
+<ol class="flow">
+  ${flow(1, 'Kane drives the flow', 'In a real browser, Kane runs your test and gives its verdict from what the page shows.')}
+  ${flow(2, 'Your app reports', 'During that same run, the probe sends what the app actually did: the values you exposed, every request with its status, and JS errors.')}
+  ${flow(3, 'Beam weighs both', 'Against the truth you declared. Balanced when they agree. False green when Kane passed but the app is broken. False red when Kane failed but the app works.')}
+  ${flow(4, 'Your agent fixes it', "Through MCP, the agent reads which value disagreed, fixes the app and verifies again. It can't pass by editing the test: Beam refuses a run where the test, its recording or its truth file changed.")}
 </ol>
 </section>
 
-<section aria-labelledby="a2"><div class="scale" aria-hidden="true"></div>
-<h2 id="a2">The matrix: why a second pan matters</h2>
-<ol class="steps">
-  <li><strong>Two pages per behavior.</strong> A correct page and a broken twin that differs in one visible thing, so the right answer is known for both.</li>
-  <li><strong>Kane runs each wording on both.</strong> Balanced means it passed the correct page and failed the broken one.</li>
-  <li><strong>The agent repairs wrong wordings.</strong> When no wording is right, Claude Code reads what Kane did and proposes new ones, and Kane runs those too.</li>
-  <li><strong>Each Kane version gets a column.</strong> Checks are recorded with Kane ${esc(data.referenceVersion || '')} and replayed with healing off on each version, so older columns measure Kane's replay of those recordings.</li>
-</ol>
-<p>We also found that the same wording can record different reading code on different runs. One recording of the plural check read only the number and passed a broken page. Another read the whole label and caught it. That's why Beam doesn't rely on the wording alone.</p>
+<section aria-labelledby="a2" class="split"><div class="scale" aria-hidden="true"></div>
+<div><h2 id="a2">Inside Kane's own evidence</h2>
+<p>Every Kane run leaves a sealed evidence pack with its network log. Kane's verdict policies can't read that log yet (<a href="https://github.com/LambdaTest/kane-cli/issues/243">Kane #243</a>), so even Kane's strictest policy passes a checkout whose order request failed.</p>
+<p>Beam reads the pack too. On the demo checkout, Kane's own log holds the failed order and the wrong amount, and Kane still passed. Beam writes its verdict beside Kane's, in Kane's format, so CI can gate on it.</p>
+<p class="muted">The probe reports over a local WebSocket, so your app's values never end up in Kane's uploaded pack.</p></div>
+<div><p class="code-label">beam.verdict.json, beside Kane's verdicts</p><pre class="out"><code>{
+  "result": "fail",
+  "exit_code": 1,
+  "evaluator": { "name": "kane-beam",
+                 "kane_verdict": "PASS",
+                 "balance": "FALSE_GREEN" },
+  "failed_gates": [ "beam-2-order.amount",
+                    "beam-4-no-failed-requests" ]
+}</code></pre></div>
 </section>
 
 <section aria-labelledby="a3"><div class="scale" aria-hidden="true"></div>
-<h2 id="a3">Honesty notes</h2>
-<ul>
-  <li>The matrix uses small test pages in the repo, not real websites. The checkout and todo demos are small apps in the repo too.</li>
-  <li>A behavior from a Kane issue that Kane now gets right is shown as Balanced. That's a finding, not something to hide.</li>
-  <li>Kane reported ${esc(data.creditsReported)} credits for the matrix runs behind this page.</li>
-  <li>Beam is a separate open-source project. It isn't affiliated with TestMu AI.</li>
-</ul>
+<h2 id="a3">The matrix: measuring Kane itself</h2>
+<p class="lede">Kane's verdict also depends on how a check is worded. So we measured it.</p>
+<ol class="flow">
+  ${flow(1, 'Two pages per behavior', 'A correct page and a broken twin that differs in one visible thing, so the right answer is known for both.')}
+  ${flow(2, 'Each wording, both pages', 'Kane runs every wording on both. Balanced means it passed the correct page and failed the broken one.')}
+  ${flow(3, 'The agent tries again', 'When no wording is right, Claude Code reads what Kane did and proposes new wordings, and Kane runs those too.')}
+  ${flow(4, 'A column per version', `Checks are recorded with Kane ${esc(data.referenceVersion || '')} and replayed with healing off on each version.`)}
+</ol>
+<p>One finding: the same wording can record different reading code on different runs. One recording of the plural check read only the number and passed a broken page. Another read the whole label and caught it. That's why Beam doesn't trust the wording alone.</p>
 </section>
 
-<section id="add"><div class="scale" aria-hidden="true"></div>
-<h2>Add a behavior to the matrix</h2>
-<p>Know a Kane check that goes wrong? Open an issue on <a href="https://github.com/CryptoZephyr/beam/issues">Beam's repo</a> with a link to the Kane issue, or draft it yourself:</p>
-${copyBox('npm run add-issue -- https://github.com/LambdaTest/kane-cli/issues/<number>')}
-<p>The agent drafts the two pages. Nothing runs until a person approves them.</p>
+<section aria-labelledby="a4"><div class="scale" aria-hidden="true"></div>
+<h2 id="a4">Honesty notes</h2>
+<ul class="notes">
+  <li>The matrix uses small test pages in the repo, not real websites. The checkout demo is a small app in the repo too.</li>
+  <li>A behavior from a Kane issue that Kane now gets right is shown as Balanced. That's a finding, not something to hide.</li>
+  <li>Behaviors we haven't measured yet are shown as Not run.</li>
+  <li>Kane reported at least ${esc(data.creditsReported)} credits for the matrix runs behind this site.</li>
+  <li>Beam is a separate open-source project. It isn't affiliated with TestMu AI.</li>
+</ul>
+<p>Know a Kane check that goes wrong? <a href="https://github.com/CryptoZephyr/beam/issues">Open an issue on Beam's repo</a> with a link to the Kane issue.</p>
 </section>`;
   return layout({ title: 'How it works · Beam', body, page: 'about' });
 }
