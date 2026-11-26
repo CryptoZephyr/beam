@@ -54,7 +54,7 @@ function writeFor(agent, skill, dataText) {
 
 // How agents should start the Beam MCP server: npx when installed from npm, else this checkout.
 function mcpCommand() {
-  if (/[\\/]_npx[\\/]/.test(PKG_ROOT)) return { command: 'npx', args: ['-y', 'kane-beam', 'mcp'] };
+  if (/[\\/]_npx[\\/]/.test(PKG_ROOT)) return { command: 'npx', args: ['-y', 'github:CryptoZephyr/beam', 'mcp'] };
   return { command: process.execPath, args: [path.join(PKG_ROOT, 'bin', 'kane-beam.mjs'), 'mcp'] };
 }
 
@@ -123,7 +123,7 @@ async function install(args, out) {
   out(`Beam ${version()} · data from ${dataDate(data)} (${data.behaviors.length} behaviors, Kane ${data.versions.join(', ')})\n`);
   if (!agents.length) {
     out('No supported agent found (Claude Code, Codex or Cursor).');
-    out('Install into a folder instead: npx kane-beam install --dir .');
+    out('Install into a folder instead: npx github:CryptoZephyr/beam install --dir .');
     return 1;
   }
   out(`Found: ${agents.map((a) => a.name).join(', ')}`);
@@ -146,16 +146,16 @@ async function install(args, out) {
   state.dataDate = dataDate(data);
   saveState(state);
   out(`\nInstalled for ${agents.map((a) => a.name).join(' and ')}.`);
-  out('Next: add the probe to your app (npx kane-beam init), then ask your agent to build a feature and verify it with Beam.');
-  out(`Or try: npx kane-beam check "Verify the todo counter reads '1 item left'"`);
-  out('Undo anytime: npx kane-beam uninstall');
+  out('Next: add the probe to your app (npx github:CryptoZephyr/beam init), then ask your agent to build a feature and verify it with Beam.');
+  out(`Or try: npx github:CryptoZephyr/beam check "Verify the todo counter reads '1 item left'"`);
+  out('Undo anytime: npx github:CryptoZephyr/beam uninstall');
   return 0;
 }
 
 async function update(args, out) {
   const state = loadState();
   const dataFiles = state.files.filter((f) => f.endsWith('beam.json'));
-  if (!dataFiles.length) { out('Beam isn\'t installed yet. Run: npx kane-beam install'); return 1; }
+  if (!dataFiles.length) { out('Beam isn\'t installed yet. Run: npx github:CryptoZephyr/beam install'); return 1; }
   let text;
   try {
     const r = await fetch(`${SITE}/beam.json`, { signal: AbortSignal.timeout(15000) });
@@ -180,7 +180,7 @@ async function update(args, out) {
 
 function check(args, out) {
   const objective = args._.join(' ').trim();
-  if (!objective) { out('Usage: npx kane-beam check "<Kane objective>"'); return 2; }
+  if (!objective) { out('Usage: npx github:CryptoZephyr/beam check "<Kane objective>"'); return 2; }
   const data = readData();
   const m = checkObjective(objective, data);
   if (m.kind === 'known-wrong') {
@@ -241,7 +241,7 @@ export async function main(argv, out = console.log) {
     bridge: async () => { const { startBridge, BRIDGE_URL } = await import('./bridge.mjs'); await startBridge(); out(`Beam bridge on ${BRIDGE_URL} (Ctrl+C to stop)`); return new Promise(() => {}); },
     verify: async (a) => {
       const { verify, formatResult } = await import('./verify.mjs');
-      if (!a._[0]) { out('Usage: npx kane-beam verify path/to/name_test.md [--record] [--accept-changes]'); return 2; }
+      if (!a._[0]) { out('Usage: npx github:CryptoZephyr/beam verify path/to/name_test.md [--record] [--accept-changes]'); return 2; }
       const r = await verify(a._[0], { replayOnly: !a.record, acceptChanges: a.acceptChanges, headed: a.headed });
       out(formatResult(r));
       return r.state === 'BALANCED' ? 0 : 1;
@@ -253,15 +253,15 @@ export async function main(argv, out = console.log) {
       'Beam: Kane checks the screen. Your app confirms it.',
       '',
       'Usage:',
-      '  npx kane-beam install      add the Beam MCP server and skill to Claude Code, Codex or Cursor',
-      '  npx kane-beam init         add the Beam probe to your app\'s dev build',
-      '  npx kane-beam verify X     run a Kane test and weigh it against your app\'s own truth',
-      '  npx kane-beam check "..."  look up a Kane wording in Beam\'s measured results',
-      '  npx kane-beam mcp          the MCP server (your agent starts this)',
-      '  npx kane-beam bridge       the bridge the probe reports to (verify and mcp start it for you)',
-      '  npx kane-beam update       get the latest measured results',
-      '  npx kane-beam uninstall    remove everything install added',
-      '  npx kane-beam where        show what is installed',
+      '  npx github:CryptoZephyr/beam install      add the Beam MCP server and skill to Claude Code, Codex or Cursor',
+      '  npx github:CryptoZephyr/beam init         add the Beam probe to your app\'s dev build',
+      '  npx github:CryptoZephyr/beam verify X     run a Kane test and weigh it against your app\'s own truth',
+      '  npx github:CryptoZephyr/beam check "..."  look up a Kane wording in Beam\'s measured results',
+      '  npx github:CryptoZephyr/beam mcp          the MCP server (your agent starts this)',
+      '  npx github:CryptoZephyr/beam bridge       the bridge the probe reports to (verify and mcp start it for you)',
+      '  npx github:CryptoZephyr/beam update       get the latest measured results',
+      '  npx github:CryptoZephyr/beam uninstall    remove everything install added',
+      '  npx github:CryptoZephyr/beam where        show what is installed',
     ].join('\n'));
     return cmd ? 2 : 0;
   }

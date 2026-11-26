@@ -15,7 +15,7 @@ You have Beam's MCP tools: `beam_verify`, `beam_app_state`, `beam_app_history`, 
    ```js
    if (window.beam) beam.expose('order.amount', () => lastOrder.amount);
    ```
-   Expose what the code *knows* (state, the amount actually sent, the saved record), not what the screen shows. If the page doesn't load the probe yet, run `npx kane-beam init` once.
+   Expose what the code *knows* (state, the amount actually sent, the saved record), not what the screen shows. If the page doesn't load the probe yet, run `npx github:CryptoZephyr/beam init` once.
 2. **Write the Kane test** (`name_test.md`) for the user flow. Look up your check sentence with `beam_check_wording` first and use the measured wording when there is one.
 3. **Declare the truth** in `name_test.beam.json`, next to the test:
    ```json

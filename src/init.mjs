@@ -1,4 +1,4 @@
-// npx kane-beam init: add the Beam probe to an app's dev build, and show how to declare truth.
+// npx github:CryptoZephyr/beam init: add the Beam probe to an app's dev build, and show how to declare truth.
 import fs from 'node:fs';
 import path from 'node:path';
 
@@ -65,7 +65,7 @@ export async function init(args, out) {
   out("     beam.expose('cart.total', () => cart.total)");
   out('2. Next to a Kane test (name_test.md), write name_test.beam.json:');
   out('     { "truth": [ { "key": "cart.total", "equals": 45 }, { "network": "no-failures" } ] }');
-  out('3. Run it: npx kane-beam verify path/to/name_test.md --record');
+  out('3. Run it: npx github:CryptoZephyr/beam verify path/to/name_test.md --record');
   if (changed) out(`\nTo undo: remove the Beam line from ${rel(changed)}.`);
   return 0;
 }
