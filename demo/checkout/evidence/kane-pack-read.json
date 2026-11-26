@@ -1,0 +1,58 @@
+{
+  "note": "What Beam read from Kane's own evidence pack on a replay of the buggy checkout (Kane 0.10.9, 0 credits). Kane passed the test.",
+  "at": "2026-11-26T13:14:30.708Z",
+  "kane": "PASS",
+  "beam": "FALSE_GREEN",
+  "kaneRun": {
+    "replayed": 1,
+    "authored": 0,
+    "credits": 0
+  },
+  "kanePack": {
+    "file": "e1f9dec4-3d16-4810-a2c6-c0b6ca14d444.evidence",
+    "failedRequests": [
+      {
+        "method": "POST",
+        "url": "http://127.0.0.1:4402/api/orders",
+        "status": 500,
+        "body": "{\"items\":[\"guji-250\",\"huila-250\"],\"code\":\"SAVE10\",\"amount\":50}"
+      }
+    ],
+    "consoleErrors": [
+      "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "Failed to load resource: the server responded with a status of 500 (Internal Server Error)"
+    ]
+  },
+  "checks": [
+    {
+      "what": "cart.total",
+      "expected": 45,
+      "actual": 45,
+      "ok": true
+    },
+    {
+      "what": "order.amount",
+      "expected": 45,
+      "actual": 50,
+      "ok": false
+    },
+    {
+      "what": "order.status",
+      "expected": "placed",
+      "actual": "placed",
+      "ok": true
+    },
+    {
+      "what": "no failed requests",
+      "expected": "none",
+      "actual": "POST http://127.0.0.1:4402/api/orders → 500",
+      "ok": false
+    },
+    {
+      "what": "no JS errors",
+      "expected": "none",
+      "actual": "none",
+      "ok": true
+    }
+  ]
+}

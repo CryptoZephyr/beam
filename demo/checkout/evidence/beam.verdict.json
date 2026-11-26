@@ -1,0 +1,69 @@
+{
+  "result": "fail",
+  "exit_code": 1,
+  "evaluated_at": "2026-11-26T13:14:30.708Z",
+  "evaluator": {
+    "name": "kane-beam",
+    "kane_verdict": "PASS",
+    "balance": "FALSE_GREEN"
+  },
+  "pack": {
+    "path": "e1f9dec4-3d16-4810-a2c6-c0b6ca14d444.evidence"
+  },
+  "policy": {
+    "id": "beam"
+  },
+  "failed_gates": [
+    "beam-2-order.amount",
+    "beam-4-no-failed-requests"
+  ],
+  "warnings": [],
+  "errored_gates": [],
+  "gates": [
+    {
+      "id": "beam-1-cart.total",
+      "expr": "app truth: cart.total",
+      "op": "equals",
+      "expected": 45,
+      "actual": 45,
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "id": "beam-2-order.amount",
+      "expr": "app truth: order.amount",
+      "op": "equals",
+      "expected": 45,
+      "actual": 50,
+      "severity": "blocking",
+      "status": "fail"
+    },
+    {
+      "id": "beam-3-order.status",
+      "expr": "app truth: order.status",
+      "op": "equals",
+      "expected": "placed",
+      "actual": "placed",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "id": "beam-4-no-failed-requests",
+      "expr": "app truth: no failed requests",
+      "op": "equals",
+      "expected": "none",
+      "actual": "POST http://127.0.0.1:4402/api/orders → 500",
+      "severity": "blocking",
+      "status": "fail"
+    },
+    {
+      "id": "beam-5-no-JS-errors",
+      "expr": "app truth: no JS errors",
+      "op": "equals",
+      "expected": "none",
+      "actual": "none",
+      "severity": "blocking",
+      "status": "pass"
+    }
+  ]
+}
