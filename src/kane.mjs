@@ -47,16 +47,22 @@ export function runTest(kane, file, { replay = false, headed = false, onStep, ti
       env: { ...process.env, KANE_CLI_USER_AGENT: 'kane-beam' },
       stdio: ['ignore', 'pipe', 'pipe'],
       windowsHide: true,
+      detached: process.platform !== 'win32',
     });
     let stdout = '';
     let stderr = '';
     let buf = '';
-    const timer = setTimeout(() => child.kill(), timeoutMs);
+    // Kill Kane's whole tree, or its Chrome lingers and holds a debug port (9222-9230) for the next run.
+    const killTree = () => {
+      if (process.platform === 'win32') spawn('taskkill', ['/PID', String(child.pid), '/T', '/F'], { stdio: 'ignore', windowsHide: true });
+      else try { process.kill(-child.pid, 'SIGKILL'); } catch { child.kill('SIGKILL'); }
+    };
+    const timer = setTimeout(killTree, timeoutMs);
     // After Kane reports its result, stop waiting if it goes quiet (background uploads can hang).
     let idle = null;
     const armIdle = () => {
       clearTimeout(idle);
-      if (/"type":"(run_end|test_md_summary|test_md_done)"/.test(stdout)) idle = setTimeout(() => child.kill(), 45_000);
+      if (/"type":"(run_end|test_md_summary|test_md_done)"/.test(stdout)) idle = setTimeout(killTree, 45_000);
     };
     child.stdout.on('data', (d) => {
       const s = d.toString();
