@@ -38,9 +38,11 @@ export async function init(args, out) {
   if (found.kind === 'html') {
     const html = fs.readFileSync(found.file, 'utf8');
     if (html.includes(MARK)) out(`The probe is already in ${rel(found.file)}.`);
-    else if (!/<head[^>]*>/i.test(html)) out(`Couldn't find <head> in ${rel(found.file)}. Add this line inside it:\n  ${TAG}`);
+    else if (!/<head[^>]*>|<html[^>]*>/i.test(html)) out(`Couldn't find <head> in ${rel(found.file)}. Add this line inside it:\n  ${TAG}`);
     else {
-      fs.writeFileSync(found.file, html.replace(/<head[^>]*>/i, (m) => `${m}\n${TAG}`));
+      // No <head>? Browsers accept one right after <html>, so add it there.
+      const next = /<head[^>]*>/i.test(html) ? html.replace(/<head[^>]*>/i, (m) => `${m}\n${TAG}`) : html.replace(/<html[^>]*>/i, (m) => `${m}\n<head>\n${TAG}\n</head>`);
+      fs.writeFileSync(found.file, next);
       changed = found.file;
       out(`Added the probe to ${rel(found.file)}. It does nothing unless the page is on your own machine.`);
     }
