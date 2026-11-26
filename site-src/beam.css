@@ -244,3 +244,77 @@ main > h1:first-child { margin-top: 40px; }
 .steps-live { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; font-size: 14.5px; color: rgb(233 231 226 / 0.85); min-height: 3em; }
 .steps-live li:last-child { color: var(--on-frame); font-weight: 600; }
 select { font: 16px var(--body); color: var(--text); background: var(--sheet); border: 1px solid var(--line); border-radius: var(--r); padding: 8px 10px; }
+
+/* ---- Revision 3 (26 Nov): a product page, not a docs page. Same tokens, bigger scale. ---- */
+body { font-size: 18px; }
+.wrap { max-width: 1240px; padding: 0 32px; }
+h2 { font-size: clamp(30px, 3.6vw, 44px); margin-bottom: 14px; }
+h3 { font-size: 22px; }
+section > .scale { margin: 88px 0 26px; }
+.lede { font-size: 20px; }
+
+.hero { max-width: none; display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: 48px; align-items: center; padding: 72px 0 24px; }
+.hero h1 { font-size: clamp(46px, 6.6vw, 92px); line-height: 0.95; margin-bottom: 22px; }
+.hero h1 em { font-style: normal; color: var(--streak-text); display: block; }
+.hero .lede { font-size: 21px; }
+.hero .cmd { margin-top: 26px; }
+.hero-links { display: flex; flex-wrap: wrap; gap: 10px 26px; margin: 22px 0 0; font-weight: 600; font-size: 16px; }
+
+.hero-balance { margin: 0; }
+.hero-balance > svg { width: 100%; height: auto; display: block; color: var(--text); }
+.hero-balance .post, .hero-balance .pivot { fill: currentColor; }
+.hero-balance .arm { stroke: currentColor; stroke-width: 8; stroke-linecap: square; }
+.hero-balance .needle { fill: var(--streak); }
+.hero-balance line:not(.arm) { stroke: currentColor; stroke-width: 1.5; opacity: 0.6; }
+.hero-balance .dish { fill: var(--frame); stroke: currentColor; stroke-width: 2; }
+.hero-balance .hb-t { font: 800 22px var(--heading); fill: var(--text); letter-spacing: 0.02em; }
+.hero-balance .hb-l { font: 600 13px var(--mono); }
+.hero-balance .pass .hb-l { fill: var(--true); }
+.hero-balance .fail .hb-l { fill: var(--false); }
+.hero-balance figcaption { display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center; justify-content: center; margin-top: 10px; font-size: 17px; }
+.hero-balance .reading { font-size: 17px; }
+@media (prefers-color-scheme: light) { .hero-balance .dish { fill: var(--sheet); } }
+
+.balance { padding: 26px 30px 22px; }
+.pan-h { font-size: 28px; }
+.pan ul { font-size: 16.5px; gap: 9px; }
+.app .what, .app .val { font-size: 14.5px; }
+
+.how.cols { max-width: none; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+.how.cols li { grid-template-columns: 1fr; background: var(--sheet); border: 1px solid var(--line); border-radius: var(--r); padding: 22px 22px 16px; align-content: start; }
+.how.cols li::before { grid-row: auto; font-size: 46px; margin-bottom: 12px; }
+.how.cols pre { margin-top: auto; }
+
+.loop { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); gap: 36px; align-items: center; margin-top: 10px; }
+.loop .changes { list-style: none; counter-reset: ch; padding: 0; margin: 0; display: grid; gap: 18px; font-size: 18px; }
+.loop .changes li { counter-increment: ch; display: grid; grid-template-columns: 34px 1fr; margin: 0; }
+.loop .changes li::before { content: counter(ch); font: 800 26px/1 var(--heading); color: var(--streak-text); }
+.loop .balance { margin: 0; }
+
+.tools-h { margin: 44px 0 14px; }
+.tools { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; margin: 0; }
+.tools div { background: var(--sheet); border: 1px solid var(--line); border-radius: var(--r); padding: 16px 18px; }
+.tools dt code { font-size: 13.5px; color: var(--streak-text); }
+.tools dd { margin: 8px 0 0; color: var(--muted); font-size: 16px; }
+
+.contrast li { padding: 18px 22px; }
+.contrast code { font-size: 15px; }
+.scope { margin-top: 26px; }
+
+@media (max-width: 960px) {
+  .hero, .loop { grid-template-columns: minmax(0, 1fr); }
+  .hero { padding-top: 40px; gap: 28px; }
+  .how.cols, .tools { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 640px) {
+  body { font-size: 16.5px; }
+  .wrap { padding: 0 18px; }
+  .how.cols, .tools { grid-template-columns: 1fr; }
+  section > .scale { margin-top: 56px; }
+  .balance { padding: 20px 18px 16px; }
+}
+@media (max-width: 640px) {
+  .hero h1 { font-size: 44px; }
+  .hero-copy, .hero-balance { min-width: 0; }
+  .hero-balance figcaption { font-size: 15.5px; }
+}

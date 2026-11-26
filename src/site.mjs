@@ -166,22 +166,57 @@ function balanceFrame(r, { caption }) {
 </figure>`;
 }
 
+function heroBalance() {
+  // Pivot (300,70). Beam 360 wide, tipped 9 degrees down to the left: the pass side is heavy.
+  const a = (9 * Math.PI) / 180;
+  const L = [300 - 180 * Math.cos(a), 70 + 180 * Math.sin(a)];
+  const R = [300 + 180 * Math.cos(a), 70 - 180 * Math.sin(a)];
+  const pan = ([x, y], cls, title, lines) => `
+    <g class="hb-pan ${cls}">
+      <line x1="${x}" y1="${y}" x2="${x - 62}" y2="${y + 92}"/><line x1="${x}" y1="${y}" x2="${x + 62}" y2="${y + 92}"/>
+      <path d="M${x - 82} ${y + 92} H${x + 82} A82 34 0 0 1 ${x - 82} ${y + 92} Z" class="dish"/>
+      <text x="${x}" y="${y + 82}" class="hb-t" text-anchor="middle">${title}</text>
+      ${lines.map((t, i) => `<text x="${x}" y="${y + 152 + i * 20}" class="hb-l" text-anchor="middle">${t}</text>`).join('')}
+    </g>`;
+  return `
+<figure class="hero-balance" aria-label="Kane passed the checkout, but the app reports it charged 50 dollars and the order request failed: a false green.">
+  <svg viewBox="0 0 600 340" role="img" aria-hidden="true">
+    <path d="M292 70 L308 70 L312 286 L288 286 Z" class="post"/>
+    <rect x="236" y="286" width="128" height="14" class="post"/>
+    <line x1="${L[0]}" y1="${L[1]}" x2="${R[0]}" y2="${R[1]}" class="arm"/>
+    <circle cx="300" cy="70" r="9" class="pivot"/>
+    <path d="M300 92 L294 112 L306 112 Z" class="needle"/>
+    ${pan(L, 'pass', 'Kane', ['passed ✓'])}
+    ${pan(R, 'fail', 'Your app', ['charged $50', 'order request 500'])}
+  </svg>
+  <figcaption>${pill('FALSE_GREEN')} <span>Kane passed the checkout. The app says it's broken.</span></figcaption>
+</figure>`;
+}
+
 function indexPage(data, { lab }) {
   const n = data.behaviors.length;
   const issues = data.behaviors.filter((b) => b.issue).length;
   const demo = checkoutDemo();
   const body = `
 <section class="hero">
-  <h1>Kane checks the screen. Your app confirms it.</h1>
-  <p class="lede">Beam weighs every Kane verdict against what your app knows to be true, and hands any difference to your coding agent.</p>
-  ${copyBox(INSTALL)}
+  <div class="hero-copy">
+    <h1>Kane checks the screen. <em>Your app confirms it.</em></h1>
+    <p class="lede">Beam weighs every Kane verdict against what your app knows to be true, and hands any difference to your coding agent.</p>
+    ${copyBox(INSTALL)}
+    <p class="hero-links"><a href="#how">How the balance works</a><a href="#matrix">See the matrix</a><a href="https://github.com/CryptoZephyr/beam">Source on GitHub</a></p>
+  </div>
+  ${heroBalance()}
 </section>
 ${lab ? liveVerify() : ''}
-${balanceFrame(demo.before, { caption: 'A real Beam run on the Northwind Coffee checkout demo' })}
+<section aria-labelledby="run"><div class="scale" aria-hidden="true"></div>
+  <h2 id="run">A real run, both pans</h2>
+  <p class="lede">The Northwind Coffee checkout demo, with two planted bugs. Kane reads the screen and passes. The app reports what it actually did.</p>
+  ${balanceFrame(demo.before, { caption: 'Beam verify on the checkout demo, before the fix' })}
+</section>
 
 <section aria-labelledby="how"><div class="scale" aria-hidden="true"></div>
   <h2 id="how">How the balance works</h2>
-  <ol class="how">
+  <ol class="how cols">
     <li><h3>Your app reports its truth</h3><p>One script tag in your dev build, added by <code>npx github:CryptoZephyr/beam init</code>. Expose what the code knows, and Beam also records the app's own requests, errors and saved data.</p><pre><code>beam.expose('order.amount', () => lastOrder.amount)</code></pre></li>
     <li><h3>You say what must be true</h3><p>Next to a Kane test, a small file lists the truth that has to hold when the check passes.</p><pre><code>{ "truth": [ { "key": "order.amount", "equals": 45 },
             { "network": "no-failures" } ] }</code></pre></li>
@@ -193,12 +228,21 @@ ${balanceFrame(demo.before, { caption: 'A real Beam run on the Northwind Coffee 
   <h2 id="loop">Your agent closes the loop</h2>
   <p class="lede">With Beam's MCP server, a coding agent calls <code>beam_verify</code>, reads which value disagrees, fixes the app and verifies again. It can't pass by editing the test: Beam refuses runs where the test changed.</p>
   <p>On the checkout demo, Claude Code, given only Beam's tools and a customer's complaint, made three changes in the app and nothing in the tests:</p>
-  <ul class="changes">
-    <li>Charged the discounted total instead of the subtotal.</li>
-    <li>Added the <code>SAVE10</code> code the server didn't know about.</li>
-    <li>Made the page check the order request, so a failed order never says “Order placed”.</li>
-  </ul>
-  ${balanceFrame(demo.after, { caption: "The same check after the agent's fix" })}
+  <div class="loop">
+    <ol class="changes">
+      <li>Charged the discounted total instead of the subtotal.</li>
+      <li><span>Added the <code>SAVE10</code> code the server didn't know about.</span></li>
+      <li>Made the page check the order request, so a failed order never says “Order placed”.</li>
+    </ol>
+    ${balanceFrame(demo.after, { caption: "The same check after the agent's fix" })}
+  </div>
+  <h3 class="tools-h">The MCP tools your agent gets</h3>
+  <dl class="tools">
+    <div><dt><code>beam_verify</code></dt><dd>Runs a Kane test and weighs it against the app.</dd></div>
+    <div><dt><code>beam_app_state</code></dt><dd>The app's latest reported values.</dd></div>
+    <div><dt><code>beam_app_history</code></dt><dd>Snapshots over time, for when did it go wrong.</dd></div>
+    <div><dt><code>beam_check_wording</code></dt><dd>Whether a Kane wording is a measured false green, and the one that works.</dd></div>
+  </dl>
 </section>
 
 <section aria-labelledby="why"><div class="scale" aria-hidden="true"></div>
