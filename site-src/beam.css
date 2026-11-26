@@ -1,4 +1,4 @@
-/* Beam design system: Touchstone (docs/DESIGN_SYSTEM.md, locked 25 Nov 2026).
+/* Beam design system: Touchstone, locked 25 Nov 2026.
    Dark first: the page is the touchstone, the gold streak marks what you operate. */
 
 @font-face { font-family: "Big Shoulders Display"; src: url("fonts/big-shoulders-display.woff2") format("woff2"); font-weight: 100 900; font-display: swap; }
@@ -318,3 +318,25 @@ section > .scale { margin: 88px 0 26px; }
   .hero-copy, .hero-balance { min-width: 0; }
   .hero-balance figcaption { font-size: 15.5px; }
 }
+
+/* Footer: a closing hero with the path to a first verdict (revision 3). */
+.foot { margin-top: 120px; padding-bottom: 8px; }
+.foot > .scale { color: var(--on-frame); opacity: 0.35; }
+.foot-hero { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 56px; align-items: start; padding-top: 72px; padding-bottom: 64px; }
+.foot-hero h2 { font-size: clamp(40px, 5.4vw, 72px); line-height: 0.95; margin: 0 0 18px; color: var(--on-frame); }
+.foot-lede { font-size: 20px; color: rgb(233 231 226 / 0.75); margin: 0 0 24px; max-width: 46ch; }
+.foot .cmd { background: var(--page); }
+@media (prefers-color-scheme: light) { .foot .cmd { background: #22262B; } }
+.foot-steps { list-style: none; counter-reset: fs; margin: 0; padding: 0; display: grid; gap: 0; }
+.foot-steps li { counter-increment: fs; display: grid; grid-template-columns: 48px 1fr; gap: 4px 0; padding: 16px 0; border-top: 1px solid rgb(233 231 226 / 0.14); }
+.foot-steps li:last-child { border-bottom: 1px solid rgb(233 231 226 / 0.14); }
+.foot-steps li::before { content: counter(fs); grid-row: span 2; font: 800 30px/1 var(--heading); color: var(--streak); }
+.foot-steps code { font-size: 14px; color: var(--on-frame); }
+.foot-steps span { font-size: 16px; color: rgb(233 231 226 / 0.7); }
+.foot-base { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 28px; padding-top: 20px; padding-bottom: 20px; border-top: 1px solid rgb(233 231 226 / 0.14); font-size: 14.5px; }
+.foot-base .brand { font-size: 20px; gap: 8px; }
+.foot-base nav { display: flex; flex-wrap: wrap; gap: 8px 22px; }
+.foot-base nav a { color: var(--on-frame); text-decoration: none; font-weight: 600; }
+.foot-base nav a:hover { text-decoration: underline; text-decoration-color: var(--streak); }
+.foot-base p { margin: 0 0 0 auto; color: rgb(233 231 226 / 0.6); }
+@media (max-width: 960px) { .foot-hero { grid-template-columns: minmax(0, 1fr); gap: 32px; padding-top: 48px; } .foot-base p { margin-left: 0; } }

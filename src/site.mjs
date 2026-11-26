@@ -27,7 +27,7 @@ const STATE_HELP = {
   NOT_RUN: 'Not run on this version yet.',
 };
 
-// The beam reading: glyph + word, never colour alone (DESIGN_SYSTEM.md section 7).
+// The beam reading: glyph + word, never colour alone (the Touchstone design system).
 export function beamGlyph(state) {
   const beam = state === 'FALSE_GREEN' ? 'M2 7.6 18 3.4l.4 1.5L2.4 9.1z' : state === 'FALSE_RED' ? 'M2 3.4l16 4.2-.4 1.5L1.6 4.9z' : 'M2 5h16v1.6H2z';
   const dashed = state === 'ERROR';
@@ -67,10 +67,27 @@ function layout({ title, body, depth = 0, lab = false, page = '' }) {
 <main id="main" class="wrap">
 ${body}
 </main>
-<footer class="foot"><div class="wrap">
-  <p>Beam measures Kane CLI on small pages with known answers. Every result links to the Kane run and the public Kane issue behind it. Not affiliated with TestMu AI.</p>
-  <p>© 2026 Beam. MIT Licensed. <a href="https://github.com/CryptoZephyr/beam">Source</a>, <a href="${up}beam.json">beam.json</a>, <a href="https://github.com/CryptoZephyr/beam/blob/main/docs/DESIGN_SYSTEM.md">Design system</a></p>
-</div></footer>
+<footer class="foot">
+  <div class="scale" aria-hidden="true"></div>
+  <div class="wrap foot-hero">
+    <div class="foot-copy">
+      <h2>Put a second pan on your app.</h2>
+      <p class="foot-lede">Four steps to your first verdict. Works with Claude Code, Cursor and Codex. Replays cost no Kane credits.</p>
+      ${copyBox(INSTALL)}
+    </div>
+    <ol class="foot-steps">
+      <li><code>npx kane-beam install</code><span>Adds Beam's MCP server and skill to your coding agent.</span></li>
+      <li><code>npx kane-beam init</code><span>Adds the dev-only probe to your app.</span></li>
+      <li><code>beam.expose('order.amount', …)</code><span>Next to the feature, expose what the code knows.</span></li>
+      <li><code>npx kane-beam verify your_test.md</code><span>Kane runs, Beam weighs. Or ask your agent to.</span></li>
+    </ol>
+  </div>
+  <div class="wrap foot-base">
+    <a class="brand" href="${up}index.html" aria-label="Beam home"><svg width="20" height="20" aria-hidden="true" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M2 6 6 2H18L22 6V18L18 22H6L2 18ZM4 6.83 6.83 4H17.17L20 6.83V17.17L17.17 20H6.83L4 17.17Z M6 7.5H18V9H6ZM11.25 9H12.75V16H11.25ZM8.5 16H15.5V17.5H8.5ZM7.4 9H8.6V11.5H7.4ZM15.4 9H16.6V11.5H15.4ZM5.5 11.5H10.5A2.5 2.5 0 0 1 5.5 11.5ZM13.5 11.5H18.5A2.5 2.5 0 0 1 13.5 11.5Z"/></svg>Beam</a>
+    <nav aria-label="Footer"><a href="${up}install.html">Set up</a><a href="${up}about.html">How it works</a><a href="https://github.com/CryptoZephyr/beam">GitHub</a><a href="https://www.npmjs.com/package/kane-beam">npm</a><a href="${up}beam.json">beam.json</a></nav>
+    <p>MIT licensed. Built for the KaneCLI hackathon. Not affiliated with TestMu AI.</p>
+  </div>
+</footer>
 ${lab ? `<script type="module" src="${up}lab.js"></script>` : ''}
 <script>
 document.querySelectorAll('[data-copy]').forEach(b=>b.addEventListener('click',async()=>{try{await navigator.clipboard.writeText(b.dataset.copy);const t=b.textContent;b.textContent='Copied';b.setAttribute('aria-live','polite');setTimeout(()=>b.textContent=t,1500)}catch{}}));
