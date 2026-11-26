@@ -23,7 +23,7 @@ Your coding agent (Claude Code, Cursor or Codex) runs this loop for you through 
 You need Node 20+ and [Kane CLI](https://www.testmuai.com/support/docs/kane-cli-introduction/) signed in (`kane-cli login`).
 
 ```powershell
-npx github:CryptoZephyr/beam install
+npx kane-beam install
 ```
 
 This adds the Beam skill and registers the `beam` MCP server for the agents it finds:
@@ -32,14 +32,14 @@ This adds the Beam skill and registers the `beam` MCP server for the agents it f
 - **Cursor:** `~/.cursor/mcp.json`
 - **Codex:** `config.toml`
 
-Run `npx github:CryptoZephyr/beam where` to see what it changed, and `npx github:CryptoZephyr/beam uninstall` to undo it all.
+Run `npx kane-beam where` to see what it changed, and `npx kane-beam uninstall` to undo it all.
 
 ## Use it in 4 steps
 
 **1. Add the probe to your app's dev build** (once per app):
 
 ```powershell
-npx github:CryptoZephyr/beam init
+npx kane-beam init
 ```
 
 This adds one script tag (or a loader behind `import.meta.env.DEV`). The probe only runs on a page served from your own machine. It reports to a bridge on `127.0.0.1:4330`, which checks the address and a token you never have to handle.
@@ -70,7 +70,7 @@ Each truth item takes one of these forms: `equals`, `min` (at least this number)
 **4. Verify:**
 
 ```powershell
-npx github:CryptoZephyr/beam verify tests/checkout_test.md --record
+npx kane-beam verify tests/checkout_test.md --record
 ```
 
 - **`--record`:** use it only the first time. Kane writes the test's recording, which costs credits.

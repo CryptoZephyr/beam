@@ -5,7 +5,7 @@ import { buildCompat } from './compat.mjs';
 import { ROOT, SITE_DIR } from './paths.mjs';
 
 export const SITE_URL = process.env.BEAM_SITE_URL || 'https://kane-beam.vercel.app';
-const INSTALL = 'npx github:CryptoZephyr/beam install';
+const INSTALL = 'npx kane-beam install';
 
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
 
@@ -217,10 +217,10 @@ ${lab ? liveVerify() : ''}
 <section aria-labelledby="how"><div class="scale" aria-hidden="true"></div>
   <h2 id="how">How the balance works</h2>
   <ol class="how cols">
-    <li><h3>Your app reports its truth</h3><p>One script tag in your dev build, added by <code>npx github:CryptoZephyr/beam init</code>. Expose what the code knows, and Beam also records the app's own requests, errors and saved data.</p><pre><code>beam.expose('order.amount', () => lastOrder.amount)</code></pre></li>
+    <li><h3>Your app reports its truth</h3><p>One script tag in your dev build, added by <code>npx kane-beam init</code>. Expose what the code knows, and Beam also records the app's own requests, errors and saved data.</p><pre><code>beam.expose('order.amount', () => lastOrder.amount)</code></pre></li>
     <li><h3>You say what must be true</h3><p>Next to a Kane test, a small file lists the truth that has to hold when the check passes.</p><pre><code>{ "truth": [ { "key": "order.amount", "equals": 45 },
             { "network": "no-failures" } ] }</code></pre></li>
-    <li><h3>Kane runs, Beam weighs</h3><p>Kane drives the real flow in a real browser. Beam compares its verdict with what the app reported during that same run. Replays of recorded tests cost no Kane credits.</p><pre><code>npx github:CryptoZephyr/beam verify tests/checkout_test.md</code></pre></li>
+    <li><h3>Kane runs, Beam weighs</h3><p>Kane drives the real flow in a real browser. Beam compares its verdict with what the app reported during that same run. Replays of recorded tests cost no Kane credits.</p><pre><code>npx kane-beam verify tests/checkout_test.md</code></pre></li>
   </ol>
 </section>
 
@@ -324,7 +324,7 @@ ${copyBox(INSTALL)}
 
 <section aria-labelledby="i2"><div class="scale" aria-hidden="true"></div>
 <h2 id="i2">2. Let your app report its truth</h2>
-${copyBox('npx github:CryptoZephyr/beam init')}
+${copyBox('npx kane-beam init')}
 <p>Adds the Beam probe to your dev build: a script tag in plain HTML, or a loader behind <code>import.meta.env.DEV</code> in Vite. For Next.js it prints the line to add. Then expose what your code knows, next to the feature:</p>
 <pre><code>if (window.beam) beam.expose('order.amount', () => lastOrder.amount)</code></pre>
 <p>The probe also records your app's own requests with their status codes, JS errors and localStorage, with no extra code.</p>
@@ -344,17 +344,17 @@ ${copyBox('npx github:CryptoZephyr/beam init')}
   { "network": "no-failures" },
   { "errors": "none" }
 ] }</code></pre>
-${copyBox('npx github:CryptoZephyr/beam verify tests/checkout_test.md --record')}
+${copyBox('npx kane-beam verify tests/checkout_test.md --record')}
 <p>The first run records the Kane test (Kane credits). Later runs replay it at no credit cost. Exit code 0 means Balanced, 1 means not, so it works in CI. If the test, its recording or its truth file changed since the last verify, Beam refuses to run.</p>
 </section>
 
 <section aria-labelledby="i4"><div class="scale" aria-hidden="true"></div>
 <h2 id="i4">Look up a wording</h2>
-${copyBox(`npx github:CryptoZephyr/beam check "Verify the todo counter reads '1 item left'"`)}
+${copyBox(`npx kane-beam check "Verify the todo counter reads '1 item left'"`)}
 <p>Exits with code 1 on a wording measured to pass broken pages, and prints the wording that's right.</p>
 <h2>Update and remove</h2>
-${copyBox('npx github:CryptoZephyr/beam update')}
-${copyBox('npx github:CryptoZephyr/beam uninstall')}
+${copyBox('npx kane-beam update')}
+${copyBox('npx kane-beam uninstall')}
 </section>`;
   return layout({ title: 'Set up · Beam', body, page: 'install' });
 }

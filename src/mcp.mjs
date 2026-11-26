@@ -1,5 +1,5 @@
 // Beam MCP server: connects your running app to your coding agent.
-// stdio JSON-RPC 2.0, no dependencies. Start with: npx github:CryptoZephyr/beam mcp
+// stdio JSON-RPC 2.0, no dependencies. Start with: npx kane-beam mcp
 import readline from 'node:readline';
 import fs from 'node:fs';
 import path from 'node:path';
@@ -45,7 +45,7 @@ async function call(name, args) {
   if (name === 'beam_app_state') {
     const s = await getSnapshots();
     const last = s[s.length - 1];
-    if (!last) return 'The app has not reported anything yet. Open it in a browser with the Beam probe on the page (npx github:CryptoZephyr/beam init adds it).';
+    if (!last) return 'The app has not reported anything yet. Open it in a browser with the Beam probe on the page (npx kane-beam init adds it).';
     return JSON.stringify({ url: last.url, at: new Date(last.at).toISOString(), values: last.values, storage: last.storage, requests: last.network, errors: last.errors }, null, 2);
   }
   if (name === 'beam_app_history') {

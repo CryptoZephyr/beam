@@ -1,11 +1,21 @@
 {
   "name": "kane-beam",
   "version": "0.1.0",
-  "description": "Make every Kane green a true green. Which Kane CLI checks are right, measured on pages with known answers, and a skill that teaches your coding agent the wordings that work.",
+  "description": "Kane checks the screen. Your app confirms it. An MCP server and CLI that weighs every Kane CLI verdict against your app's own truth, so a coding agent can catch and fix false greens.",
   "type": "module",
-  "bin": { "kane-beam": "bin/kane-beam.mjs" },
-  "files": ["bin/", "skill/", "probe/", "beam.json", "src/"],
-  "engines": { "node": ">=20" },
+  "bin": {
+    "kane-beam": "bin/kane-beam.mjs"
+  },
+  "files": [
+    "bin/",
+    "skill/",
+    "probe/",
+    "beam.json",
+    "src/"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "test": "node --test test/*.test.mjs",
     "suite": "node src/cli.mjs suite",
@@ -16,5 +26,16 @@
   },
   "license": "MIT",
   "repository": "github:CryptoZephyr/beam",
-  "keywords": ["kane-cli", "testing", "ai-agents", "claude-code", "e2e"]
+  "keywords": [
+    "kane-cli",
+    "testing",
+    "ai-agents",
+    "claude-code",
+    "e2e",
+    "mcp",
+    "mcp-server",
+    "model-context-protocol"
+  ],
+  "mcpName": "io.github.CryptoZephyr/beam",
+  "homepage": "https://kane-beam.vercel.app"
 }
