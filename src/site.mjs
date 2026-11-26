@@ -115,7 +115,10 @@ function heroContrast(data) {
 function matrix(data, { lab }) {
   const vs = data.versions;
   const head = `<tr><th scope="col">Behavior</th><th scope="col">Issue</th>${vs.map((v) => `<th scope="col">Kane ${esc(v)}</th>`).join('')}</tr>`;
-  const rows = data.behaviors.map((b) => {
+  const measured = data.behaviors.filter((b) => b.state !== 'NOT_RUN');
+  const unmeasured = data.behaviors.filter((b) => b.state === 'NOT_RUN');
+  const shown = lab ? data.behaviors : measured;
+  const rows = shown.map((b) => {
     const cells = vs.map((v) => {
       const c = b.cells[v] || { state: 'NOT_RUN' };
       const prev = vs[vs.indexOf(v) + 1];
@@ -123,16 +126,20 @@ function matrix(data, { lab }) {
       return `<td data-cell="${esc(b.id)}|${esc(v)}">${pill(c.state, changed ? `<span class="changed">changed since ${esc(prev)}</span>` : '')}</td>`;
     }).join('');
     const tags = [b.title, b.summary, ...(b.tags || []), b.issue ? `#${b.issue.number}` : ''].join(' ').toLowerCase();
-    return `<tr data-state="${esc(b.state)}" data-search="${esc(tags)}"><th scope="row"><a href="b/${esc(b.id)}.html">${esc(b.title)}</a><span class="sub">${esc(b.summary)}</span></th><td>${b.issue ? `<a href="${esc(b.issue.url)}">#${b.issue.number}</a>` : '<span class="muted">–</span>'}</td>${cells}</tr>`;
+    return `<tr data-state="${esc(b.state)}" data-search="${esc(tags)}"><th scope="row"><a href="b/${esc(b.id)}.html">${esc(b.title)}</a><span class="sub">${esc(b.summary)}</span></th><td>${b.issue ? `<a href="${esc(b.issue.url)}">#${b.issue.number}</a>` : '<span class="sr">none</span>'}</td>${cells}</tr>`;
   }).join('');
   const counts = Object.fromEntries(Object.keys(STATE_LABEL).map((s) => [s, data.behaviors.filter((b) => b.state === s).length]));
-  const filters = ['ALL', 'CORRECT', 'FIXED_BY_WORDING', 'FALSE_GREEN', 'FALSE_RED']
-    .map((s) => `<button type="button" data-filter="${s}" aria-pressed="${s === 'ALL'}">${s === 'ALL' ? `All (${data.behaviors.length})` : `${STATE_LABEL[s]} (${counts[s]})`}</button>`).join('');
+  const filters = ['ALL', 'CORRECT', 'FIXED_BY_WORDING', 'FALSE_GREEN', 'FALSE_RED', ...(lab ? ['NOT_RUN'] : [])]
+    .filter((s) => s === 'ALL' || counts[s] > 0)
+    .map((s) => `<button type="button" data-filter="${s}" aria-pressed="${s === 'ALL'}">${s === 'ALL' ? `All (${shown.length})` : `${STATE_LABEL[s]} (${counts[s]})`}</button>`).join('');
+  const wrong = counts.FALSE_GREEN + counts.FALSE_RED;
+  const summary = `<p class="msum"><strong>${measured.length} of ${data.behaviors.length} behaviors measured</strong> on Kane ${vs.map(esc).join(' and ')}. Kane got ${measured.length - wrong} right${counts.FIXED_BY_WORDING ? ` (${counts.FIXED_BY_WORDING} only with Beam's wording)` : ''}, and ${wrong} wrong.</p>`;
+  const later = !lab && unmeasured.length ? `<div class="later"><h3>Not measured yet (${unmeasured.length})</h3><p class="muted">Built and ready, not yet run through Kane.</p><ul>${unmeasured.map((b) => `<li><a href="b/${esc(b.id)}.html">${esc(b.title)}</a>${b.issue ? ` <span class="muted">#${b.issue.number}</span>` : ''}</li>`).join('')}</ul></div>` : '';
   return `
 <section id="matrix" aria-labelledby="mh">
   <div class="scale" aria-hidden="true"></div>
   <div class="mhead">
-    <h2 id="mh">The matrix</h2>
+    <div><h2 id="mh">The matrix</h2>${summary}</div>
     <dl class="legend">
       <div><dt>${pill('CORRECT')}</dt><dd>right as first worded</dd></div>
       <div><dt>${pill('FIXED_BY_WORDING')}</dt><dd>right with Beam's wording</dd></div>
@@ -145,7 +152,8 @@ function matrix(data, { lab }) {
     <div class="segmented" role="group" aria-label="Filter by reading">${filters}</div>
   </div>
   <div class="tablewrap"><table class="m"><thead>${head}</thead><tbody>${rows}</tbody></table></div>
-  <p id="empty" class="empty" hidden>No behavior matches that search. Know a Kane check that goes wrong? <a href="about.html#add">Suggest one</a>.</p>
+  <p id="empty" class="empty" hidden>No behavior matches that search. Know a Kane check that goes wrong? <a href="https://github.com/CryptoZephyr/beam/issues">Open an issue</a>.</p>
+  ${later}
 </section>
 <script>
 const q=document.getElementById('q'),rows=[...document.querySelectorAll('table.m tbody tr')],chips=[...document.querySelectorAll('.segmented button')];let f='ALL';

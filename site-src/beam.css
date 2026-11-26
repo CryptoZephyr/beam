@@ -419,3 +419,16 @@ section.split > .scale { grid-column: 1 / -1; }
 #live .controls select { min-width: 280px; min-height: 44px; }
 .steps-live .ph, .pan .app .ph { display: block; color: rgb(236 234 228 / 0.55); font-weight: 400; font-style: italic; }
 .steps-live li.ph:last-child { color: rgb(236 234 228 / 0.55); font-weight: 400; }
+
+/* Matrix (revision 3). */
+.mhead { align-items: start; }
+.msum { margin: 0; font-size: 17px; color: var(--muted); max-width: 60ch; }
+.msum strong { color: var(--text); }
+.mhead .legend { max-width: 560px; justify-content: flex-end; margin-top: 10px; }
+.later { margin-top: 32px; }
+.later h3 { margin: 0 0 4px; }
+.later ul { list-style: none; padding: 0; margin: 12px 0 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 8px 24px; }
+.later li { padding: 8px 0; border-top: 1px solid var(--line); }
+@media (max-width: 960px) { .mhead .legend { justify-content: flex-start; } }
+.mhead { display: block; }
+.mhead .legend { max-width: none; justify-content: flex-start; margin: 18px 0 0; gap: 8px 26px; }
