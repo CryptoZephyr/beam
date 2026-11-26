@@ -1,0 +1,6 @@
+Balanced: Kane passed, the app says it's working.
+  ok  cart.total: expected 45, app reported 45
+  ok  order.amount: expected 45, app reported 45
+  ok  order.status: expected "placed", app reported "placed"
+  ok  no failed requests: expected "none", app reported "none"
+  ok  no JS errors: expected "none", app reported "none"

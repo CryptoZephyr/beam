@@ -1,0 +1,6 @@
+False green: Kane passed, the app says it's broken.
+  ok  cart.total: expected 45, app reported 45
+  NO  order.amount: expected 45, app reported 50
+  ok  order.status: expected "placed", app reported "placed"
+  NO  no failed requests: expected "none", app reported "POST http://127.0.0.1:4402/api/orders → 500"
+  ok  no JS errors: expected "none", app reported "none"
