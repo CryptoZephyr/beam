@@ -1,7 +1,7 @@
 {
   "schema": 1,
-  "generated": "2026-11-26T13:10:31.444Z",
-  "lastRun": "2026-11-26T13:09:41.445Z",
+  "generated": "2026-11-26T14:30:56.524Z",
+  "lastRun": "2026-11-26T14:29:58.719Z",
   "referenceVersion": "0.10.9",
   "versions": [
     "0.10.9",
@@ -201,6 +201,122 @@
       }
     },
     {
+      "id": "toast-message",
+      "title": "Save shows a settings toast",
+      "summary": "Clicking Save shows a toast reading \"Settings saved\" that stays for 4 seconds and then fades.",
+      "whatDiffers": "The broken page sets the toast text but never makes the toast visible, so clicking Save shows nothing.",
+      "tags": [
+        "toast",
+        "notification",
+        "timing",
+        "feedback"
+      ],
+      "issue": {
+        "number": 165,
+        "url": "https://github.com/LambdaTest/kane-cli/issues/165"
+      },
+      "steps": "Click \"Save\".",
+      "state": "FALSE_RED",
+      "limitation": true,
+      "recommendedWording": null,
+      "avoidWordings": [
+        {
+          "text": "Verify a toast message \"Settings saved\" appears.",
+          "state": "FALSE_RED"
+        },
+        {
+          "text": "Verify that within 3 seconds of clicking Save, a message with the exact text \"Settings saved\" is visible.",
+          "state": "FALSE_RED"
+        }
+      ],
+      "cells": {
+        "0.10.9": {
+          "state": "FALSE_RED",
+          "recommended": null
+        },
+        "0.10.8": {
+          "state": "FALSE_RED",
+          "recommended": null
+        }
+      },
+      "wordings": [
+        {
+          "id": "w1",
+          "origin": "issue",
+          "text": "Verify a toast message \"Settings saved\" appears.",
+          "versions": {
+            "0.10.9": {
+              "state": "FALSE_RED",
+              "correct": "FAIL",
+              "broken": "FAIL",
+              "brokenSummary": "The Save control did not produce the expected visible confirmation message.\nCheck the Save button’s confirmation-message behavior and restore a visible “Settings saved” toast after a successful save.\nevidence: objective_contradiction: check FAILED: a toast message \"Settings saved\" appears. — expected: true | observed: {{settings_saved_toast_visible}}",
+              "correctSummary": "The confirmation message was not captured by the required automated check after Save was clicked. The provided run does not contain product-error evidence showing that saving or the message itself failed.\nUpdate the test to wait for and capture the toast reliably, using a stable visible-text or accessibility-based check before making the assertion.",
+              "codeJs": null,
+              "stored": {
+                "correct": {},
+                "broken": {}
+              },
+              "testUrl": null,
+              "at": "2026-11-26T14:12:38.652Z"
+            },
+            "0.10.8": {
+              "state": "FALSE_RED",
+              "correct": "FAIL",
+              "broken": "FAIL",
+              "brokenSummary": "The Save action did not provide the required visible confirmation after it was clicked.\nFix the Save action so it displays a visible “Settings saved” toast, then add a UI test that waits for and checks that message.\nevidence: objective_contradiction: check FAILED: a toast message \"Settings saved\" appears. — expected: true | observed: {{settings_saved_toast_visible}}",
+              "correctSummary": "The confirmation message was temporary, and the test checked for it too late or with a check that did not observe the message while it was visible.\nUpdate the test to start waiting for the exact “Settings saved” message immediately after clicking Save, and record the message while it is visible.",
+              "codeJs": null,
+              "stored": {
+                "correct": {},
+                "broken": {}
+              },
+              "testUrl": null,
+              "at": "2026-11-26T14:18:44.971Z"
+            }
+          }
+        },
+        {
+          "id": "w2",
+          "origin": "baseline",
+          "text": "Verify that within 3 seconds of clicking Save, a message with the exact text \"Settings saved\" is visible.",
+          "versions": {
+            "0.10.9": {
+              "state": "FALSE_RED",
+              "correct": "FAIL",
+              "broken": "FAIL",
+              "brokenSummary": "The final check used the unresolved value {{settings_saved_message_visible}} instead of a completed visibility result. This makes the run unable to reliably verify the toast and does not prove that the Save feature failed.\nFix the test so it waits for the exact visible text \"Settings saved\" and passes the actual boolean result directly to the assertion. Re-run the check after confirming the result is no longer an unresolved placeholder.",
+              "correctSummary": "The test’s required checkpoint did not recognize the confirmation message even though it was visible after Save was clicked.\nUpdate the toast assertion to wait for and inspect the visible message text after the click, then rerun the check.",
+              "codeJs": null,
+              "stored": {
+                "correct": {},
+                "broken": {}
+              },
+              "testUrl": null,
+              "at": "2026-11-26T14:26:48.944Z"
+            },
+            "0.10.8": {
+              "state": "NOT_RUN",
+              "correct": "FAIL",
+              "broken": null,
+              "brokenSummary": null,
+              "correctSummary": "The automated verification did not recognize the confirmation state after Save was clicked. The supplied step log does not establish that the Settings page failed to save or show its message.\nRepair the checkpoint to wait for and directly inspect the visible text “Settings saved” for up to three seconds after clicking Save, then rerun the check.",
+              "codeJs": null,
+              "stored": {
+                "correct": {},
+                "broken": {}
+              },
+              "testUrl": null,
+              "at": "2026-11-26T14:29:58.712Z"
+            }
+          }
+        }
+      ],
+      "fixture": {
+        "correct": "fixtures/toast-message/correct.html",
+        "broken": "fixtures/toast-message/broken.html"
+      }
+    },
+    {
       "id": "plural-counter",
       "title": "Counter label, singular vs plural",
       "summary": "After adding one to-do, the counter should read \"1 item left\".",
@@ -311,6 +427,113 @@
       "fixture": {
         "correct": "fixtures/plural-counter/correct.html",
         "broken": "fixtures/plural-counter/broken.html"
+      }
+    },
+    {
+      "id": "not-visible",
+      "title": "Bar hides after clearing selection",
+      "summary": "Clicking Clear selection hides the blue \"3 items selected\" bar.",
+      "whatDiffers": "The broken page's Clear selection button does nothing, so the bar stays visible.",
+      "tags": [
+        "visibility",
+        "hidden",
+        "negative-check",
+        "selection"
+      ],
+      "issue": {
+        "number": 65,
+        "url": "https://github.com/LambdaTest/kane-cli/issues/65"
+      },
+      "steps": "Click \"Clear selection\".",
+      "state": "CORRECT",
+      "limitation": false,
+      "recommendedWording": "Assert that the \"3 items selected\" bar is NOT visible.",
+      "avoidWordings": [],
+      "cells": {
+        "0.10.9": {
+          "state": "CORRECT",
+          "recommended": "w1"
+        },
+        "0.10.8": {
+          "state": "CORRECT",
+          "recommended": "w1"
+        }
+      },
+      "wordings": [
+        {
+          "id": "w1",
+          "origin": "issue",
+          "text": "Assert that the \"3 items selected\" bar is NOT visible.",
+          "versions": {
+            "0.10.9": {
+              "state": "CORRECT",
+              "correct": "PASS",
+              "broken": "FAIL",
+              "brokenSummary": null,
+              "correctSummary": "You asked to clear the current selection on the Files page.\nClicked “Clear selection.”\nThe selection was cleared, and the “3 items selected” bar is no longer visible.",
+              "codeJs": null,
+              "stored": {
+                "correct": {},
+                "broken": {}
+              },
+              "testUrl": null,
+              "at": "2026-11-26T13:34:00.890Z"
+            },
+            "0.10.8": {
+              "state": "CORRECT",
+              "correct": "PASS",
+              "broken": "FAIL",
+              "brokenSummary": null,
+              "correctSummary": null,
+              "codeJs": null,
+              "stored": {
+                "correct": {},
+                "broken": {}
+              },
+              "testUrl": null,
+              "at": "2026-11-26T13:38:50.591Z"
+            }
+          }
+        },
+        {
+          "id": "w2",
+          "origin": "baseline",
+          "text": "Verify that no element with the text \"3 items selected\" is visible on the page.",
+          "versions": {
+            "0.10.9": {
+              "state": "CORRECT",
+              "correct": "PASS",
+              "broken": "FAIL",
+              "brokenSummary": null,
+              "correctSummary": "You asked to clear the current selection.\nClicked “Clear selection” on the page.\nThe selection was cleared successfully, and “3 items selected” is no longer visible.",
+              "codeJs": null,
+              "stored": {
+                "correct": {},
+                "broken": {}
+              },
+              "testUrl": null,
+              "at": "2026-11-26T13:43:19.987Z"
+            },
+            "0.10.8": {
+              "state": "CORRECT",
+              "correct": "PASS",
+              "broken": "FAIL",
+              "brokenSummary": null,
+              "correctSummary": null,
+              "codeJs": null,
+              "stored": {
+                "correct": {},
+                "broken": {}
+              },
+              "testUrl": null,
+              "at": "2026-11-26T13:47:15.312Z"
+            }
+          }
+        }
+      ],
+      "fixture": {
+        "correct": "fixtures/not-visible/correct.html",
+        "broken": "fixtures/not-visible/broken.html"
       }
     },
     {
@@ -948,6 +1171,113 @@
       }
     },
     {
+      "id": "reload-persists",
+      "title": "To-do survives a page reload",
+      "summary": "After adding a to-do and reloading the page, the to-do is still listed because it is saved in localStorage (Kane issue 252 reported the reload being done as a Ctrl+R key press).",
+      "whatDiffers": "The broken page keeps to-dos only in memory and never reads them back, so a real reload clears the list.",
+      "tags": [
+        "reload",
+        "persistence",
+        "localstorage",
+        "todo"
+      ],
+      "issue": {
+        "number": 252,
+        "url": "https://github.com/LambdaTest/kane-cli/issues/252"
+      },
+      "steps": "Type \"pay rent\" into the \"New to-do\" box and press Enter. Reload the page.",
+      "state": "CORRECT",
+      "limitation": false,
+      "recommendedWording": "Verify the to-do list shows \"pay rent\".",
+      "avoidWordings": [],
+      "cells": {
+        "0.10.9": {
+          "state": "CORRECT",
+          "recommended": "w1"
+        },
+        "0.10.8": {
+          "state": "CORRECT",
+          "recommended": "w1"
+        }
+      },
+      "wordings": [
+        {
+          "id": "w1",
+          "origin": "issue",
+          "text": "Verify the to-do list shows \"pay rent\".",
+          "versions": {
+            "0.10.9": {
+              "state": "CORRECT",
+              "correct": "PASS",
+              "broken": "FAIL",
+              "brokenSummary": null,
+              "correctSummary": "Added “pay rent” to the to-do list as requested.\nReloaded the page.\nConfirmed that “pay rent” remained visible in the to-do list after the reload.",
+              "codeJs": "Array.from(el(3).querySelectorAll(':scope > li')).some(li => li.innerText.trim() === 'pay rent')",
+              "stored": {
+                "correct": {},
+                "broken": {}
+              },
+              "testUrl": null,
+              "at": "2026-11-26T13:52:10.016Z"
+            },
+            "0.10.8": {
+              "state": "CORRECT",
+              "correct": "PASS",
+              "broken": "FAIL",
+              "brokenSummary": null,
+              "correctSummary": null,
+              "codeJs": "Array.from(el(3).querySelectorAll(':scope > li')).some(li => li.innerText.trim() === 'pay rent')",
+              "stored": {
+                "correct": {},
+                "broken": {}
+              },
+              "testUrl": null,
+              "at": "2026-11-26T13:56:58.103Z"
+            }
+          }
+        },
+        {
+          "id": "w2",
+          "origin": "baseline",
+          "text": "Verify the exact visible text of the to-do list includes \"pay rent\" after the page has been reloaded.",
+          "versions": {
+            "0.10.9": {
+              "state": "CORRECT",
+              "correct": "PASS",
+              "broken": "FAIL",
+              "brokenSummary": null,
+              "correctSummary": "Added “pay rent” to the to-do list as requested.\nReloaded the page.\nConfirmed that “pay rent” remained visible in the to-do list after reloading.",
+              "codeJs": "Array.from(el(3).querySelectorAll(':scope > li')).some(li => li.innerText.trim().includes('pay rent'))",
+              "stored": {
+                "correct": {},
+                "broken": {}
+              },
+              "testUrl": null,
+              "at": "2026-11-26T14:02:34.118Z"
+            },
+            "0.10.8": {
+              "state": "CORRECT",
+              "correct": "PASS",
+              "broken": "FAIL",
+              "brokenSummary": null,
+              "correctSummary": null,
+              "codeJs": "Array.from(el(3).querySelectorAll(':scope > li')).some(li => li.innerText.trim().includes('pay rent'))",
+              "stored": {
+                "correct": {},
+                "broken": {}
+              },
+              "testUrl": null,
+              "at": "2026-11-26T14:06:08.956Z"
+            }
+          }
+        }
+      ],
+      "fixture": {
+        "correct": "fixtures/reload-persists/correct.html",
+        "broken": "fixtures/reload-persists/broken.html"
+      }
+    },
+    {
       "id": "hover-menu",
       "title": "Account menu items on hover",
       "summary": "Hovering over \"Account\" reveals a menu with \"Profile\", \"Billing\" and \"Sign out\".",
@@ -991,55 +1321,6 @@
       "fixture": {
         "correct": "fixtures/hover-menu/correct.html",
         "broken": "fixtures/hover-menu/broken.html"
-      }
-    },
-    {
-      "id": "not-visible",
-      "title": "Bar hides after clearing selection",
-      "summary": "Clicking Clear selection hides the blue \"3 items selected\" bar.",
-      "whatDiffers": "The broken page's Clear selection button does nothing, so the bar stays visible.",
-      "tags": [
-        "visibility",
-        "hidden",
-        "negative-check",
-        "selection"
-      ],
-      "issue": {
-        "number": 65,
-        "url": "https://github.com/LambdaTest/kane-cli/issues/65"
-      },
-      "steps": "Click \"Clear selection\".",
-      "state": "NOT_RUN",
-      "limitation": false,
-      "recommendedWording": null,
-      "avoidWordings": [],
-      "cells": {
-        "0.10.9": {
-          "state": "NOT_RUN",
-          "recommended": null
-        },
-        "0.10.8": {
-          "state": "NOT_RUN",
-          "recommended": null
-        }
-      },
-      "wordings": [
-        {
-          "id": "w1",
-          "origin": "issue",
-          "text": "Assert that the \"3 items selected\" bar is NOT visible.",
-          "versions": {}
-        },
-        {
-          "id": "w2",
-          "origin": "baseline",
-          "text": "Verify that no element with the text \"3 items selected\" is visible on the page.",
-          "versions": {}
-        }
-      ],
-      "fixture": {
-        "correct": "fixtures/not-visible/correct.html",
-        "broken": "fixtures/not-visible/broken.html"
       }
     },
     {
@@ -1135,55 +1416,6 @@
       }
     },
     {
-      "id": "toast-message",
-      "title": "Save shows a settings toast",
-      "summary": "Clicking Save shows a toast reading \"Settings saved\" that stays for 4 seconds and then fades.",
-      "whatDiffers": "The broken page sets the toast text but never makes the toast visible, so clicking Save shows nothing.",
-      "tags": [
-        "toast",
-        "notification",
-        "timing",
-        "feedback"
-      ],
-      "issue": {
-        "number": 165,
-        "url": "https://github.com/LambdaTest/kane-cli/issues/165"
-      },
-      "steps": "Click \"Save\".",
-      "state": "NOT_RUN",
-      "limitation": false,
-      "recommendedWording": null,
-      "avoidWordings": [],
-      "cells": {
-        "0.10.9": {
-          "state": "NOT_RUN",
-          "recommended": null
-        },
-        "0.10.8": {
-          "state": "NOT_RUN",
-          "recommended": null
-        }
-      },
-      "wordings": [
-        {
-          "id": "w1",
-          "origin": "issue",
-          "text": "Verify a toast message \"Settings saved\" appears.",
-          "versions": {}
-        },
-        {
-          "id": "w2",
-          "origin": "baseline",
-          "text": "Verify that within 3 seconds of clicking Save, a message with the exact text \"Settings saved\" is visible.",
-          "versions": {}
-        }
-      ],
-      "fixture": {
-        "correct": "fixtures/toast-message/correct.html",
-        "broken": "fixtures/toast-message/broken.html"
-      }
-    },
-    {
       "id": "number-format",
       "title": "Thousands separator in item count",
       "summary": "The order summary shows \"Items: 1,250\" with a thousands separator.",
@@ -1227,55 +1459,6 @@
       "fixture": {
         "correct": "fixtures/number-format/correct.html",
         "broken": "fixtures/number-format/broken.html"
-      }
-    },
-    {
-      "id": "reload-persists",
-      "title": "To-do survives a page reload",
-      "summary": "After adding a to-do and reloading the page, the to-do is still listed because it is saved in localStorage (Kane issue 252 reported the reload being done as a Ctrl+R key press).",
-      "whatDiffers": "The broken page keeps to-dos only in memory and never reads them back, so a real reload clears the list.",
-      "tags": [
-        "reload",
-        "persistence",
-        "localstorage",
-        "todo"
-      ],
-      "issue": {
-        "number": 252,
-        "url": "https://github.com/LambdaTest/kane-cli/issues/252"
-      },
-      "steps": "Type \"pay rent\" into the \"New to-do\" box and press Enter. Reload the page.",
-      "state": "NOT_RUN",
-      "limitation": false,
-      "recommendedWording": null,
-      "avoidWordings": [],
-      "cells": {
-        "0.10.9": {
-          "state": "NOT_RUN",
-          "recommended": null
-        },
-        "0.10.8": {
-          "state": "NOT_RUN",
-          "recommended": null
-        }
-      },
-      "wordings": [
-        {
-          "id": "w1",
-          "origin": "issue",
-          "text": "Verify the to-do list shows \"pay rent\".",
-          "versions": {}
-        },
-        {
-          "id": "w2",
-          "origin": "baseline",
-          "text": "Verify the exact visible text of the to-do list includes \"pay rent\" after the page has been reloaded.",
-          "versions": {}
-        }
-      ],
-      "fixture": {
-        "correct": "fixtures/reload-persists/correct.html",
-        "broken": "fixtures/reload-persists/broken.html"
       }
     },
     {

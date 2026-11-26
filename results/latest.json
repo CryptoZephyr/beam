@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-26T13:09:41.445Z",
+  "updated": "2026-11-26T14:29:58.719Z",
   "behaviors": {
     "plural-counter": {
       "wordings": {
@@ -1324,6 +1324,435 @@
                 "testUrl": null,
                 "exitCode": 1
               }
+            }
+          }
+        }
+      }
+    },
+    "not-visible": {
+      "wordings": {
+        "w1": {
+          "text": "Assert that the \"3 items selected\" bar is NOT visible.",
+          "origin": "issue",
+          "versions": {
+            "0.10.9": {
+              "correct": {
+                "verdict": "PASS",
+                "at": "2026-11-26T13:32:29.497Z",
+                "replay": false,
+                "authored": 1,
+                "replayed": 0,
+                "credits": 16.09221,
+                "durationS": 70.3,
+                "summary": "You asked to clear the current selection on the Files page.\nClicked “Clear selection.”\nThe selection was cleared, and the “3 items selected” bar is no longer visible.",
+                "reasonCode": "success.complete",
+                "codeJs": null,
+                "stored": {},
+                "testUrl": null,
+                "exitCode": 0
+              },
+              "state": "CORRECT",
+              "broken": {
+                "verdict": "FAIL",
+                "at": "2026-11-26T13:34:00.890Z",
+                "replay": true,
+                "authored": 0,
+                "replayed": 1,
+                "credits": null,
+                "durationS": 20.67,
+                "summary": "",
+                "reasonCode": null,
+                "codeJs": null,
+                "stored": {},
+                "testUrl": null,
+                "exitCode": 1
+              }
+            },
+            "0.10.8": {
+              "correct": {
+                "verdict": "PASS",
+                "at": "2026-11-26T13:36:10.610Z",
+                "replay": true,
+                "authored": 0,
+                "replayed": 1,
+                "credits": null,
+                "durationS": 29.7,
+                "summary": "",
+                "reasonCode": "success.complete",
+                "codeJs": null,
+                "stored": {},
+                "testUrl": null,
+                "exitCode": 0
+              },
+              "state": "CORRECT",
+              "broken": {
+                "verdict": "FAIL",
+                "at": "2026-11-26T13:38:50.591Z",
+                "replay": true,
+                "authored": 0,
+                "replayed": 1,
+                "credits": null,
+                "durationS": 31.52,
+                "summary": "",
+                "reasonCode": null,
+                "codeJs": null,
+                "stored": {},
+                "testUrl": null,
+                "exitCode": 1
+              }
+            }
+          }
+        },
+        "w2": {
+          "text": "Verify that no element with the text \"3 items selected\" is visible on the page.",
+          "origin": "baseline",
+          "versions": {
+            "0.10.9": {
+              "correct": {
+                "verdict": "PASS",
+                "at": "2026-11-26T13:41:41.164Z",
+                "replay": false,
+                "authored": 1,
+                "replayed": 0,
+                "credits": 16.578415,
+                "durationS": 60.2,
+                "summary": "You asked to clear the current selection.\nClicked “Clear selection” on the page.\nThe selection was cleared successfully, and “3 items selected” is no longer visible.",
+                "reasonCode": "success.complete",
+                "codeJs": null,
+                "stored": {},
+                "testUrl": null,
+                "exitCode": 0
+              },
+              "state": "CORRECT",
+              "broken": {
+                "verdict": "FAIL",
+                "at": "2026-11-26T13:43:19.987Z",
+                "replay": true,
+                "authored": 0,
+                "replayed": 1,
+                "credits": null,
+                "durationS": 22.61,
+                "summary": "",
+                "reasonCode": null,
+                "codeJs": null,
+                "stored": {},
+                "testUrl": null,
+                "exitCode": 1
+              }
+            },
+            "0.10.8": {
+              "correct": {
+                "verdict": "PASS",
+                "at": "2026-11-26T13:45:15.921Z",
+                "replay": true,
+                "authored": 0,
+                "replayed": 1,
+                "credits": null,
+                "durationS": 17.91,
+                "summary": "",
+                "reasonCode": "success.complete",
+                "codeJs": null,
+                "stored": {},
+                "testUrl": null,
+                "exitCode": 0
+              },
+              "state": "CORRECT",
+              "broken": {
+                "verdict": "FAIL",
+                "at": "2026-11-26T13:47:15.312Z",
+                "replay": true,
+                "authored": 0,
+                "replayed": 1,
+                "credits": null,
+                "durationS": 20.25,
+                "summary": "",
+                "reasonCode": null,
+                "codeJs": null,
+                "stored": {},
+                "testUrl": null,
+                "exitCode": 1
+              }
+            }
+          }
+        }
+      }
+    },
+    "reload-persists": {
+      "wordings": {
+        "w1": {
+          "text": "Verify the to-do list shows \"pay rent\".",
+          "origin": "issue",
+          "versions": {
+            "0.10.9": {
+              "correct": {
+                "verdict": "PASS",
+                "at": "2026-11-26T13:50:27.508Z",
+                "replay": false,
+                "authored": 1,
+                "replayed": 0,
+                "credits": 18.3969775,
+                "durationS": 59.8,
+                "summary": "Added “pay rent” to the to-do list as requested.\nReloaded the page.\nConfirmed that “pay rent” remained visible in the to-do list after the reload.",
+                "reasonCode": "success.complete",
+                "codeJs": "Array.from(el(3).querySelectorAll(':scope > li')).some(li => li.innerText.trim() === 'pay rent')",
+                "stored": {},
+                "testUrl": null,
+                "exitCode": 0
+              },
+              "state": "CORRECT",
+              "broken": {
+                "verdict": "FAIL",
+                "at": "2026-11-26T13:52:10.016Z",
+                "replay": true,
+                "authored": 0,
+                "replayed": 1,
+                "credits": null,
+                "durationS": 37.59,
+                "summary": "",
+                "reasonCode": null,
+                "codeJs": null,
+                "stored": {},
+                "testUrl": null,
+                "exitCode": 1
+              }
+            },
+            "0.10.8": {
+              "correct": {
+                "verdict": "PASS",
+                "at": "2026-11-26T13:54:48.859Z",
+                "replay": true,
+                "authored": 0,
+                "replayed": 1,
+                "credits": null,
+                "durationS": 22.73,
+                "summary": "",
+                "reasonCode": "success.complete",
+                "codeJs": null,
+                "stored": {},
+                "testUrl": null,
+                "exitCode": 0
+              },
+              "state": "CORRECT",
+              "broken": {
+                "verdict": "FAIL",
+                "at": "2026-11-26T13:56:58.103Z",
+                "replay": true,
+                "authored": 0,
+                "replayed": 1,
+                "credits": null,
+                "durationS": 41.22,
+                "summary": "",
+                "reasonCode": null,
+                "codeJs": null,
+                "stored": {},
+                "testUrl": null,
+                "exitCode": 1
+              }
+            }
+          }
+        },
+        "w2": {
+          "text": "Verify the exact visible text of the to-do list includes \"pay rent\" after the page has been reloaded.",
+          "origin": "baseline",
+          "versions": {
+            "0.10.9": {
+              "correct": {
+                "verdict": "PASS",
+                "at": "2026-11-26T14:00:01.961Z",
+                "replay": false,
+                "authored": 1,
+                "replayed": 0,
+                "credits": 17.4938875,
+                "durationS": 65.1,
+                "summary": "Added “pay rent” to the to-do list as requested.\nReloaded the page.\nConfirmed that “pay rent” remained visible in the to-do list after reloading.",
+                "reasonCode": "success.complete",
+                "codeJs": "Array.from(el(3).querySelectorAll(':scope > li')).some(li => li.innerText.trim().includes('pay rent'))",
+                "stored": {},
+                "testUrl": null,
+                "exitCode": 0
+              },
+              "state": "CORRECT",
+              "broken": {
+                "verdict": "FAIL",
+                "at": "2026-11-26T14:02:34.118Z",
+                "replay": true,
+                "authored": 0,
+                "replayed": 1,
+                "credits": null,
+                "durationS": 38.8,
+                "summary": "",
+                "reasonCode": null,
+                "codeJs": null,
+                "stored": {},
+                "testUrl": null,
+                "exitCode": 1
+              }
+            },
+            "0.10.8": {
+              "correct": {
+                "verdict": "PASS",
+                "at": "2026-11-26T14:03:53.562Z",
+                "replay": true,
+                "authored": 0,
+                "replayed": 1,
+                "credits": null,
+                "durationS": 12.42,
+                "summary": "",
+                "reasonCode": "success.complete",
+                "codeJs": null,
+                "stored": {},
+                "testUrl": null,
+                "exitCode": 0
+              },
+              "state": "CORRECT",
+              "broken": {
+                "verdict": "FAIL",
+                "at": "2026-11-26T14:06:08.956Z",
+                "replay": true,
+                "authored": 0,
+                "replayed": 1,
+                "credits": null,
+                "durationS": 55.48,
+                "summary": "",
+                "reasonCode": null,
+                "codeJs": null,
+                "stored": {},
+                "testUrl": null,
+                "exitCode": 1
+              }
+            }
+          }
+        }
+      }
+    },
+    "toast-message": {
+      "wordings": {
+        "w1": {
+          "text": "Verify a toast message \"Settings saved\" appears.",
+          "origin": "issue",
+          "versions": {
+            "0.10.9": {
+              "correct": {
+                "verdict": "FAIL",
+                "at": "2026-11-26T14:09:28.032Z",
+                "replay": false,
+                "authored": 1,
+                "replayed": 0,
+                "credits": 14.514445,
+                "durationS": 97.3,
+                "summary": "The confirmation message was not captured by the required automated check after Save was clicked. The provided run does not contain product-error evidence showing that saving or the message itself failed.\nUpdate the test to wait for and capture the toast reliably, using a stable visible-text or accessibility-based check before making the assertion.",
+                "reasonCode": "assertion_error.step_not_achievable",
+                "codeJs": null,
+                "stored": {},
+                "testUrl": null,
+                "exitCode": 1
+              },
+              "state": "FALSE_RED",
+              "broken": {
+                "verdict": "FAIL",
+                "at": "2026-11-26T14:12:38.652Z",
+                "replay": true,
+                "authored": 1,
+                "replayed": 0,
+                "credits": 22.171436000000003,
+                "durationS": 113.5,
+                "summary": "The Save control did not produce the expected visible confirmation message.\nCheck the Save button’s confirmation-message behavior and restore a visible “Settings saved” toast after a successful save.\nevidence: objective_contradiction: check FAILED: a toast message \"Settings saved\" appears. — expected: true | observed: {{settings_saved_toast_visible}}",
+                "reasonCode": "assertion_error.confirmed_product_bug",
+                "codeJs": null,
+                "stored": {},
+                "testUrl": null,
+                "exitCode": 1
+              }
+            },
+            "0.10.8": {
+              "correct": {
+                "verdict": "FAIL",
+                "at": "2026-11-26T14:16:03.157Z",
+                "replay": true,
+                "authored": 1,
+                "replayed": 0,
+                "credits": 12.732097500000002,
+                "durationS": 101.3,
+                "summary": "The confirmation message was temporary, and the test checked for it too late or with a check that did not observe the message while it was visible.\nUpdate the test to start waiting for the exact “Settings saved” message immediately after clicking Save, and record the message while it is visible.",
+                "reasonCode": "assertion_error.step_not_achievable",
+                "codeJs": null,
+                "stored": {},
+                "testUrl": null,
+                "exitCode": 1
+              },
+              "state": "FALSE_RED",
+              "broken": {
+                "verdict": "FAIL",
+                "at": "2026-11-26T14:18:44.971Z",
+                "replay": true,
+                "authored": 1,
+                "replayed": 0,
+                "credits": 9.687190000000001,
+                "durationS": 72.5,
+                "summary": "The Save action did not provide the required visible confirmation after it was clicked.\nFix the Save action so it displays a visible “Settings saved” toast, then add a UI test that waits for and checks that message.\nevidence: objective_contradiction: check FAILED: a toast message \"Settings saved\" appears. — expected: true | observed: {{settings_saved_toast_visible}}",
+                "reasonCode": "assertion_error.confirmed_product_bug",
+                "codeJs": null,
+                "stored": {},
+                "testUrl": null,
+                "exitCode": 1
+              }
+            }
+          }
+        },
+        "w2": {
+          "text": "Verify that within 3 seconds of clicking Save, a message with the exact text \"Settings saved\" is visible.",
+          "origin": "baseline",
+          "versions": {
+            "0.10.9": {
+              "correct": {
+                "verdict": "FAIL",
+                "at": "2026-11-26T14:22:41.933Z",
+                "replay": false,
+                "authored": null,
+                "replayed": null,
+                "credits": 15.041672499999997,
+                "durationS": 104.8,
+                "summary": "The test’s required checkpoint did not recognize the confirmation message even though it was visible after Save was clicked.\nUpdate the toast assertion to wait for and inspect the visible message text after the click, then rerun the check.",
+                "reasonCode": "assertion_error.step_not_achievable",
+                "codeJs": null,
+                "stored": {},
+                "testUrl": null,
+                "exitCode": 1
+              },
+              "state": "FALSE_RED",
+              "broken": {
+                "verdict": "FAIL",
+                "at": "2026-11-26T14:26:48.944Z",
+                "replay": true,
+                "authored": 1,
+                "replayed": 0,
+                "credits": 10.097419999999998,
+                "durationS": 64.4,
+                "summary": "The final check used the unresolved value {{settings_saved_message_visible}} instead of a completed visibility result. This makes the run unable to reliably verify the toast and does not prove that the Save feature failed.\nFix the test so it waits for the exact visible text \"Settings saved\" and passes the actual boolean result directly to the assertion. Re-run the check after confirming the result is no longer an unresolved placeholder.",
+                "reasonCode": "assertion_error.final_verification",
+                "codeJs": null,
+                "stored": {},
+                "testUrl": null,
+                "exitCode": 1
+              }
+            },
+            "0.10.8": {
+              "correct": {
+                "verdict": "FAIL",
+                "at": "2026-11-26T14:29:58.712Z",
+                "replay": true,
+                "authored": 1,
+                "replayed": 0,
+                "credits": 11.554644999999999,
+                "durationS": 122.1,
+                "summary": "The automated verification did not recognize the confirmation state after Save was clicked. The supplied step log does not establish that the Settings page failed to save or show its message.\nRepair the checkpoint to wait for and directly inspect the visible text “Settings saved” for up to three seconds after clicking Save, then rerun the check.",
+                "reasonCode": "assertion_error.step_not_achievable",
+                "codeJs": null,
+                "stored": {},
+                "testUrl": null,
+                "exitCode": 1
+              },
+              "state": "NOT_RUN"
             }
           }
         }
