@@ -1,1 +1,1 @@
-Big Shoulders Display, Atkinson Hyperlegible Next and Martian Mono are licensed under the SIL Open Font License 1.1 (https://openfontlicense.org). Files are the latin subsets served by Google Fonts, self-hosted here.
+B612 and B612 Mono: Copyright 2012 The B612 Project Authors, SIL Open Font License 1.1 (see B612-OFL.txt).

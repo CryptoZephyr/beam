@@ -52,7 +52,7 @@ function layout({ title, body, depth = 0, lab = false, page = '' }) {
 <title>${esc(title)}</title>
 <meta name="description" content="Which Kane CLI checks can you trust? Measured on pages with known answers.">
 <link rel="icon" href="${up}favicon.svg" type="image/svg+xml"><link rel="icon" href="${up}favicon-32.png" sizes="32x32"><link rel="apple-touch-icon" href="${up}apple-touch-icon.png">
-<link rel="preload" href="${up}fonts/big-shoulders-display.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="${up}fonts/B612-Bold.ttf" as="font" type="font/ttf" crossorigin>
 <link rel="stylesheet" href="${up}beam.css">
 </head>
 <body${lab ? ' class="lab"' : ''}>
