@@ -54,7 +54,10 @@ function writeFor(agent, skill, dataText) {
 
 // How agents should start the Beam MCP server: npx when installed from npm, else this checkout.
 function mcpCommand() {
-  if (/[\\/]_npx[\\/]/.test(PKG_ROOT)) return { command: 'npx', args: ['-y', 'kane-beam', 'mcp'] };
+  // On Windows, agents launch MCP servers without a shell, and npx is a .cmd script there, so it has to go through cmd.
+  if (/[\\/]_npx[\\/]/.test(PKG_ROOT)) return process.platform === 'win32'
+    ? { command: 'cmd', args: ['/c', 'npx', '-y', 'kane-beam', 'mcp'] }
+    : { command: 'npx', args: ['-y', 'kane-beam', 'mcp'] };
   return { command: process.execPath, args: [path.join(PKG_ROOT, 'bin', 'kane-beam.mjs'), 'mcp'] };
 }
 

@@ -1,6 +1,6 @@
 {
   "name": "kane-beam",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Kane checks the screen. Your app confirms it. An MCP server and CLI that weighs every Kane CLI verdict against your app's own truth, so a coding agent can catch and fix false greens.",
   "type": "module",
   "bin": {
